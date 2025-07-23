@@ -1,0 +1,2 @@
+C:/Users/COACHIKO/Documents/FlutterProjects/safety_zone_consumer/android/app/.cxx/RelWithDebInfo/5i1n3o6z/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/COACHIKO/Documents/FlutterProjects/safety_zone_consumer/android/app/.cxx/RelWithDebInfo/5i1n3o6z/armeabi-v7a/CMakeFiles/rebuild_cache.dir

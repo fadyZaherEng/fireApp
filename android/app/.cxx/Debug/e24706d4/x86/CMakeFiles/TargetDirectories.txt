@@ -1,0 +1,2 @@
+C:/Users/COACHIKO/Documents/FlutterProjects/safety_zone_consumer/android/app/.cxx/Debug/e24706d4/x86/CMakeFiles/edit_cache.dir
+C:/Users/COACHIKO/Documents/FlutterProjects/safety_zone_consumer/android/app/.cxx/Debug/e24706d4/x86/CMakeFiles/rebuild_cache.dir
