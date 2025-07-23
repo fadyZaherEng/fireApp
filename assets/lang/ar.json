@@ -419,6 +419,7 @@
   "submit": "إضافة",
   "cardAddedSuccess": "تمت الإضافة بنجاح",
   "enterCardInformation": "أدخل بيانات البطاقة",
-  "fireSystems": "نظامات الحريق"
+  "fireSystems": "نظامات الحريق",
+  "paymentSuccessful": "تم الدفع بنجاح"
 
 }

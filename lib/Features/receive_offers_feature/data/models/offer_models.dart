@@ -26,6 +26,7 @@ class OfferRequest {
   final String status;
   final int createdAt;
   final List<Offer> offers;
+  final bool is_Primary;
 
   OfferRequest({
     required this.id,
@@ -36,6 +37,7 @@ class OfferRequest {
     required this.status,
     required this.createdAt,
     required this.offers,
+    this.is_Primary = false,
   });
 
   factory OfferRequest.fromJson(Map<String, dynamic> json) {
@@ -50,6 +52,8 @@ class OfferRequest {
       offers: (json['offers'] as List<dynamic>)
           .map((item) => Offer.fromJson(item as Map<String, dynamic>))
           .toList(),
+      is_Primary: //check if not null
+          json['is_Primary'] != null ? json['is_Primary'] as bool : false,
     );
   }
 

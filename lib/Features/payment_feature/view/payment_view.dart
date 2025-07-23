@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/card_payment/card_payment_screen.dart';
 import '../../receive_offers_feature/data/models/accept_offer_models.dart';
 import '../cubit/payment_cubit.dart';
 import '../cubit/payment_states.dart';
@@ -262,65 +263,75 @@ class PaymentContent extends StatelessWidget {
     final cubit = context.read<PaymentCubit>();
     final isSelected = cubit.selectedPaymentMethod == method;
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(
-          color: const Color(0xFFE0E0E0),
-          width: 1,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CardPaymentScreen(),
+          ),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(
+            color: const Color(0xFFE0E0E0),
+            width: 1,
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          // Payment method logo placeholder
-          Image.asset(
-            assetPath,
-            fit: BoxFit.contain,
-          ),
-          SizedBox(width: 12.w),
-          Text(
-            name,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: const Color(0xFF333333),
-              fontFamily: 'Almarai',
+        child: Row(
+          children: [
+            // Payment method logo placeholder
+            Image.asset(
+              assetPath,
+              fit: BoxFit.contain,
             ),
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {
-              cubit.selectPaymentMethod(method);
-            },
-            child: Container(
-              width: 20.w,
-              height: 20.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected
-                      ? const Color(0xFF2196F3)
-                      : const Color(0xFFE0E0E0),
-                  width: 2,
-                ),
+            SizedBox(width: 12.w),
+            Text(
+              name,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF333333),
+                fontFamily: 'Almarai',
               ),
-              child: isSelected
-                  ? Center(
-                      child: Container(
-                        width: 8.w,
-                        height: 8.h,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF2196F3),
-                        ),
-                      ),
-                    )
-                  : null,
             ),
-          ),
-        ],
+            const Spacer(),
+            GestureDetector(
+              onTap: () {
+                cubit.selectPaymentMethod(method);
+              },
+              child: Container(
+                width: 20.w,
+                height: 20.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected
+                        ? const Color(0xFF2196F3)
+                        : const Color(0xFFE0E0E0),
+                    width: 2,
+                  ),
+                ),
+                child: isSelected
+                    ? Center(
+                        child: Container(
+                          width: 8.w,
+                          height: 8.h,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF2196F3),
+                          ),
+                        ),
+                      )
+                    : null,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

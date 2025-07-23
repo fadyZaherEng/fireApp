@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geocoding/geocoding.dart';
+ import 'package:safetyZone/Features/success/success_screen.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../cubit/receive_offers_cubit.dart';
 import '../cubit/receive_offers_states.dart';
@@ -390,9 +390,21 @@ class ReceiveOffersContent extends StatelessWidget {
                                 onPressed: isLoading
                                     ? null
                                     : () {
-                                        context
-                                            .read<ReceiveOffersCubit>()
-                                            .acceptOffer(offer.id);
+                                        if (offerRequest.is_Primary) {
+                                          ///Navigate to success
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SuccessScreen())).then(
+                                              (value) => context
+                                                  .read<ReceiveOffersCubit>()
+                                                  .fetchOffers());
+                                        } else {
+                                          context
+                                              .read<ReceiveOffersCubit>()
+                                              .acceptOffer(offer.id);
+                                        }
                                       },
                                 child: isLoading
                                     ? SizedBox(

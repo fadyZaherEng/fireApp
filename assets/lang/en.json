@@ -413,5 +413,6 @@
   "submit": "Submit",
   "cardAddedSuccess": "Card added successfully",
   "enterCardInformation": "Enter Card Information",
-  "fireSystems": "Fire Systems"
+  "fireSystems": "Fire Systems",
+  "paymentSuccessful": "Payment successful"
 }
