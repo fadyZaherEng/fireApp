@@ -69,8 +69,7 @@ class ProductApiService {
   Future<ProductItemResponse> getProductItems({
     required String nameKey,
     required String type,
-        required String itemType,
-
+    required String itemType,
     int page = 1,
     int limit = 20,
   }) async {
@@ -81,23 +80,39 @@ class ProductApiService {
       if (token == null || token.isEmpty) {
         throw Exception('Authentication token not found');
       }
-
       // Set authorization header
       _dio.options.headers['Authorization'] = 'Bearer $token';
 
-      final response = await _dio.get(
-        '/api/consumer/item-management/$itemType/$nameKey?alarmType=$type',
-        queryParameters: {
-          'page': page,
-          'limit': limit,
-        },
-      );
+      if (nameKey != "Fire extinguisher maintenance") {
+        final response = await _dio.get(
+          '/api/consumer/item-management/$itemType/$nameKey?alarmType=$type',
+          queryParameters: {
+            'page': page,
+            'limit': limit,
+          },
+        );
 
-      if (response.statusCode == 200) {
-        return ProductItemResponse.fromJson(response.data);
+        if (response.statusCode == 200) {
+          return ProductItemResponse.fromJson(response.data);
+        } else {
+          throw Exception(
+              'Failed to fetch product items: ${response.statusCode}');
+        }
       } else {
-        throw Exception(
-            'Failed to fetch product items: ${response.statusCode}');
+        final response = await _dio.get(
+          '/api/consumer/item-management/fire-extinguisher?page=1&limit=2',
+          queryParameters: {
+            'page': page,
+            'limit': limit,
+          },
+        );
+
+        if (response.statusCode == 200) {
+          return ProductItemResponse.fromJson(response.data);
+        } else {
+          throw Exception(
+              'Failed to fetch product items: ${response.statusCode}');
+        }
       }
     } on DioException catch (e) {
       _logger.e('DioException in getProductItems: ${e.message}');

@@ -1,0 +1,2 @@
+E:/fireApp/android/app/.cxx/RelWithDebInfo/zj5h6jk3/x86/CMakeFiles/edit_cache.dir
+E:/fireApp/android/app/.cxx/RelWithDebInfo/zj5h6jk3/x86/CMakeFiles/rebuild_cache.dir
