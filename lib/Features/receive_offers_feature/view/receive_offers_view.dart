@@ -56,6 +56,7 @@ class ReceiveOffersContent extends StatelessWidget {
               ),
             );
             context.read<ReceiveOffersCubit>().clearActionState();
+            context.read<ReceiveOffersCubit>().fetchOffers();
           } else if (state is OfferActionError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -395,17 +396,19 @@ class ReceiveOffersContent extends StatelessWidget {
                                                 .offers.first.is_Primary) {
                                           ///Navigate to success
                                           Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SuccessScreen())).then(
-                                              (value) => context
-                                                  .read<ReceiveOffersCubit>()
-                                                  .fetchOffers());
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SuccessScreen()))
+                                              .then((value) {
+                                            context
+                                                .read<ReceiveOffersCubit>()
+                                                .acceptOffer(offer.id, false);
+                                          });
                                         } else {
                                           context
                                               .read<ReceiveOffersCubit>()
-                                              .acceptOffer(offer.id);
+                                              .acceptOffer(offer.id, true);
                                         }
                                       },
                                 child: isLoading

@@ -27,11 +27,12 @@ class _SuccessScreenState extends State<SuccessScreen> {
     return Scaffold(
       body: Center(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            'assets/images/success.svg',
-            width: 200,
-            height: 200,
+          Image.asset(
+            'assets/images/success.png',
+            width: 120,
+            height: 120,
           ),
           const SizedBox(height: 20),
           Text(

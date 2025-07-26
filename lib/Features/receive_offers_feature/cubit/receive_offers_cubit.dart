@@ -41,7 +41,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
     }
   }
 
-  Future<void> acceptOffer(String offerId) async {
+  Future<void> acceptOffer(String offerId,bool isNavigate) async {
     if (isClosed) return;
 
     try {
@@ -54,8 +54,10 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       _logger.i('Successfully accepted offer: $offerId');
 
       // Navigate to payment instead of showing success message
-      if (!isClosed) {
+      if (!isClosed&&isNavigate) {
         emit(OfferAcceptedNavigateToPayment(response.invoice));
+      }else{
+        emit(OfferActionSuccess('تم قبول العرض بنجاح'));
       }
     } catch (e) {
       _logger.e('Error accepting offer: $e');
