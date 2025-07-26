@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
- import 'package:safetyZone/Features/success/success_screen.dart';
+import 'package:safetyZone/Features/success/success_screen.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../cubit/receive_offers_cubit.dart';
 import '../cubit/receive_offers_states.dart';
@@ -390,7 +390,9 @@ class ReceiveOffersContent extends StatelessWidget {
                                 onPressed: isLoading
                                     ? null
                                     : () {
-                                        if (offerRequest.is_Primary) {
+                                        if (offerRequest.offers.isNotEmpty &&
+                                            offerRequest
+                                                .offers.first.is_Primary) {
                                           ///Navigate to success
                                           Navigator.push(
                                               context,

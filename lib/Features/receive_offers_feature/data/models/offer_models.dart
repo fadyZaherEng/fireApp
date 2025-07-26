@@ -26,7 +26,6 @@ class OfferRequest {
   final String status;
   final int createdAt;
   final List<Offer> offers;
-  final bool is_Primary;
 
   OfferRequest({
     required this.id,
@@ -37,8 +36,7 @@ class OfferRequest {
     required this.status,
     required this.createdAt,
     required this.offers,
-    this.is_Primary = false,
-  });
+    });
 
   factory OfferRequest.fromJson(Map<String, dynamic> json) {
     return OfferRequest(
@@ -52,8 +50,7 @@ class OfferRequest {
       offers: (json['offers'] as List<dynamic>)
           .map((item) => Offer.fromJson(item as Map<String, dynamic>))
           .toList(),
-      is_Primary: //check if not null
-          json['is_Primary'] != null ? json['is_Primary'] as bool : false,
+
     );
   }
 
@@ -178,12 +175,15 @@ class Offer {
   final Provider provider;
   final double price;
   final int createdAt;
+  final bool is_Primary;
+
 
   Offer({
     required this.id,
     required this.provider,
     required this.price,
     required this.createdAt,
+    required this.is_Primary,
   });
 
   factory Offer.fromJson(Map<String, dynamic> json) {
@@ -192,6 +192,7 @@ class Offer {
       provider: Provider.fromJson(json['provider'] as Map<String, dynamic>),
       price: (json['price'] as num).toDouble(),
       createdAt: json['createdAt'] as int,
+      is_Primary: json['is_Primary'] as bool,
     );
   }
 
