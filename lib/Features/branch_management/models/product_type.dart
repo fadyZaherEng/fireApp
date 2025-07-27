@@ -16,4 +16,17 @@ class ProductType {
     this.alarmType,
     this.madeIn,
   });
+
+  ProductType copy() {
+    return ProductType(
+      id: id,
+      nameKey: nameKey,
+      imagePath: imagePath,
+      type: type,
+      subCategory: subCategory,
+      alarmType: alarmType,
+      madeIn: madeIn,
+    );
+  }
+
 }

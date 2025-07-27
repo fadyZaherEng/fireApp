@@ -8,7 +8,7 @@ import '../../../core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
 import '../../../core/services/shared_pref/shared_pref.dart';
 import '../../../core/utils/constants/branch_colors.dart';
-import '../../../core/widgets/branch_widgets.dart';
+import '../../../core/widgets/branch_widgets.dart' as branchWidgets;
 import '../../../core/widgets/paginated_manager_dropdown.dart';
 import '../../../core/widgets/mall_dropdown.dart';
 import '../../location_picker/widgets/location_picker_button.dart';
@@ -202,7 +202,7 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                     // Bottom CTA button
                     Padding(
                         padding: EdgeInsets.all(BranchSpacing.lg.w),
-                        child: PrimaryButton(
+                        child: branchWidgets.PrimaryButton(
                           text: localizations
                               .translate('startEnteringQuantities'),
                           onPressed: _validateAndProceed,
@@ -246,7 +246,7 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                   fullName = userData['fullName'] ?? '';
                 }
 
-                return CustomTextField(
+                return branchWidgets.CustomTextField(
                   enabled: false,
                   suffixIcon: Icon(Icons.home, color: BranchColors.primaryBlue),
                   controller: _mainEstablishmentController,
@@ -278,7 +278,7 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
               ],
             ),
             SizedBox(height: BranchSpacing.sm.h),
-            CustomTextField(
+            branchWidgets.CustomTextField(
               suffixIcon: Icon(Icons.home, color: BranchColors.primaryBlue),
               controller: _branchController,
               hintText: localizations.translate('enterBranchName'),
