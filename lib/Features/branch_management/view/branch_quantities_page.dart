@@ -50,7 +50,8 @@ class BranchQuantitiesView extends StatelessWidget {
             _buildHeader(context, localizations, isRTL),
             Expanded(
               child: viewModel.isLoading
-                  ? const Center(child: CircularProgressIndicator(color: CColors.primary))
+                  ? const Center(
+                      child: CircularProgressIndicator(color: CColors.primary))
                   : _buildProductList(context, viewModel, localizations, isRTL),
             ),
             _buildBottomButton(context, viewModel, localizations),
@@ -141,27 +142,24 @@ class BranchQuantitiesView extends StatelessWidget {
               isLoadingVariants: false,
               hasLoadedVariants: false,
               selectedVariantIndex: index,
-              onVariantChanged: (variant,idx) {
-                for(int i = 0; i < viewModel.products.length; i++) {
-                  final product = viewModel.products[i];
-                  print("product: ${product.selectedVariant}");
-                  print("variant: $variant");
-                  print("product.itemName: ${i}");
-                  print("variant: $variant");
-                }
+              onVariantChanged: (variant, idx) {
+                print("ffffffffffff$variant");
+                print("ffffffffffff${idx}");
                 for (var product in sameTypeProducts) {
                   final index = viewModel.products.indexOf(product);
-                  if (index != -1) {
+                  print("FFFFFFFFFFFFFFFFtttttttttttttttF$index $idx");
+                  if (index != -1 && idx == index) {
+                    print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK$index $idx");
                     viewModel.handleVariantSelection(
                       variant,
-                      index,
+                      idx,
                       product,
                       variants,
                     );
                   }
                 }
               },
-              onQuantityChanged: ( quantity,idx) {
+              onQuantityChanged: (quantity, idx) {
                 if (sameTypeProducts.isNotEmpty) {
                   final index =
                       viewModel.products.indexOf(sameTypeProducts.first);
@@ -169,7 +167,7 @@ class BranchQuantitiesView extends StatelessWidget {
                     viewModel.updateQuantity(
                       index,
                       sameTypeProducts.first,
-                      quantity??0,
+                      quantity ?? 0,
                     );
                   }
                 }
@@ -288,7 +286,7 @@ class ProductGroupWidget extends StatelessWidget {
             onQuantityChanged: onQuantityChanged,
             selectedVariantIndex: selectedVariantIndex,
           );
-        }).toList(),
+        }),
         SizedBox(height: 8.h),
         branch_widgets.OutlinePlusButton(
           text: localizations.translate('addMoreProduct'),
@@ -335,7 +333,7 @@ class ProductCard extends StatefulWidget {
   final VoidCallback? onDropdownOpened;
   int? selectedVariantIndex;
 
-    ProductCard({
+  ProductCard({
     super.key,
     required this.title,
     required this.imagePath,
@@ -402,7 +400,8 @@ class _ProductCardState extends State<ProductCard> {
                       hintText: _getLocalizedText('selectVariant'),
                       onChanged: (value) {
                         if (value != null) {
-                          widget.onVariantChanged?.call(value, widget.selectedVariantIndex ?? 0);
+                          widget.onVariantChanged
+                              ?.call(value, widget.selectedVariantIndex ?? 0);
                         }
                       },
                       onTap: widget.onDropdownOpened,
@@ -421,7 +420,8 @@ class _ProductCardState extends State<ProductCard> {
                       hintText: _getLocalizedText('selectQuantity'),
                       onChanged: (value) {
                         if (value != null) {
-                          widget.onQuantityChanged?.call(int.tryParse(value), widget.selectedVariantIndex ?? 0);
+                          widget.onQuantityChanged?.call(int.tryParse(value),
+                              widget.selectedVariantIndex ?? 0);
                         }
                       },
                     ),
@@ -492,7 +492,7 @@ class CustomDropdownField extends StatefulWidget {
   final VoidCallback? onTap;
 
   const CustomDropdownField({
-    Key? key,
+    super.key,
     this.value,
     required this.items,
     required this.hintText,
@@ -501,7 +501,7 @@ class CustomDropdownField extends StatefulWidget {
     this.decoration,
     this.style,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomDropdownField> createState() => _CustomDropdownFieldState();

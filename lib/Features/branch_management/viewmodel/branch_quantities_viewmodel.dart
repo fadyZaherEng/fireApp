@@ -300,7 +300,8 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
         variant = null;
       }
     }
-
+   print('Selected variant: $variant');
+    print('Selected item: $productIndex');
     _products[productIndex] = productData.copyWith(
       selectedVariant: variant,
       selectedVariantItem: selectedItem,
