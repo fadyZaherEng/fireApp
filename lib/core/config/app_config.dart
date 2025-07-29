@@ -7,9 +7,9 @@ class AppConfig {
   static String get apiBaseUrl {
     switch (environment) {
       case Environment.development:
-        return 'http://safty-zone-env.eba-rhpc9ydc.us-east-1.elasticbeanstalk.com';
+        return 'https://safty-zone-env.eba-rhpc9ydc.us-east-1.elasticbeanstalk.com';
       case Environment.staging:
-        return 'http://safty-zone-env.eba-rhpc9ydc.us-east-1.elasticbeanstalk.com';
+        return 'https://safty-zone-env.eba-rhpc9ydc.us-east-1.elasticbeanstalk.com';
       case Environment.production:
         return 'https://api.safetyzone.com';
     }
