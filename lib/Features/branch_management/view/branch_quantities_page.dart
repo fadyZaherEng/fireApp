@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:safetyZone/Features/auth_features/login_feature/widgets/primary_button.dart';
 import 'package:safetyZone/Features/branch_management/models/product_data.dart';
@@ -24,10 +25,11 @@ class BranchQuantitiesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => BranchQuantitiesViewModel(
-        systemType: systemType,
-        branchData: branchData,
-      ),
+      create: (_) =>
+          BranchQuantitiesViewModel(
+            systemType: systemType,
+            branchData: branchData,
+          ),
       child: const BranchQuantitiesView(),
     );
   }
@@ -51,7 +53,7 @@ class BranchQuantitiesView extends StatelessWidget {
             Expanded(
               child: viewModel.isLoading
                   ? const Center(
-                      child: CircularProgressIndicator(color: CColors.primary))
+                  child: SpinKitDoubleBounce(color: CColors.primary))
                   : _buildProductList(context, viewModel, localizations, isRTL),
             ),
             _buildBottomButton(context, viewModel, localizations),
@@ -61,8 +63,8 @@ class BranchQuantitiesView extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(
-      BuildContext context, AppLocalizations localizations, bool isRTL) {
+  Widget _buildHeader(BuildContext context, AppLocalizations localizations,
+      bool isRTL) {
     return Column(
       children: [
         Padding(
@@ -105,12 +107,10 @@ class BranchQuantitiesView extends StatelessWidget {
     );
   }
 
-  Widget _buildProductList(
-    BuildContext context,
-    BranchQuantitiesViewModel viewModel,
-    AppLocalizations localizations,
-    bool isRTL,
-  ) {
+  Widget _buildProductList(BuildContext context,
+      BranchQuantitiesViewModel viewModel,
+      AppLocalizations localizations,
+      bool isRTL,) {
     final productTypes = viewModel.getUniqueProductTypes();
 
     return ListView.separated(
@@ -121,7 +121,7 @@ class BranchQuantitiesView extends StatelessWidget {
       itemBuilder: (context, index) {
         final type = productTypes[index];
         final products =
-            viewModel.products.where((p) => p.type.id == type.id).toList();
+        viewModel.products.where((p) => p.type.id == type.id).toList();
         final variants = viewModel.variantsCache[type.nameKey] ?? [];
         final isLoading = viewModel.loadingVariants[type.nameKey] == true;
         final hasLoaded = viewModel.variantsCache.containsKey(type.nameKey);
@@ -163,7 +163,7 @@ class BranchQuantitiesView extends StatelessWidget {
                 child: Container(
                   color: Colors.transparent,
                   child: const Center(
-                      child: CircularProgressIndicator(color: CColors.primary)),
+                      child: SpinKitDoubleBounce(color: CColors.primary)),
                 ),
               ),
           ],
@@ -172,11 +172,9 @@ class BranchQuantitiesView extends StatelessWidget {
     );
   }
 
-  List<String> _getVariantNames(
-    bool isLoadingVariants,
-    bool hasLoadedVariants,
-    List<dynamic> variants,
-  ) {
+  List<String> _getVariantNames(bool isLoadingVariants,
+      bool hasLoadedVariants,
+      List<dynamic> variants,) {
     if (isLoadingVariants) {
       return ['Loading...'];
     } else if (hasLoadedVariants && variants.isEmpty) {
@@ -191,11 +189,9 @@ class BranchQuantitiesView extends StatelessWidget {
     return [];
   }
 
-  Widget _buildBottomButton(
-    BuildContext context,
-    BranchQuantitiesViewModel viewModel,
-    AppLocalizations localizations,
-  ) {
+  Widget _buildBottomButton(BuildContext context,
+      BranchQuantitiesViewModel viewModel,
+      AppLocalizations localizations,) {
     return Column(
       children: [
         Padding(
@@ -246,7 +242,10 @@ class ProductGroupWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...products.asMap().entries.map((entry) {
+        ...products
+            .asMap()
+            .entries
+            .map((entry) {
           final idx = entry.key;
           final productData = entry.value;
 
@@ -260,7 +259,7 @@ class ProductGroupWidget extends StatelessWidget {
           return ProductCard(
             title: localizations.translate(productType.nameKey),
             imagePath:
-                entry.value.selectedVariantItem?.image ?? productType.imagePath,
+            entry.value.selectedVariantItem?.image ?? productType.imagePath,
             variantList: variantNames,
             selectedVariant: validatedSelectedVariant,
             quantity: productData.quantity,
@@ -280,12 +279,10 @@ class ProductGroupWidget extends StatelessWidget {
     );
   }
 
-  String? _getValidatedSelectedVariant(
-    String? currentSelection,
-    List<String> variantNames,
-    bool isLoadingVariants,
-    bool hasLoadedVariants,
-  ) {
+  String? _getValidatedSelectedVariant(String? currentSelection,
+      List<String> variantNames,
+      bool isLoadingVariants,
+      bool hasLoadedVariants,) {
     if (isLoadingVariants && !hasLoadedVariants) {
       return null;
     }
@@ -399,7 +396,7 @@ class _ProductCardState extends State<ProductCard> {
                     child: CustomDropdownField(
                       value: widget.quantity?.toString(),
                       items:
-                          List.generate(50, (index) => (index + 1).toString()),
+                      List.generate(50, (index) => (index + 1).toString()),
                       hintText: _getLocalizedText('selectQuantity'),
                       onChanged: (value) {
                         if (value != null) {
@@ -495,9 +492,9 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
   Widget build(BuildContext context) {
     // Ensure the selected value is valid - if not, use null
     final validValue =
-        (widget.value != null && widget.items.contains(widget.value))
-            ? widget.value
-            : null;
+    (widget.value != null && widget.items.contains(widget.value))
+        ? widget.value
+        : null;
 
     // If items list is empty, show a clickable dropdown that triggers onTap
     if (widget.items.isEmpty) {
@@ -585,10 +582,10 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
                 child: Text(
                   item,
                   style: widget.style?.copyWith(
-                        color: isSpecialItem
-                            ? Colors.grey
-                            : (widget.style?.color ?? Colors.black),
-                      ) ??
+                    color: isSpecialItem
+                        ? Colors.grey
+                        : (widget.style?.color ?? Colors.black),
+                  ) ??
                       TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -628,10 +625,10 @@ class _CustomDropdownFieldState extends State<CustomDropdownField> {
             ),
             prefixIcon: widget.leadingIcon != null
                 ? Icon(
-                    widget.leadingIcon,
-                    size: 24.sp,
-                    color: BranchColors.primaryBlue,
-                  )
+              widget.leadingIcon,
+              size: 24.sp,
+              color: BranchColors.primaryBlue,
+            )
                 : null,
             border: InputBorder.none,
             contentPadding: EdgeInsets.symmetric(
