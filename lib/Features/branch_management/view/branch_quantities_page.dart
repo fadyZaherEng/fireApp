@@ -259,7 +259,8 @@ class ProductGroupWidget extends StatelessWidget {
 
           return ProductCard(
             title: localizations.translate(productType.nameKey),
-            imagePath:entry.value.selectedVariantItem?.image??productType.imagePath,
+            imagePath:
+                entry.value.selectedVariantItem?.image ?? productType.imagePath,
             variantList: variantNames,
             selectedVariant: validatedSelectedVariant,
             quantity: productData.quantity,
@@ -429,7 +430,7 @@ class _ProductCardState extends State<ProductCard> {
                 borderRadius: BorderRadius.circular(6.r),
                 child: Image.asset(
                   widget.imagePath,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
                       color: Colors.grey[200],
