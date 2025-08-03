@@ -235,7 +235,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     return currentSelection == 'Loading...' ||
         currentSelection == 'No variants available' ||
         (currentSelection != null &&
-            !variants.any((item) => item.itemName == currentSelection));
+            !variants.any((item) => item.itemName.en == currentSelection||item.itemName.ar==currentSelection));
   }
 
   void _clearInvalidSelections(String nameKey) {
@@ -298,7 +298,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     if (variant != null && variants.isNotEmpty) {
       try {
         selectedItem = variants.firstWhere(
-          (item) => item.itemName == variant,
+          (item) => item.itemName.en == variant||item.itemName.ar==variant,
         );
       } catch (e) {
         selectedItem = null;
