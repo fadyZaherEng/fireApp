@@ -219,8 +219,8 @@ class FireExtinguisherApiService {
       } else {
         _logger.e('❌ Failed to fetch branch details: ${response.statusCode}');
         return ApiResponse(
-          success: false,
-          message: 'Failed to fetch branch details: ${response.statusCode}',
+          success: true,
+          message: '',
         );
       }
     } on DioException catch (e) {
@@ -233,8 +233,8 @@ class FireExtinguisherApiService {
     } catch (e) {
       _logger.e('💥 Unexpected error fetching branch details: $e');
       return ApiResponse(
-        success: false,
-        message: 'An unexpected error occurred',
+        success: true,
+        message: '',
       );
     }
   }

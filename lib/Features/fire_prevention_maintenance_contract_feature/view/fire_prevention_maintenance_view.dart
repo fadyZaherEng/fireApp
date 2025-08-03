@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
+import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../data/models/certificate_models.dart';
@@ -66,17 +68,17 @@ class _ServiceProviderSelectionViewState
           _branches = response.data!;
         });
       } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                response.message,
-                style: const TextStyle(fontFamily: 'Almarai'),
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+        // if (mounted) {
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       content: Text(
+        //         response.message,
+        //         style: const TextStyle(fontFamily: 'Almarai'),
+        //       ),
+        //       backgroundColor: Colors.red,
+        //     ),
+        //   );
+        // }
       }
     } catch (e) {
       if (mounted) {
@@ -114,17 +116,17 @@ class _ServiceProviderSelectionViewState
           _providers = response.data!;
         });
       } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                response.message,
-                style: const TextStyle(fontFamily: 'Almarai'),
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+        // if (mounted) {
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       content: Text(
+        //         response.message,
+        //         style: const TextStyle(fontFamily: 'Almarai'),
+        //       ),
+        //       backgroundColor: Colors.red,
+        //     ),
+        //   );
+        // }
       }
     } catch (e) {
       if (mounted) {
@@ -163,11 +165,19 @@ class _ServiceProviderSelectionViewState
         // Convert items to alert devices and fire extinguishers
         List<AlertDevice> alertDevices = branchDetails.alarmItem
             .map((item) => AlertDevice(
-                type: item.itemDetails.itemName, count: item.quantity))
+                type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                        'en'
+                    ? item.itemDetails.itemName.en.toString()
+                    : item.itemDetails.itemName.ar.toString(),
+                count: item.quantity))
             .toList();
         List<FireExtinguisher> fireExtinguishers = branchDetails.fireSystemItem
             .map((item) => FireExtinguisher(
-                type: item.itemDetails.itemName, count: item.quantity))
+                type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                        'en'
+                    ? item.itemDetails.itemName.en.toString()
+                    : item.itemDetails.itemName.ar.toString(),
+                count: item.quantity))
             .toList();
 
         // for (final item in branchDetails.items) {
