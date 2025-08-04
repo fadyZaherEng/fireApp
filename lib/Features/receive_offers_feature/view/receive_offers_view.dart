@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
 import '../../../core/localization/app_localizations.dart';
@@ -84,7 +88,7 @@ class ReceiveOffersContent extends StatelessWidget {
 
           if (state is ReceiveOffersLoading) {
             return const Center(
-              child: CircularProgressIndicator(
+              child: SpinKitDoubleBounce(
                 color: Color(0xFF2196F3),
               ),
             );
@@ -177,7 +181,9 @@ class ReceiveOffersContent extends StatelessWidget {
           }
 
           return const Center(
-            child: CircularProgressIndicator(),
+            child: SpinKitDoubleBounce(
+              color: Color(0xFF2196F3),
+            ),
           );
         },
       ),
@@ -356,11 +362,8 @@ class ReceiveOffersContent extends StatelessWidget {
                                     ? SizedBox(
                                         width: 16.w,
                                         height: 16.h,
-                                        child: const CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Color(0xFFE53935)),
+                                        child: const SpinKitDoubleBounce(
+                                          color: Color(0xFFE53935),
                                         ),
                                       )
                                     : Text(
@@ -415,12 +418,8 @@ class ReceiveOffersContent extends StatelessWidget {
                                     ? SizedBox(
                                         width: 16.w,
                                         height: 16.h,
-                                        child: const CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.white),
-                                        ),
+                                        child: const SpinKitDoubleBounce(
+                                            color: Colors.white),
                                       )
                                     : Text(
                                         localizations.translate('accept'),

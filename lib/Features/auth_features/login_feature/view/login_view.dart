@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/routes.dart';
 import '../widgets/phone_input_field.dart';
@@ -76,10 +77,8 @@ class _LoginViewState extends State<LoginView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    const Color(0xFF1C4587),
-                  ),
+                SpinKitDoubleBounce(
+                  color: const Color(0xFF1C4587),
                 ),
                 SizedBox(height: 16.h),
                 Text(

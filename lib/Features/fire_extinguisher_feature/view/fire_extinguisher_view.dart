@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
 import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import '../../../../constants/app_constants.dart';
@@ -281,14 +284,14 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
       ),
       body: _isLoadingBranches || _isLoadingBranchDetails
           ? const Center(
-              child: CircularProgressIndicator(
+              child: SpinKitDoubleBounce(
                 color: AppColors.primaryRed,
               ),
             )
           : _showProviderSelection
               ? _buildCompleteForm(context, isRTL, localizations)
               : const Center(
-                  child: CircularProgressIndicator(
+                  child: SpinKitDoubleBounce(
                     color: AppColors.primaryRed,
                   ),
                 ),
@@ -421,7 +424,7 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
           context: context,
           barrierDismissible: false,
           builder: (context) => const Center(
-            child: CircularProgressIndicator(
+            child: SpinKitDoubleBounce(
               color: AppColors.primaryRed,
             ),
           ),
