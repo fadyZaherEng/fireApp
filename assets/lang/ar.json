@@ -510,7 +510,12 @@
   "repairRequest": "إصلاح صيانة",
   "viewRepairCost": "عرض سعر الإصلاح",
   "viewReports": "عرض التقارير",
-  "approveRequest": "تعميد الطلب"
+  "approveRequest": "تعميد الطلب",
+  "emergencyPrice": "قيمة الزيارة الطارئة",
+  "visitPrice": "قيمة الزيارة",
+  "contractPrice": "قيمة العقد",
+  "commission": "العموله",
+  "requestServiceFromServiceProvider": "طلب خدمة من مزود الخدمة"
 
 
 

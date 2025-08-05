@@ -30,6 +30,8 @@ class AcceptedOffer {
   final String status;
   final String responsibleEmployee;
   final int createdAt;
+  final int visitPrice;
+  final int emergencyVisitPrice;
   final int v;
 
   AcceptedOffer({
@@ -41,6 +43,8 @@ class AcceptedOffer {
     required this.responsibleEmployee,
     required this.createdAt,
     required this.v,
+    required this.visitPrice,
+    required this.emergencyVisitPrice,
   });
 
   factory AcceptedOffer.fromJson(Map<String, dynamic> json) {
@@ -53,6 +57,8 @@ class AcceptedOffer {
       responsibleEmployee: json['responsibleEmployee'] ?? '',
       createdAt: json['createdAt'] ?? 0,
       v: json['__v'] ?? 0,
+      visitPrice: json['visitPrice'] ?? 0,
+      emergencyVisitPrice: json['emergencyVisitPrice'] ?? 0,
     );
   }
 

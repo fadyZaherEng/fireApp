@@ -472,5 +472,10 @@
   "repairRequest": "Repair Request",
   "viewRepairCost": "View Repair Cost",
   "viewReports": "View Reports",
-  "approveRequest": "Approve Request"
-}
+  "approveRequest": "Approve Request",
+  "emergencyPrice": "Emergency Price",
+  "visitPrice": "Visit Price",
+  "contractPrice": "Contract Price",
+  "commission": "العموله",
+  "requestServiceFromServiceProvider": "Request Service from Service Provider"
+ }

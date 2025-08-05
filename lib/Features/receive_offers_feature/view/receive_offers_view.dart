@@ -74,7 +74,11 @@ class ReceiveOffersContent extends StatelessWidget {
             Navigator.of(context)
                 .push(
               MaterialPageRoute(
-                builder: (context) => PaymentView(invoice: state.invoice),
+                builder: (context) => PaymentView(
+                  invoice: state.invoice,
+                  emergencyVisitPrice: state.emergencyVisitPrice,
+                  visitPrice: state.visitPrice,
+                ),
               ),
             )
                 .then((_) {

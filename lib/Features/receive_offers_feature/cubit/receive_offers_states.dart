@@ -40,5 +40,7 @@ class OfferActionError extends ReceiveOffersState {
 class OfferAcceptedNavigateToPayment extends ReceiveOffersState {
   final Invoice invoice;
 
-  OfferAcceptedNavigateToPayment(this.invoice);
+  final int visitPrice;
+  final int emergencyVisitPrice;
+  OfferAcceptedNavigateToPayment(this.invoice, this.visitPrice, this.emergencyVisitPrice);
 }
