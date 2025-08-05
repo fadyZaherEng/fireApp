@@ -411,7 +411,7 @@ class _ServiceProviderSelectionViewState
         // Create the request
         final request = CertificateInstallationRequest(
           branch: _selectedBranch,
-          requestType: 'InstallationCertificate',
+          requestType: 'MaintenanceContract',
           providers: _selectedProvider != null
               ? [ProviderSelection(provider: _selectedProvider!.id)]
               : _providers.isNotEmpty
@@ -421,8 +421,8 @@ class _ServiceProviderSelectionViewState
                       .toList()
                   : null,
           // Pass null if no providers available
-          visitsPerYear: _visitsPerYear,
-          durationInMonths: duration,
+          numberOfVisits: _visitsPerYear,
+          duration: duration,
         );
 
         // Show loading indicator

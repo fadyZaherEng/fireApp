@@ -168,15 +168,15 @@ class CertificateInstallationRequest {
   final String branch;
   final String requestType;
   final List<ProviderSelection>? providers;
-  final int? visitsPerYear;
-  final int? durationInMonths;
+  final int? numberOfVisits;
+  final int? duration;
 
   const CertificateInstallationRequest({
     required this.branch,
     required this.requestType,
     this.providers,
-    this.visitsPerYear,
-    this.durationInMonths,
+    this.numberOfVisits,
+    this.duration,
   });
 
   Map<String, dynamic> toJson() {
@@ -190,13 +190,13 @@ class CertificateInstallationRequest {
       json['providers'] = providers!.map((p) => p.toJson()).toList();
     }
 
-    // Add visitsPerYear and durationInMonths if they are not null
-    if (visitsPerYear != null) {
-      json['visitsPerYear'] = visitsPerYear;
+    // Add numberOfVisits and durationInMonths if they are not null
+    if (numberOfVisits != null) {
+      json['numberOfVisits'] = numberOfVisits;
     }
 
-    if (durationInMonths != null) {
-      json['durationInMonths'] = durationInMonths;
+    if (duration != null) {
+      json['duration'] = duration;
     }
 
     return json;
