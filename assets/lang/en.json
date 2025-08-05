@@ -513,5 +513,7 @@
   "visitNumber": "Visit No.",
   "rescheduleButton": "Emergency! Reschedule Visit",
   "selectVisitDate": "Select Visit Date",
-  "saveAndSend": "Save & Send"
+  "saveAndSend": "Save & Send",
+  "providerWillBeContacted": "The service provider will be contacted, and you will be notified."
+
 }
