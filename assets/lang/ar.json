@@ -468,20 +468,6 @@
   "branch_quantities": "كميات الفرع",
   "quantity": "العدد",
   "item_name": "اسم الصنف",
-  "left_items": [
-    {"name": "لوحة تحكم 1 زون", "quantity": "5"},
-    {"name": "كاشف دخان عادي", "quantity": "5"},
-    {"name": "كاشف حراري", "quantity": "5"},
-    {"name": "جرس إنذار", "quantity": "5"},
-    {"name": "كاسر زجاج", "quantity": "5"}
-  ],
-  "right_items": [
-    {"name": "مخرج طوارئ", "quantity": "5"},
-    {"name": "إنارة احتياطية", "quantity": "5"},
-    {"name": "مضخة حريق", "quantity": "5"},
-    {"name": "صندوق حريق", "quantity": "5"},
-    {"name": "لوحة تحكم 1 زون", "quantity": "5"}
-  ],
   "branchQuantities": "كميات الفرع",
   "itemName": "اسم الصنف",
   "quantity": "العدد",
