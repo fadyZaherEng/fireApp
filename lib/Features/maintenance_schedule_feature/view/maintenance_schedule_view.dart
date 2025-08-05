@@ -6,6 +6,8 @@ import '../../../core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
 import '../../home_feature/cubit/home_cubit.dart';
 import '../../home_feature/cubit/home_states.dart';
+import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class MaintenanceScheduleView extends StatelessWidget {
   const MaintenanceScheduleView({super.key});
@@ -313,7 +315,14 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
                 backgroundColor: CColors.primary,
                 minimumSize: const Size(double.infinity, 40),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const VisitDateScreen(),
+                  ),
+                );
+              },
               child: Text(t.translate("rescheduleButton"),
                   style: const TextStyle(color: Colors.white)),
             ),
@@ -344,6 +353,121 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
           Text(branchInfo,
               style: const TextStyle(color: Colors.grey, fontSize: 12)),
         ],
+      ),
+    );
+  }
+}
+
+class VisitDateScreen extends StatefulWidget {
+  const VisitDateScreen({super.key});
+
+  @override
+  State<VisitDateScreen> createState() => _VisitDateScreenState();
+}
+
+class _VisitDateScreenState extends State<VisitDateScreen> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {},
+        ),
+        centerTitle: true,
+        title: Text(
+          AppLocalizations.of(context).translate("selectVisitDate"),
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Card(
+              elevation: 2,
+              // color: Colors.white,
+              margin: const EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: TableCalendar(
+                  firstDay: DateTime.utc(2020, 1, 1),
+                  lastDay: DateTime.utc(2030, 12, 31),
+                  focusedDay: _focusedDay,
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  calendarFormat: CalendarFormat.month,
+                  startingDayOfWeek: StartingDayOfWeek.sunday,
+                  availableGestures: AvailableGestures.all,
+                  calendarStyle: CalendarStyle(
+                    todayDecoration: BoxDecoration(
+                      color: CColors.secondary.withOpacity(0.4),
+                      shape: BoxShape.circle,
+                    ),
+                    selectedDecoration: BoxDecoration(
+                      color: CColors.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  headerStyle: const HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    titleTextStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 16),
+                  ),
+                  daysOfWeekStyle: const DaysOfWeekStyle(
+                    weekendStyle: TextStyle(color: Colors.black),
+                    weekdayStyle: TextStyle(color: Colors.black),
+                  ),
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                    });
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 48),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  // TODO: handle save/send logic
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: CColors.primary,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context).translate("saveAndSend"),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }
