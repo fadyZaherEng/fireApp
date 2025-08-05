@@ -393,14 +393,13 @@
   "drawerBranchesList": "قائمة الفروع",
   "drawerAddEmployees": "إضافة موظفين",
   "drawerCity": "المدينة",
-  "drawerModificationReports": "تقارير تعديل اعلان",
+  "drawerModificationReports": "تقارير تعميد أصلاح",
   "drawerMaintenanceContracts": "عقود صيانة",
   "drawerVisitReports": "تقارير الزيارة",
   "drawerNotifications": "الاشعارات",
   "drawerLanguage": "اللغة",
   "drawerContactUs": "تواصل معنا",
   "drawerCompanyName": "شركة النور",
-  
   "equipmentCertificatesTitle": "تقارير تعديد إصلاح",
   "searchCompanyOrOther": "ابحث عن الشركة أو الآخر...",
   "errorLoadingCertificates": "خطأ في تحميل الشهادات",
@@ -520,7 +519,12 @@
   "rescheduleButton": "لطوارئ! إعادة جدولة موعد الزيارة",
   "selectVisitDate": "اختر تاريخ الزيارة",
   "saveAndSend": "حفظ و ارسال",
-  "providerWillBeContacted": "سوف يتم التواصل مع مزود الخدمة و يتم اشعارك بذلك"
+  "providerWillBeContacted": "سوف يتم التواصل مع مزود الخدمة و يتم اشعارك بذلك",
+  "requestType": "نوع الطلب",
+  "repairRequest": "إصلاح صيانة",
+  "viewRepairCost": "عرض سعر الإصلاح",
+  "viewReports": "عرض التقارير",
+  "approveRequest": "تعميد الطلب"
 
 
 

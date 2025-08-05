@@ -514,6 +514,11 @@
   "rescheduleButton": "Emergency! Reschedule Visit",
   "selectVisitDate": "Select Visit Date",
   "saveAndSend": "Save & Send",
-  "providerWillBeContacted": "The service provider will be contacted, and you will be notified."
+  "providerWillBeContacted": "The service provider will be contacted, and you will be notified.",
+  "requestType": "Request Type",
+  "repairRequest": "Repair Request",
+  "viewRepairCost": "View Repair Cost",
+  "viewReports": "View Reports",
+  "approveRequest": "Approve Request"
 
 }

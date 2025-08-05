@@ -6,7 +6,6 @@ import '../../../core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
 import '../../home_feature/cubit/home_cubit.dart';
 import '../../home_feature/cubit/home_states.dart';
-import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MaintenanceScheduleView extends StatelessWidget {
@@ -181,60 +180,57 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF2F4F7),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            t.translate("maintenanceTitle"),
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: CColors.secondary,
-            ),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF2F4F7),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          t.translate("maintenanceTitle"),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: CColors.secondary,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              // Search bar
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: t.translate("searchHint"),
-                    border: InputBorder.none,
-                    icon: const Icon(Icons.search),
-                  ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            // Search bar
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: t.translate("searchHint"),
+                  border: InputBorder.none,
+                  icon: const Icon(Icons.search),
                 ),
               ),
-              const SizedBox(height: 16),
+            ),
+            const SizedBox(height: 16),
 
-              // Card Example
-              _buildMaintenanceCard(
-                context,
-                companyName: t.translate("company1"),
-                branchInfo: t.translate("branchInfo"),
-                address: "شارع عبد العزيز - المملكة العربية السعودية",
-                visitDate: "22/06/2025",
-                visitNumber: "2",
-              ),
-              const SizedBox(height: 10),
-              _simpleCard(t.translate("company2"), t.translate("branchInfo")),
-              const SizedBox(height: 10),
-              _simpleCard(t.translate("company3"), t.translate("branchInfo")),
-            ],
-          ),
+            // Card Example
+            _buildMaintenanceCard(
+              context,
+              companyName: t.translate("company1"),
+              branchInfo: t.translate("branchInfo"),
+              address: "شارع عبد العزيز - المملكة العربية السعودية",
+              visitDate: "22/06/2025",
+              visitNumber: "2",
+            ),
+            const SizedBox(height: 10),
+            _simpleCard(t.translate("company2"), t.translate("branchInfo")),
+            const SizedBox(height: 10),
+            _simpleCard(t.translate("company3"), t.translate("branchInfo")),
+          ],
         ),
       ),
     );
@@ -378,7 +374,9 @@ class _VisitDateScreenState extends State<VisitDateScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         centerTitle: true,
         title: Text(
@@ -498,7 +496,8 @@ class SuccessScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                AppLocalizations.of(context).translate('providerWillBeContacted'),
+                AppLocalizations.of(context)
+                    .translate('providerWillBeContacted'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
