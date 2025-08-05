@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safetyZone/core/utils/constants/colors.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
 import '../../home_feature/cubit/home_cubit.dart';
@@ -8,6 +9,7 @@ import '../../home_feature/cubit/home_states.dart';
 
 class MaintenanceScheduleView extends StatelessWidget {
   const MaintenanceScheduleView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
@@ -21,7 +23,7 @@ class MaintenanceScheduleView extends StatelessWidget {
           return _buildBlockingScreen(localizations, isRTL, state, context);
         }
 
-        return _buildSimpleMaintenancePage(localizations, isRTL);
+        return SimpleMaintenancePage();
       },
     );
   }
@@ -152,26 +154,6 @@ class MaintenanceScheduleView extends StatelessWidget {
     );
   }
 
-  Widget _buildSimpleMaintenancePage(
-      AppLocalizations localizations, bool isRTL) {
-    return SafeArea(
-      child: Container(
-        color: const Color(0xFFEDF2FA),
-        child: Center(
-          child: Text(
-            'maintenance',
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF444444),
-              fontFamily: isRTL ? 'Almarai' : 'Poppins',
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   void _navigateToAddEmployees(BuildContext context) {
     Navigator.of(context).pushNamed(Routes.addEmployees);
   }
@@ -182,5 +164,187 @@ class MaintenanceScheduleView extends StatelessWidget {
 
   void _navigateToTermsAndConditions(BuildContext context) {
     Navigator.of(context).pushNamed(Routes.termsAndConditions);
+  }
+}
+
+class SimpleMaintenancePage extends StatefulWidget {
+  const SimpleMaintenancePage({super.key});
+
+  @override
+  State<SimpleMaintenancePage> createState() => _SimpleMaintenancePageState();
+}
+
+class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF2F4F7),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            t.translate("maintenanceTitle"),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: CColors.secondary,
+            ),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              // Search bar
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: t.translate("searchHint"),
+                    border: InputBorder.none,
+                    icon: const Icon(Icons.search),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Card Example
+              _buildMaintenanceCard(
+                context,
+                companyName: t.translate("company1"),
+                branchInfo: t.translate("branchInfo"),
+                address: "شارع عبد العزيز - المملكة العربية السعودية",
+                visitDate: "22/06/2025",
+                visitNumber: "2",
+              ),
+              const SizedBox(height: 10),
+              _simpleCard(t.translate("company2"), t.translate("branchInfo")),
+              const SizedBox(height: 10),
+              _simpleCard(t.translate("company3"), t.translate("branchInfo")),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMaintenanceCard(
+    BuildContext context, {
+    required String companyName,
+    required String branchInfo,
+    required String address,
+    required String visitDate,
+    required String visitNumber,
+  }) {
+    final t = AppLocalizations.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.white),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            companyName,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: CColors.secondary),
+          ),
+          const SizedBox(height: 4),
+          Text(branchInfo,
+              style: const TextStyle(color: Colors.grey, fontSize: 12)),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Icon(Icons.location_on, color: CColors.primary),
+              const SizedBox(width: 6),
+              Expanded(child: Text(address)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Text("${t.translate("visitNumber")}: ",
+                          style: const TextStyle(color: CColors.secondary)),
+                      Text(visitNumber,
+                          style: const TextStyle(color: CColors.black)),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("${t.translate("visitDate")}: ",
+                          style: const TextStyle(color: CColors.secondary)),
+                      Text(visitDate,
+                          style: const TextStyle(color: CColors.black)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CColors.primary,
+                minimumSize: const Size(double.infinity, 40),
+              ),
+              onPressed: () {},
+              child: Text(t.translate("rescheduleButton"),
+                  style: const TextStyle(color: Colors.white)),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _simpleCard(String companyName, String branchInfo) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.white),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(companyName,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: CColors.secondary)),
+          const SizedBox(height: 4),
+          Text(branchInfo,
+              style: const TextStyle(color: Colors.grey, fontSize: 12)),
+        ],
+      ),
+    );
   }
 }

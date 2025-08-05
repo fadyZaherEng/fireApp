@@ -502,5 +502,14 @@
   "empty": "",
   "party1": "First Party",
   "party2": "Second Party",
-  "signature": "Signature"
+  "signature": "Signature",
+  "maintenanceTitle": "Maintenance Schedule",
+  "searchHint": "Search by company or branch",
+  "company1": "Saudi Security & Safety Co.",
+  "company2": "Fais Security & Safety Co.",
+  "company3": "Riyadh Security & Safety Co.",
+  "branchInfo": "Branch of Smart Program Tech Co.",
+  "visitDate": "Visit Date",
+  "visitNumber": "Visit No.",
+  "rescheduleButton": "Emergency! Reschedule Visit"
 }
