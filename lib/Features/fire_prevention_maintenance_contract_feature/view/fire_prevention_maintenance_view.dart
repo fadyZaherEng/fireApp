@@ -46,7 +46,7 @@ class _ServiceProviderSelectionViewState
   @override
   void initState() {
     super.initState();
-    _durationController.text = '12'; // Default to 12 months
+    _durationController.text = '1'; // Default to 12 months
     _fetchBranches();
     // Auto-show provider selection after a short delay
     Future.delayed(const Duration(milliseconds: 500), () {

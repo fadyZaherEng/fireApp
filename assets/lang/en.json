@@ -477,5 +477,6 @@
   "visitPrice": "Visit Price",
   "contractPrice": "Contract Price",
   "commission": "العموله",
-  "requestServiceFromServiceProvider": "Request Service from Service Provider"
+  "requestServiceFromServiceProvider": "Request Service from Service Provider",
+  "year": "Year"
  }

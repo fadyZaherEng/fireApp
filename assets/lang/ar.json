@@ -515,9 +515,8 @@
   "visitPrice": "قيمة الزيارة",
   "contractPrice": "قيمة العقد",
   "commission": "العموله",
-  "requestServiceFromServiceProvider": "طلب خدمة من مزود الخدمة"
-
-
+  "requestServiceFromServiceProvider": "طلب خدمة من مزود الخدمة",
+  "year": "سنة"
 
 
 }

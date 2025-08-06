@@ -45,7 +45,7 @@ class DurationInput extends StatelessWidget {
             fontSize: 14.sp,
             color: AppColors.hintTextColor,
           ),
-          suffixText: localizations.translate('months'),
+          suffixText: localizations.translate('year'),
           suffixStyle: TextStyle(
             fontFamily: 'Almarai',
             fontSize: 14.sp,
