@@ -62,7 +62,7 @@ class _ContractScreenState extends State<ContractScreen> {
         t.translate("emergencyVisitValue"),
         '200 ${t.translate("currency")}'
       ],
-     ];
+    ];
     final List<List<String>> rowsinfo = [
       [
         t.translate("party1"),
@@ -419,21 +419,33 @@ class _ContractScreenState extends State<ContractScreen> {
     );
   }
 
-  Future<void> _captureAndSavePDF() async {
-    try {
-      // اطلب صلاحية الوصول للتخزين (Android)
-      if (Platform.isAndroid) {
-        final status = await Permission.storage.request();
-        if (!status.isGranted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Permission denied")),
-          );
-          return;
-        }
+  Future<bool> _requestStoragePermission() async {
+    if (Platform.isAndroid) {
+      // لأندرويد 11 وما فوق
+      if (await Permission.manageExternalStorage.isGranted) {
+        return true;
       }
 
-      RenderRepaintBoundary boundary =
-      _contractKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      final result = await Permission.manageExternalStorage.request();
+      return result.isGranted;
+    } else {
+      // iOS doesn't need storage permission
+      return true;
+    }
+  }
+
+  Future<void> _captureAndSavePDF() async {
+    try {
+      bool hasPermission = await _requestStoragePermission();
+      if (!hasPermission) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Storage permission denied")),
+        );
+        return;
+      }
+
+      RenderRepaintBoundary boundary = _contractKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
       var image = await boundary.toImage(pixelRatio: 3.0);
       ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
 
@@ -452,15 +464,9 @@ class _ContractScreenState extends State<ContractScreen> {
         ),
       );
 
-      // المسار إلى مجلد التنزيلات
-      Directory? downloadsDir;
-      if (Platform.isAndroid) {
-        downloadsDir = Directory('/storage/emulated/0/Download');
-      } else {
-        downloadsDir = await getApplicationDocumentsDirectory(); // iOS
-      }
-
-      final filePath = "${downloadsDir.path}/contract_${DateTime.now().millisecondsSinceEpoch}.pdf";
+      final downloadsDir = Directory('/storage/emulated/0/Download');
+      final filePath =
+          "${downloadsDir.path}/contract_${DateTime.now().millisecondsSinceEpoch}.pdf";
       final file = File(filePath);
       await file.writeAsBytes(await pdf.save());
 
