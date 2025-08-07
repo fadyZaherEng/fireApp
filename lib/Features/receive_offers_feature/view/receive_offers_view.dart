@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:safetyZone/Features/contract/contract_screen.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../cubit/receive_offers_cubit.dart';
@@ -312,8 +313,18 @@ class ReceiveOffersContent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       _buildInfoItem(Icons.schedule, offer.timeAgo, isArabic),
-                      _buildInfoItem(Icons.print,
-                          localizations.translate('print'), isArabic),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ContractScreen(),
+                            ),
+                          );
+                        },
+                        child: _buildInfoItem(Icons.print,
+                            localizations.translate('print'), isArabic),
+                      ),
                       Row(
                         textDirection:
                             isArabic ? TextDirection.rtl : TextDirection.ltr,
