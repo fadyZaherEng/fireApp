@@ -27,7 +27,6 @@ class _ContractScreenState extends State<ContractScreen> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-
     final List<List<String>> dataRight = [
       [t.translate("emergencyExit"), '5'],
       [t.translate("backupLight"), '5'],
@@ -82,6 +81,7 @@ class _ContractScreenState extends State<ContractScreen> {
         t.translate("signature")
       ],
     ];
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -167,11 +167,13 @@ class _ContractScreenState extends State<ContractScreen> {
                             children: [
                               Expanded(
                                   child: _buildInfoRow(
+                                      isColor: false,
                                       AppLocalizations.of(context)
                                           .translate('branch_name'),
                                       'معرض الحياة لمستحضرات التجميل')),
                               Expanded(
                                   child: _buildInfoRow(
+                                      isColor: false,
                                       AppLocalizations.of(context)
                                           .translate('license_number'),
                                       '24')),
@@ -198,25 +200,28 @@ class _ContractScreenState extends State<ContractScreen> {
                               Expanded(
                                   flex: 4,
                                   child: _buildInfoRow(
+                                      isColor: false,
                                       AppLocalizations.of(context)
                                           .translate('branch_area'),
                                       '130 م')),
                               Expanded(
                                   flex: 3,
                                   child: _buildInfoRow(
+                                      isColor: false,
                                       AppLocalizations.of(context)
                                           .translate('number_of_visits'),
                                       '6')),
                               Expanded(
                                 flex: 5,
                                 child: _buildInfoRow(
+                                    isColor: false,
                                     AppLocalizations.of(context)
                                         .translate('visit_value'),
                                     '500'),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 16),
                           Container(
                             width: double.infinity,
                             color: CColors.secondary,
@@ -235,140 +240,13 @@ class _ContractScreenState extends State<ContractScreen> {
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Expanded removed here
-                                DataTable(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[100],
-                                    borderRadius: BorderRadius.circular(8),
-                                    border:
-                                        Border.all(color: Colors.grey[100]!),
-                                  ),
-                                  border: TableBorder.all(
-                                    color: Colors.white,
-                                    width: 4,
-                                  ),
-                                  dividerThickness: 0,
-                                  columnSpacing: 32,
-                                  horizontalMargin: 24,
-                                  dataRowMaxHeight: 30,
-                                  dataRowMinHeight: 30,
-                                  headingRowHeight: 30,
-                                  columns: [
-                                    DataColumn(
-                                      label: Center(
-                                        child: Text(
-                                          t.translate("itemName"),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    DataColumn(
-                                      label: Center(
-                                        child: Text(
-                                          t.translate("quantity"),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  rows: dataLeft
-                                      .map(
-                                        (row) => DataRow(
-                                          cells: row
-                                              .map(
-                                                (cell) => DataCell(
-                                                  Text(
-                                                    cell,
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                                DataTable(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[100],
-                                    borderRadius: BorderRadius.circular(8),
-                                    border:
-                                        Border.all(color: Colors.grey[100]!),
-                                  ),
-                                  border: TableBorder.all(
-                                    color: Colors.white,
-                                    width: 4,
-                                  ),
-                                  dividerThickness: 0,
-                                  columnSpacing: 32,
-                                  horizontalMargin: 8,
-                                  dataRowMaxHeight: 30,
-                                  dataRowMinHeight: 30,
-                                  headingRowHeight: 30,
-                                  columns: [
-                                    DataColumn(
-                                      label: Text(
-                                        t.translate("itemName"),
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    DataColumn(
-                                      label: Text(
-                                        t.translate("quantity"),
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  rows: dataRight
-                                      .map(
-                                        (row) => DataRow(
-                                          cells: row
-                                              .map(
-                                                (cell) => DataCell(
-                                                  Text(
-                                                    cell,
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
+                                // Left Table
+                                _buildCustomTable(dataLeft, t),
+                                const SizedBox(width: 8),
+                                // Right Table
+                                _buildCustomTable(dataRight, t),
                               ],
                             ),
                           ),
@@ -537,7 +415,7 @@ class _ContractScreenState extends State<ContractScreen> {
                             "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
                             ),
@@ -564,7 +442,7 @@ class _ContractScreenState extends State<ContractScreen> {
                             "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
                             ),
@@ -591,7 +469,7 @@ class _ContractScreenState extends State<ContractScreen> {
                             "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
                             ),
@@ -600,12 +478,12 @@ class _ContractScreenState extends State<ContractScreen> {
                           Table(
                             defaultVerticalAlignment:
                                 TableCellVerticalAlignment.middle,
-                            border: TableBorder.all(color: CColors.secondary),
+                            border: TableBorder.all(color: Colors.transparent),
                             columnWidths: const {
-                              0: FlexColumnWidth(2),
+                              0: FlexColumnWidth(3),
                               1: FlexColumnWidth(3),
                               2: FlexColumnWidth(3),
-                              3: FlexColumnWidth(2),
+                              3: FlexColumnWidth(3),
                             },
                             children: rowsinfo.map((row) {
                               return TableRow(
@@ -617,12 +495,23 @@ class _ContractScreenState extends State<ContractScreen> {
                                     return Center(
                                       child: Container(
                                         alignment: Alignment.center,
-                                        color: isSideTitle
-                                            ? CColors.secondary
-                                            : Colors.white,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: isSideTitle
+                                              ? CColors.secondary
+                                              : Colors.white,
+                                          border: Border.all(
+                                            color: CColors.secondary,
+                                            width: 1,
+                                          ),
+                                        ),
                                         padding: const EdgeInsets.symmetric(
                                           vertical: 8,
                                           horizontal: 8,
+                                        ),
+                                        margin: const EdgeInsets.symmetric(
+                                          vertical: 4,
+                                          horizontal: 4,
                                         ),
                                         child: Text(
                                           cell,
@@ -664,6 +553,86 @@ class _ContractScreenState extends State<ContractScreen> {
     );
   }
 
+  Widget _buildCustomTable(List<List<String>> data, t) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey[100]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header Row
+          Row(
+            children: [
+              _buildCell(
+                t.translate("itemName"),
+                isHeader: true,
+                width: 110,
+              ),
+              _buildCell(
+                t.translate("quantity"),
+                isHeader: true,
+                width: 60,
+              ),
+            ],
+          ),
+          // Data Rows with alternating colors
+          ...List.generate(data.length, (rowIndex) {
+            final row = data[rowIndex];
+            final isColored = rowIndex % 2 == 0;
+
+            return Row(
+              children: List.generate(
+                row.length,
+                (cellIndex) {
+                  final cell = row[cellIndex];
+                  return _buildCell(
+                    cell,
+                    width: cellIndex == 0 ? 100 : 60,
+                    isColor: isColored,
+                  );
+                },
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCell(
+    String text, {
+    bool isHeader = false,
+    double width = 100,
+    bool isColor = false,
+  }) {
+    final bool isNumber =
+        double.tryParse(text) != null; // للتحقق إذا كان قيمة رقمية
+
+    return Container(
+      width: width,
+      height: 25,
+      alignment: isNumber ? Alignment.center : null,
+      margin: isHeader
+          ? EdgeInsets.zero
+          : const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.transparent, width: 2),
+        color: isColor ? const Color(0xFFF5F5F5) : null,
+      ),
+      child: Text(
+        text,
+        textAlign: isNumber ? TextAlign.center : TextAlign.start,
+        style: TextStyle(
+          fontSize: isHeader ? 13 : 11,
+          fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
   Widget _buildSectionHeader(String title) {
     return Container(
       width: double.infinity,
@@ -684,9 +653,9 @@ class _ContractScreenState extends State<ContractScreen> {
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildInfoRow(String label, String value, {bool isColor = true}) {
     return Container(
-      color: Colors.grey[100],
+      color: isColor ? Colors.grey[100] : null,
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
