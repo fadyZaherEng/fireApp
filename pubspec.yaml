@@ -47,6 +47,7 @@ dependencies:
   table_calendar:
   pdf: ^3.10.4
   printing: ^5.11.0
+  open_file:
 
 dev_dependencies:
   build_runner: ^2.3.3
