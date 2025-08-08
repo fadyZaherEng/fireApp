@@ -687,7 +687,7 @@ class _ContractScreenState extends State<ContractScreen> {
   Widget _buildInfoRow(String label, String value) {
     return Container(
       color: Colors.grey[100],
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
