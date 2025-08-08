@@ -6,7 +6,6 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:permission_handler/permission_handler.dart';
 import 'package:safetyZone/core/localization/app_localizations.dart';
 import 'package:safetyZone/core/utils/constants/colors.dart';
 import 'package:flutter/rendering.dart';
@@ -20,7 +19,10 @@ class ContractScreen extends StatefulWidget {
 }
 
 class _ContractScreenState extends State<ContractScreen> {
-  final GlobalKey _contractKey = GlobalKey();
+  final GlobalKey contractFirstKey = GlobalKey();
+  final GlobalKey contractSecondKey = GlobalKey();
+  bool _isFirstVisit = true;
+  late pw.ImageProvider imageProvider1;
 
   @override
   Widget build(BuildContext context) {
@@ -81,342 +83,540 @@ class _ContractScreenState extends State<ContractScreen> {
       ],
     ];
     return Scaffold(
-      body: RepaintBoundary(
-        key: _contractKey,
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  t.translate("electronic_contract"),
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: CColors.secondary,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  t.translate("maintenance_contract"),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Image.asset(
-                  'assets/images/contract.png',
-                  width: double.infinity,
-                  height: 110,
-                  fit: BoxFit.fill,
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  color: Colors.blue[900],
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    t.translate("party_info"),
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                        child: _buildSectionHeader(
-                            AppLocalizations.of(context)
-                                .translate('first_party'))),
-                    Expanded(
-                        child: _buildSectionHeader(
-                            AppLocalizations.of(context)
-                                .translate('second_party'))),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: _buildInfoRow(
-                            AppLocalizations.of(context)
-                                .translate('company_name'),
-                            'معرض الحياة لمستحضرات التجميل')),
-                    Expanded(
-                        child: _buildInfoRow(
-                            AppLocalizations.of(context)
-                                .translate('service_provider'),
-                            'شركة احمد خالد صالح')),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: _buildInfoRow(
-                            AppLocalizations.of(context)
-                                .translate('branch_name'),
-                            'معرض الحياة لمستحضرات التجميل')),
-                    Expanded(
-                        child: _buildInfoRow(
-                            AppLocalizations.of(context)
-                                .translate('license_number'),
-                            '24')),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: _buildInfoRow(
-                            AppLocalizations.of(context)
-                                .translate('commercial_registration'),
-                            '23')),
-                    Expanded(
-                        child: _buildInfoRow(
-                            AppLocalizations.of(context)
-                                .translate('commercial_registration'),
-                            '23')),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: _buildInfoRow(
-                            AppLocalizations.of(context)
-                                .translate('branch_area'),
-                            '130 م')),
-                    Expanded(
-                        flex: 3,
-                        child: _buildInfoRow(
-                            AppLocalizations.of(context)
-                                .translate('number_of_visits'),
-                            '6')),
-                    Expanded(
-                      flex: 5,
-                      child: _buildInfoRow(
-                          AppLocalizations.of(context)
-                              .translate('visit_value'),
-                          '500'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  color: Colors.blue[900],
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    t.translate("branch_quantities"),
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      // Expanded removed here
-                      DataTable(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.grey[100]!),
-                        ),
-                        border: TableBorder.all(
-                          color: Colors.white,
-                          width: 4,
-                        ),
-                        dividerThickness: 0,
-                        columnSpacing: 24,
-                        horizontalMargin: 10,
-                        dataRowMaxHeight: 50,
-                        dataRowMinHeight: 50,
-                        headingRowHeight: 50,
-                        columns: [
-                          DataColumn(
-                            label:
-                                Center(child: Text(t.translate("itemName"))),
+                RepaintBoundary(
+                  key: contractFirstKey,
+                  child: Visibility(
+                    visible: _isFirstVisit,
+                    child: Column(
+                      children: [
+                        Text(
+                          t.translate("electronic_contract"),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: CColors.secondary,
                           ),
-                          DataColumn(
-                            label: Center(
-                              child: Text(
-                                t.translate("quantity"),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          t.translate("maintenance_contract"),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                        rows: dataLeft
-                            .map(
-                              (row) => DataRow(
-                                cells: row
-                                    .map((cell) => DataCell(Text(cell)))
-                                    .toList(),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      DataTable(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.grey[100]!),
                         ),
-                        border: TableBorder.all(
-                          color: Colors.white,
-                          width: 4,
+                        const SizedBox(height: 4),
+                        Image.asset(
+                          'assets/images/contract.png',
+                          width: double.infinity,
+                          height: 90,
+                          fit: BoxFit.fill,
                         ),
-                        dividerThickness: 0,
-                        columnSpacing: 24,
-                        horizontalMargin: 10,
-                        dataRowMaxHeight: 50,
-                        dataRowMinHeight: 50,
-                        headingRowHeight: 50,
-                        columns: [
-                          DataColumn(label: Text(t.translate("itemName"))),
-                          DataColumn(label: Text(t.translate("quantity"))),
-                        ],
-                        rows: dataRight
-                            .map(
-                              (row) => DataRow(
-                                cells: row
-                                    .map((cell) => DataCell(Text(cell)))
-                                    .toList(),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  color: Colors.blue[900],
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    t.translate("scheduleTitle"),
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Table(
-                  border: TableBorder.all(color: Colors.grey, width: 0),
-                  columnWidths: const {
-                    0: FlexColumnWidth(2),
-                    1: FlexColumnWidth(2),
-                    2: FlexColumnWidth(2),
-                    3: FlexColumnWidth(2),
-                  },
-                  children: rows.map((row) {
-                    return TableRow(
-                      children: row.map((cell) {
-                        return Container(
-                          color: cell == t.translate("firstVisit") ||
-                                  cell == t.translate("thirdVisit") ||
-                                  cell == t.translate("fifthVisit") ||
-                                  cell == t.translate("contractValue") ||
-                                  cell == t.translate("emergencyVisitValue")
-                              ? const Color(0xFFEFF6F7)
-                              : cell == t.translate("empty")
-                                  ? const Color(0xFFF6F6F6)
-                                  : Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        SizedBox(height: 8),
+                        Container(
+                          width: double.infinity,
+                          color: Colors.blue[900],
+                          padding: const EdgeInsets.all(8),
                           child: Text(
-                            cell,
+                            t.translate("party_info"),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
                             textAlign: TextAlign.center,
                           ),
-                        );
-                      }).toList(),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  color: Colors.blue[900],
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    t.translate("terms_party_one"),
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: _buildSectionHeader(
+                                    AppLocalizations.of(context)
+                                        .translate('first_party'))),
+                            Expanded(
+                                child: _buildSectionHeader(
+                                    AppLocalizations.of(context)
+                                        .translate('second_party'))),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('company_name'),
+                                    'معرض الحياة لمستحضرات التجميل')),
+                            Expanded(
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('service_provider'),
+                                    'شركة احمد خالد صالح')),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('branch_name'),
+                                    'معرض الحياة لمستحضرات التجميل')),
+                            Expanded(
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('license_number'),
+                                    '24')),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('commercial_registration'),
+                                    '23')),
+                            Expanded(
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('commercial_registration'),
+                                    '23')),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                flex: 4,
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('branch_area'),
+                                    '130 م')),
+                            Expanded(
+                                flex: 3,
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('number_of_visits'),
+                                    '6')),
+                            Expanded(
+                              flex: 5,
+                              child: _buildInfoRow(
+                                  AppLocalizations.of(context)
+                                      .translate('visit_value'),
+                                  '500'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: double.infinity,
+                          color: Colors.blue[900],
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            t.translate("branch_quantities"),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              // Expanded removed here
+                              DataTable(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.grey[100]!),
+                                ),
+                                border: TableBorder.all(
+                                  color: Colors.white,
+                                  width: 4,
+                                ),
+                                dividerThickness: 0,
+                                columnSpacing: 32,
+                                horizontalMargin: 8,
+                                dataRowMaxHeight: 30,
+                                dataRowMinHeight: 30,
+                                headingRowHeight: 30,
+                                columns: [
+                                  DataColumn(
+                                    label: Center(
+                                      child: Text(
+                                        t.translate("itemName"),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Center(
+                                      child: Text(
+                                        t.translate("quantity"),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                rows: dataLeft
+                                    .map(
+                                      (row) => DataRow(
+                                        cells: row
+                                            .map(
+                                              (cell) => DataCell(
+                                                Text(
+                                                  cell,
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                              DataTable(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.grey[100]!),
+                                ),
+                                border: TableBorder.all(
+                                  color: Colors.white,
+                                  width: 4,
+                                ),
+                                dividerThickness: 0,
+                                columnSpacing: 32,
+                                horizontalMargin: 8,
+                                dataRowMaxHeight: 30,
+                                dataRowMinHeight: 30,
+                                headingRowHeight: 30,
+                                columns: [
+                                  DataColumn(
+                                    label: Text(
+                                      t.translate("itemName"),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      t.translate("quantity"),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                rows: dataRight
+                                    .map(
+                                      (row) => DataRow(
+                                        cells: row
+                                            .map(
+                                              (cell) => DataCell(
+                                                Text(
+                                                  cell,
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 8),
-                const SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  color: Colors.blue[900],
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    t.translate("terms_party_two"),
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
+                if (_isFirstVisit) ...[
+                  const SizedBox(height: 32),
+                  InkWell(
+                    onTap: () async {
+                      // _generatePDF(contractFirstKey,isSave: false);
+
+                      // Capture first part
+                      RenderRepaintBoundary boundary1 =
+                          contractFirstKey.currentContext!.findRenderObject()
+                              as RenderRepaintBoundary;
+                      if (boundary1 == null) {
+                        throw Exception("First boundary not rendered");
+                      }
+                      if (boundary1.size.isEmpty) {
+                        throw Exception("First image has empty dimensions");
+                      }
+
+                      ui.Image image1 =
+                          await boundary1.toImage(pixelRatio: 3.0);
+                      ByteData? byteData1 = await image1.toByteData(
+                          format: ui.ImageByteFormat.png);
+                      if (byteData1 == null) {
+                        throw Exception("First image ByteData is null");
+                      }
+
+                      Uint8List pngBytes1 = byteData1.buffer.asUint8List();
+                      imageProvider1 = pw.MemoryImage(pngBytes1);
+                      await Future.delayed(const Duration(milliseconds: 300));
+                      setState(() {
+                        _isFirstVisit = false;
+                      });
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      color: Colors.blue[900],
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        t.translate("next"),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                const SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  color: Colors.blue[900],
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    t.translate("general_terms"),
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                    textAlign: TextAlign.center,
+                ],
+                SizedBox(height: 32),
+                RepaintBoundary(
+                  key: contractSecondKey,
+                  child: Visibility(
+                    visible: !_isFirstVisit,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          color: Colors.blue[900],
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            t.translate("scheduleTitle"),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Table(
+                          border: TableBorder.all(color: Colors.grey, width: 0),
+                          columnWidths: const {
+                            0: FlexColumnWidth(2),
+                            1: FlexColumnWidth(2),
+                            2: FlexColumnWidth(2),
+                            3: FlexColumnWidth(2),
+                          },
+                          children: rows.map((row) {
+                            return TableRow(
+                              children: row.map((cell) {
+                                return Container(
+                                  color: cell == t.translate("firstVisit") ||
+                                          cell == t.translate("fourthVisit") ||
+                                          cell == t.translate("sixthVisit") ||
+                                          cell == t.translate("secondVisit") ||
+                                          cell == t.translate("thirdVisit") ||
+                                          cell == t.translate("fifthVisit") ||
+                                          cell ==
+                                              t.translate("contractValue") ||
+                                          cell ==
+                                              t.translate("emergencyVisitValue")
+                                      ? const Color(0xFFEFF6F7)
+                                      : cell == t.translate("empty")
+                                          ? const Color(0xFFF6F6F6)
+                                          : Colors.white,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: Text(
+                                    cell,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: cell ==
+                                                  t.translate("firstVisit") ||
+                                              cell ==
+                                                  t.translate("secondVisit") ||
+                                              cell ==
+                                                  t.translate("thirdVisit") ||
+                                              cell ==
+                                                  t.translate("fourthVisit") ||
+                                              cell ==
+                                                  t.translate("fifthVisit") ||
+                                              cell ==
+                                                  t.translate("sixthVisit") ||
+                                              cell ==
+                                                  t.translate(
+                                                      "contractValue") ||
+                                              cell ==
+                                                  t.translate(
+                                                      "emergencyVisitValue")
+                                          ? Colors.black
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: double.infinity,
+                          color: Colors.blue[900],
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            t.translate("terms_party_one"),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "The parties agree to the following terms and conditions: "
+                          "The parties agree to the following terms and conditions: "
+                          "The parties agree to the following terms and conditions: ",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: double.infinity,
+                          color: Colors.blue[900],
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            t.translate("terms_party_two"),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "The parties agree to the following terms and conditions: "
+                          "The parties agree to the following terms and conditions: "
+                          "The parties agree to the following terms and conditions: ",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          width: double.infinity,
+                          color: Colors.blue[900],
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            t.translate("general_terms"),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "The parties agree to the following terms and conditions: "
+                          "The parties agree to the following terms and conditions: "
+                          "The parties agree to the following terms and conditions: ",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Table(
+                          border: TableBorder.all(color: Colors.blue.shade900),
+                          columnWidths: const {
+                            0: FlexColumnWidth(2),
+                            1: FlexColumnWidth(3),
+                            2: FlexColumnWidth(3),
+                            3: FlexColumnWidth(2),
+                          },
+                          children: rowsinfo.map((row) {
+                            return TableRow(
+                              children: List.generate(row.length, (index) {
+                                final cell = row[index];
+                                final isSideTitle = index == 0;
+                                return Container(
+                                  color: isSideTitle
+                                      ? Colors.blue[900]
+                                      : Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 8,
+                                  ),
+                                  child: Text(
+                                    cell,
+                                    style: TextStyle(
+                                      color: isSideTitle
+                                          ? Colors.white
+                                          : Colors.blue[900],
+                                      fontWeight: isSideTitle
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              }),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 32),
-                Table(
-                  border: TableBorder.all(color: Colors.blue.shade900),
-                  columnWidths: const {
-                    0: FlexColumnWidth(2),
-                    1: FlexColumnWidth(3),
-                    2: FlexColumnWidth(3),
-                    3: FlexColumnWidth(2),
-                  },
-                  children: rowsinfo.map((row) {
-                    return TableRow(
-                      children: List.generate(row.length, (index) {
-                        final cell = row[index];
-                        final isSideTitle = index == 0;
-                        return Container(
-                          color:
-                              isSideTitle ? Colors.blue[900] : Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 8),
-                          child: Text(
-                            cell,
-                            style: TextStyle(
-                              color: isSideTitle
-                                  ? Colors.white
-                                  : Colors.blue[900],
-                              fontWeight: isSideTitle
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }),
-                    );
-                  }).toList(),
-                ),
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _generatePDF(),
-        child: Icon(Icons.picture_as_pdf),
-      ),
+      floatingActionButton: _isFirstVisit
+          ? null
+          : FloatingActionButton(
+              onPressed: () => _generatePDF(context: context),
+              child: Icon(Icons.picture_as_pdf),
+            ),
     );
   }
 
@@ -424,8 +624,8 @@ class _ContractScreenState extends State<ContractScreen> {
     return Container(
       width: double.infinity,
       color: Colors.blue[900],
-      height: 46,
-      padding: EdgeInsets.all(8.0),
+      height: 38,
+      padding: EdgeInsets.all(6),
       child: Center(
         child: Text(
           title,
@@ -439,7 +639,7 @@ class _ContractScreenState extends State<ContractScreen> {
   Widget _buildInfoRow(String label, String value) {
     return Container(
       color: Colors.grey[100],
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -449,7 +649,7 @@ class _ContractScreenState extends State<ContractScreen> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,
-              fontSize: 13,
+              fontSize: 12,
             ),
           ),
           SizedBox(width: 8),
@@ -459,7 +659,7 @@ class _ContractScreenState extends State<ContractScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 color: Colors.black,
-                fontSize: 13,
+                fontSize: 12,
               ),
             ),
           ),
@@ -468,81 +668,55 @@ class _ContractScreenState extends State<ContractScreen> {
     );
   }
 
-
-  // Future<void> _generatePDF() async {
-  //   try {
-  //     // 1. Capture Screenshot
-  //     RenderRepaintBoundary boundary = _contractKey.currentContext!
-  //         .findRenderObject() as RenderRepaintBoundary;
-  //     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-  //     ByteData? byteData =
-  //         await image.toByteData(format: ui.ImageByteFormat.png);
-  //
-  //     if (byteData == null) return;
-  //     Uint8List pngBytes = byteData.buffer.asUint8List();
-  //
-  //     // 2. Create PDF document
-  //     final pdf = pw.Document();
-  //     final imageProvider = pw.MemoryImage(pngBytes);
-  //
-  //     pdf.addPage(
-  //       pw.Page(
-  //         pageFormat: PdfPageFormat.a4,
-  //         build: (pw.Context context) {
-  //           return pw.Center(child: pw.Image(imageProvider));
-  //         },
-  //       ),
-  //     );
-  //
-  //     // 3. Save to temporary directory (no permission required)
-  //     final dir = await getTemporaryDirectory();
-  //     final file = File('${dir.path}/contract.pdf');
-  //     await file.writeAsBytes(await pdf.save());
-  //
-  //     // 4. Open the file
-  //     await OpenFile.open(file.path);
-  //   } catch (e) {
-  //     debugPrint("PDF Error: $e");
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('فشل في إنشاء PDF: $e')),
-  //     );
-  //   }
-  // }
-
-  Future<void> _generatePDF() async {
+  Future<void> _generatePDF({
+    required BuildContext context,
+  }) async {
     try {
-      // ننتظر إطار البناء يكتمل
+      // Wait for rendering to complete
       await Future.delayed(Duration(milliseconds: 300));
+      // Capture second part
+      RenderRepaintBoundary boundary2 = contractSecondKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
 
-      RenderRepaintBoundary boundary =
-      _contractKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      if (boundary2 == null) throw Exception("Second boundary not rendered");
+      if (boundary2.size.isEmpty) {
+        throw Exception("Second image has empty dimensions");
+      }
 
-      // نأخذ صورة بالحجم الكامل للسكشين
-      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      ui.Image image2 = await boundary2.toImage(pixelRatio: 3.0);
+      ByteData? byteData2 =
+          await image2.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData2 == null) throw Exception("Second image ByteData is null");
 
-      if (byteData == null) return;
-      Uint8List pngBytes = byteData.buffer.asUint8List();
+      Uint8List pngBytes2 = byteData2.buffer.asUint8List();
+      final imageProvider2 = pw.MemoryImage(pngBytes2);
 
+      // Create PDF
       final pdf = pw.Document();
-      final imageProvider = pw.MemoryImage(pngBytes);
-
       pdf.addPage(
         pw.Page(
-          pageFormat: PdfPageFormat.a4.landscape, // أو PdfPageFormat.a4
-          build: (pw.Context context) => pw.Center(child: pw.Image(imageProvider)),
+          pageFormat: PdfPageFormat.a4,
+          build: (_) => pw.Center(
+              child: pw.Image(imageProvider1, fit: pw.BoxFit.contain)),
+        ),
+      );
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (_) => pw.Center(
+              child: pw.Image(imageProvider2, fit: pw.BoxFit.contain)),
         ),
       );
 
+      // Save
       final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/contract_full.pdf');
+      final file = File('${dir.path}/contract.pdf');
       await file.writeAsBytes(await pdf.save());
-
       await OpenFile.open(file.path);
     } catch (e) {
       debugPrint("PDF Error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('خطأ أثناء إنشاء PDF')),
+        SnackBar(content: Text('فشل في إنشاء PDF: $e')),
       );
     }
   }
