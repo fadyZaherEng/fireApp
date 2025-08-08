@@ -415,7 +415,7 @@ class _ContractScreenState extends State<ContractScreen> {
                             "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 9,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
                             ),
@@ -442,7 +442,7 @@ class _ContractScreenState extends State<ContractScreen> {
                             "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 9,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
                             ),
@@ -469,7 +469,7 @@ class _ContractScreenState extends State<ContractScreen> {
                             "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 9,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
                             ),
@@ -506,8 +506,8 @@ class _ContractScreenState extends State<ContractScreen> {
                                           ),
                                         ),
                                         padding: const EdgeInsets.symmetric(
-                                          vertical: 8,
-                                          horizontal: 8,
+                                          vertical: 2,
+                                          horizontal: 2,
                                         ),
                                         margin: const EdgeInsets.symmetric(
                                           vertical: 4,
@@ -522,7 +522,7 @@ class _ContractScreenState extends State<ContractScreen> {
                                             fontWeight: isSideTitle
                                                 ? FontWeight.bold
                                                 : FontWeight.normal,
-                                            fontSize: 12,
+                                            fontSize:isSideTitle ? 12 : 11,
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
