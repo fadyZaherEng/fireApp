@@ -95,273 +95,285 @@ class _ContractScreenState extends State<ContractScreen> {
                   key: contractFirstKey,
                   child: Visibility(
                     visible: _isFirstVisit,
-                    child: Column(
-                      children: [
-                        Text(
-                          t.translate("electronic_contract"),
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: CColors.secondary,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          t.translate("maintenance_contract"),
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Image.asset(
-                          'assets/images/contract.png',
-                          width: double.infinity,
-                          height: 90,
-                          fit: BoxFit.fill,
-                        ),
-                        SizedBox(height: 8),
-                        Container(
-                          width: double.infinity,
-                          color: Colors.blue[900],
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            t.translate("party_info"),
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: _buildSectionHeader(
-                                    AppLocalizations.of(context)
-                                        .translate('first_party'))),
-                            Expanded(
-                                child: _buildSectionHeader(
-                                    AppLocalizations.of(context)
-                                        .translate('second_party'))),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: _buildInfoRow(
-                                    AppLocalizations.of(context)
-                                        .translate('company_name'),
-                                    'معرض الحياة لمستحضرات التجميل')),
-                            Expanded(
-                                child: _buildInfoRow(
-                                    AppLocalizations.of(context)
-                                        .translate('service_provider'),
-                                    'شركة احمد خالد صالح')),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: _buildInfoRow(
-                                    AppLocalizations.of(context)
-                                        .translate('branch_name'),
-                                    'معرض الحياة لمستحضرات التجميل')),
-                            Expanded(
-                                child: _buildInfoRow(
-                                    AppLocalizations.of(context)
-                                        .translate('license_number'),
-                                    '24')),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: _buildInfoRow(
-                                    AppLocalizations.of(context)
-                                        .translate('commercial_registration'),
-                                    '23')),
-                            Expanded(
-                                child: _buildInfoRow(
-                                    AppLocalizations.of(context)
-                                        .translate('commercial_registration'),
-                                    '23')),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                flex: 4,
-                                child: _buildInfoRow(
-                                    AppLocalizations.of(context)
-                                        .translate('branch_area'),
-                                    '130 م')),
-                            Expanded(
-                                flex: 3,
-                                child: _buildInfoRow(
-                                    AppLocalizations.of(context)
-                                        .translate('number_of_visits'),
-                                    '6')),
-                            Expanded(
-                              flex: 5,
-                              child: _buildInfoRow(
-                                  AppLocalizations.of(context)
-                                      .translate('visit_value'),
-                                  '500'),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            t.translate("electronic_contract"),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: CColors.secondary,
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          width: double.infinity,
-                          color: Colors.blue[900],
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            t.translate("branch_quantities"),
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                            textAlign: TextAlign.center,
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              // Expanded removed here
-                              DataTable(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.grey[100]!),
-                                ),
-                                border: TableBorder.all(
-                                  color: Colors.white,
-                                  width: 4,
-                                ),
-                                dividerThickness: 0,
-                                columnSpacing: 32,
-                                horizontalMargin: 8,
-                                dataRowMaxHeight: 30,
-                                dataRowMinHeight: 30,
-                                headingRowHeight: 30,
-                                columns: [
-                                  DataColumn(
-                                    label: Center(
-                                      child: Text(
-                                        t.translate("itemName"),
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Center(
-                                      child: Text(
-                                        t.translate("quantity"),
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                rows: dataLeft
-                                    .map(
-                                      (row) => DataRow(
-                                        cells: row
-                                            .map(
-                                              (cell) => DataCell(
-                                                Text(
-                                                  cell,
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    )
-                                    .toList(),
+                          const SizedBox(height: 8),
+                          Text(
+                            t.translate("maintenance_contract"),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Image.asset(
+                            'assets/images/contract.png',
+                            width: double.infinity,
+                            height: 90,
+                            fit: BoxFit.fill,
+                          ),
+                          SizedBox(height: 8),
+                          Container(
+                            width: double.infinity,
+                            color: CColors.secondary,
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              t.translate("party_info"),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
                               ),
-                              DataTable(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[100],
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.grey[100]!),
-                                ),
-                                border: TableBorder.all(
-                                  color: Colors.white,
-                                  width: 4,
-                                ),
-                                dividerThickness: 0,
-                                columnSpacing: 32,
-                                horizontalMargin: 8,
-                                dataRowMaxHeight: 30,
-                                dataRowMinHeight: 30,
-                                headingRowHeight: 30,
-                                columns: [
-                                  DataColumn(
-                                    label: Text(
-                                      t.translate("itemName"),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  DataColumn(
-                                    label: Text(
-                                      t.translate("quantity"),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                rows: dataRight
-                                    .map(
-                                      (row) => DataRow(
-                                        cells: row
-                                            .map(
-                                              (cell) => DataCell(
-                                                Text(
-                                                  cell,
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    )
-                                    .toList(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: _buildSectionHeader(
+                                      AppLocalizations.of(context)
+                                          .translate('first_party'))),
+                              Expanded(
+                                  child: _buildSectionHeader(
+                                      AppLocalizations.of(context)
+                                          .translate('second_party'))),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: _buildInfoRow(
+                                      AppLocalizations.of(context)
+                                          .translate('company_name'),
+                                      'معرض الحياة لمستحضرات التجميل')),
+                              Expanded(
+                                  child: _buildInfoRow(
+                                      AppLocalizations.of(context)
+                                          .translate('service_provider'),
+                                      'شركة احمد خالد صالح')),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: _buildInfoRow(
+                                      AppLocalizations.of(context)
+                                          .translate('branch_name'),
+                                      'معرض الحياة لمستحضرات التجميل')),
+                              Expanded(
+                                  child: _buildInfoRow(
+                                      AppLocalizations.of(context)
+                                          .translate('license_number'),
+                                      '24')),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: _buildInfoRow(
+                                      AppLocalizations.of(context)
+                                          .translate('commercial_registration'),
+                                      '23')),
+                              Expanded(
+                                  child: _buildInfoRow(
+                                      AppLocalizations.of(context)
+                                          .translate('commercial_registration'),
+                                      '23')),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  flex: 4,
+                                  child: _buildInfoRow(
+                                      AppLocalizations.of(context)
+                                          .translate('branch_area'),
+                                      '130 م')),
+                              Expanded(
+                                  flex: 3,
+                                  child: _buildInfoRow(
+                                      AppLocalizations.of(context)
+                                          .translate('number_of_visits'),
+                                      '6')),
+                              Expanded(
+                                flex: 5,
+                                child: _buildInfoRow(
+                                    AppLocalizations.of(context)
+                                        .translate('visit_value'),
+                                    '500'),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 4),
+                          Container(
+                            width: double.infinity,
+                            color: CColors.secondary,
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              t.translate("branch_quantities"),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                // Expanded removed here
+                                DataTable(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(8),
+                                    border:
+                                        Border.all(color: Colors.grey[100]!),
+                                  ),
+                                  border: TableBorder.all(
+                                    color: Colors.white,
+                                    width: 4,
+                                  ),
+                                  dividerThickness: 0,
+                                  columnSpacing: 32,
+                                  horizontalMargin: 24,
+                                  dataRowMaxHeight: 30,
+                                  dataRowMinHeight: 30,
+                                  headingRowHeight: 30,
+                                  columns: [
+                                    DataColumn(
+                                      label: Center(
+                                        child: Text(
+                                          t.translate("itemName"),
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: Center(
+                                        child: Text(
+                                          t.translate("quantity"),
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  rows: dataLeft
+                                      .map(
+                                        (row) => DataRow(
+                                          cells: row
+                                              .map(
+                                                (cell) => DataCell(
+                                                  Text(
+                                                    cell,
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                                DataTable(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(8),
+                                    border:
+                                        Border.all(color: Colors.grey[100]!),
+                                  ),
+                                  border: TableBorder.all(
+                                    color: Colors.white,
+                                    width: 4,
+                                  ),
+                                  dividerThickness: 0,
+                                  columnSpacing: 32,
+                                  horizontalMargin: 8,
+                                  dataRowMaxHeight: 30,
+                                  dataRowMinHeight: 30,
+                                  headingRowHeight: 30,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text(
+                                        t.translate("itemName"),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: Text(
+                                        t.translate("quantity"),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  rows: dataRight
+                                      .map(
+                                        (row) => DataRow(
+                                          cells: row
+                                              .map(
+                                                (cell) => DataCell(
+                                                  Text(
+                                                    cell,
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -399,8 +411,11 @@ class _ContractScreenState extends State<ContractScreen> {
                     },
                     child: Container(
                       width: double.infinity,
-                      color: Colors.blue[900],
                       padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        color: CColors.secondary,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
                       child: Text(
                         t.translate("next"),
                         style:
@@ -415,193 +430,222 @@ class _ContractScreenState extends State<ContractScreen> {
                   key: contractSecondKey,
                   child: Visibility(
                     visible: !_isFirstVisit,
-                    child: Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          color: Colors.blue[900],
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            t.translate("scheduleTitle"),
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                            textAlign: TextAlign.center,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            color: CColors.secondary,
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              t.translate("scheduleTitle"),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Table(
-                          border: TableBorder.all(color: Colors.grey, width: 0),
-                          columnWidths: const {
-                            0: FlexColumnWidth(2),
-                            1: FlexColumnWidth(2),
-                            2: FlexColumnWidth(2),
-                            3: FlexColumnWidth(2),
-                          },
-                          children: rows.map((row) {
-                            return TableRow(
-                              children: row.map((cell) {
-                                return Container(
-                                  color: cell == t.translate("firstVisit") ||
-                                          cell == t.translate("fourthVisit") ||
-                                          cell == t.translate("sixthVisit") ||
-                                          cell == t.translate("secondVisit") ||
-                                          cell == t.translate("thirdVisit") ||
-                                          cell == t.translate("fifthVisit") ||
-                                          cell ==
-                                              t.translate("contractValue") ||
-                                          cell ==
-                                              t.translate("emergencyVisitValue")
-                                      ? const Color(0xFFEFF6F7)
-                                      : cell == t.translate("empty")
-                                          ? const Color(0xFFF6F6F6)
-                                          : Colors.white,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  child: Text(
-                                    cell,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: cell ==
-                                                  t.translate("firstVisit") ||
-                                              cell ==
-                                                  t.translate("secondVisit") ||
-                                              cell ==
-                                                  t.translate("thirdVisit") ||
-                                              cell ==
-                                                  t.translate("fourthVisit") ||
-                                              cell ==
-                                                  t.translate("fifthVisit") ||
-                                              cell ==
-                                                  t.translate("sixthVisit") ||
-                                              cell ==
-                                                  t.translate(
-                                                      "contractValue") ||
-                                              cell ==
-                                                  t.translate(
-                                                      "emergencyVisitValue")
-                                          ? Colors.black
-                                          : Colors.grey,
+                          const SizedBox(height: 4),
+                          Table(
+                            border:
+                                TableBorder.all(color: Colors.grey, width: 0),
+                            columnWidths: const {
+                              0: FlexColumnWidth(2),
+                              1: FlexColumnWidth(2),
+                              2: FlexColumnWidth(2),
+                              3: FlexColumnWidth(2),
+                            },
+                            children: rows.map((row) {
+                              return TableRow(
+                                children: row.map((cell) {
+                                  return Container(
+                                    color: cell == t.translate("firstVisit") ||
+                                            cell ==
+                                                t.translate("fourthVisit") ||
+                                            cell == t.translate("sixthVisit") ||
+                                            cell ==
+                                                t.translate("secondVisit") ||
+                                            cell == t.translate("thirdVisit") ||
+                                            cell == t.translate("fifthVisit") ||
+                                            cell ==
+                                                t.translate("contractValue") ||
+                                            cell ==
+                                                t.translate(
+                                                    "emergencyVisitValue")
+                                        ? const Color(0xFFEFF6F7)
+                                        : cell == t.translate("empty")
+                                            ? const Color(0xFFF6F6F6)
+                                            : Colors.white,
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    child: Text(
+                                      cell,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color: cell ==
+                                                    t.translate("firstVisit") ||
+                                                cell ==
+                                                    t.translate(
+                                                        "secondVisit") ||
+                                                cell ==
+                                                    t.translate("thirdVisit") ||
+                                                cell ==
+                                                    t.translate(
+                                                        "fourthVisit") ||
+                                                cell ==
+                                                    t.translate("fifthVisit") ||
+                                                cell ==
+                                                    t.translate("sixthVisit") ||
+                                                cell ==
+                                                    t.translate(
+                                                        "contractValue") ||
+                                                cell ==
+                                                    t.translate(
+                                                        "emergencyVisitValue")
+                                            ? Colors.black
+                                            : Colors.grey,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          width: double.infinity,
-                          color: Colors.blue[900],
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            t.translate("terms_party_one"),
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
+                                  );
+                                }).toList(),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            width: double.infinity,
+                            color: CColors.secondary,
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              t.translate("terms_party_one"),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "The parties agree to the following terms and conditions: "
+                            "The parties agree to the following terms and conditions: "
+                            "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "The parties agree to the following terms and conditions: "
-                          "The parties agree to the following terms and conditions: "
-                          "The parties agree to the following terms and conditions: ",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          width: double.infinity,
-                          color: Colors.blue[900],
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            t.translate("terms_party_two"),
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            width: double.infinity,
+                            color: CColors.secondary,
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              t.translate("terms_party_two"),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "The parties agree to the following terms and conditions: "
+                            "The parties agree to the following terms and conditions: "
+                            "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "The parties agree to the following terms and conditions: "
-                          "The parties agree to the following terms and conditions: "
-                          "The parties agree to the following terms and conditions: ",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          width: double.infinity,
-                          color: Colors.blue[900],
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            t.translate("general_terms"),
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            width: double.infinity,
+                            color: CColors.secondary,
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              t.translate("general_terms"),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "The parties agree to the following terms and conditions: "
+                            "The parties agree to the following terms and conditions: "
+                            "The parties agree to the following terms and conditions: ",
                             textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "The parties agree to the following terms and conditions: "
-                          "The parties agree to the following terms and conditions: "
-                          "The parties agree to the following terms and conditions: ",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
+                          const SizedBox(height: 16),
+                          Table(
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            border: TableBorder.all(color: CColors.secondary),
+                            columnWidths: const {
+                              0: FlexColumnWidth(2),
+                              1: FlexColumnWidth(3),
+                              2: FlexColumnWidth(3),
+                              3: FlexColumnWidth(2),
+                            },
+                            children: rowsinfo.map((row) {
+                              return TableRow(
+                                children: List.generate(
+                                  row.length,
+                                  (index) {
+                                    final cell = row[index];
+                                    final isSideTitle = index == 0;
+                                    return Center(
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        color: isSideTitle
+                                            ? CColors.secondary
+                                            : Colors.white,
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 8,
+                                          horizontal: 8,
+                                        ),
+                                        child: Text(
+                                          cell,
+                                          style: TextStyle(
+                                            color: isSideTitle
+                                                ? Colors.white
+                                                : CColors.black,
+                                            fontWeight: isSideTitle
+                                                ? FontWeight.bold
+                                                : FontWeight.normal,
+                                            fontSize: 12,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            }).toList(),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Table(
-                          border: TableBorder.all(color: Colors.blue.shade900),
-                          columnWidths: const {
-                            0: FlexColumnWidth(2),
-                            1: FlexColumnWidth(3),
-                            2: FlexColumnWidth(3),
-                            3: FlexColumnWidth(2),
-                          },
-                          children: rowsinfo.map((row) {
-                            return TableRow(
-                              children: List.generate(row.length, (index) {
-                                final cell = row[index];
-                                final isSideTitle = index == 0;
-                                return Container(
-                                  color: isSideTitle
-                                      ? Colors.blue[900]
-                                      : Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 8,
-                                  ),
-                                  child: Text(
-                                    cell,
-                                    style: TextStyle(
-                                      color: isSideTitle
-                                          ? Colors.white
-                                          : Colors.blue[900],
-                                      fontWeight: isSideTitle
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                );
-                              }),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -623,13 +667,17 @@ class _ContractScreenState extends State<ContractScreen> {
   Widget _buildSectionHeader(String title) {
     return Container(
       width: double.infinity,
-      color: Colors.blue[900],
+      color: CColors.secondary,
       height: 38,
       padding: EdgeInsets.all(6),
       child: Center(
         child: Text(
           title,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+          ),
           textAlign: TextAlign.center,
         ),
       ),
@@ -639,7 +687,7 @@ class _ContractScreenState extends State<ContractScreen> {
   Widget _buildInfoRow(String label, String value) {
     return Container(
       color: Colors.grey[100],
-      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -649,7 +697,7 @@ class _ContractScreenState extends State<ContractScreen> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,
-              fontSize: 12,
+              fontSize: 11,
             ),
           ),
           SizedBox(width: 8),
@@ -659,7 +707,7 @@ class _ContractScreenState extends State<ContractScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 color: Colors.black,
-                fontSize: 12,
+                fontSize: 11,
               ),
             ),
           ),
