@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
+import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../data/models/certificate_models.dart';
@@ -110,17 +115,17 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
           _providers = response.data!;
         });
       } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                response.message,
-                style: const TextStyle(fontFamily: 'Almarai'),
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+        // if (mounted) {
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       content: Text(
+        //         response.message,
+        //         style: const TextStyle(fontFamily: 'Almarai'),
+        //       ),
+        //       backgroundColor: Colors.red,
+        //     ),
+        //   );
+        // }
       }
     } catch (e) {
       if (mounted) {
@@ -152,16 +157,22 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
     });
 
     try {
-      ApiResponse<BranchDetails> response = await _certificateApiService.getBranchDetails(branchId);
+      ApiResponse<BranchDetails> response =
+          await _certificateApiService.getBranchDetails(branchId);
       if (response.success && response.data != null) {
         final branchDetails = response.data!;
 
         // Convert items to alert devices and fire extinguishers
         List<AlertDevice> alertDevices = [];
         List<FireExtinguisher> fireExtinguishers = [];
-        fireExtinguishers=branchDetails.fireExtinguisherItem
-        .map((item) => FireExtinguisher(type: item.itemDetails.itemName, count: item.quantity))
-        .toList();
+        fireExtinguishers = branchDetails.fireExtinguisherItem
+            .map((item) => FireExtinguisher(
+                type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                        'en'
+                    ? item.itemDetails.itemName.en.toString()
+                    : item.itemDetails.itemName.ar.toString(),
+                count: item.quantity))
+            .toList();
         // for (final item in branchDetails.items) {
         //   final itemType = item.itemDetails.type;
         //   final itemName = item.itemDetails.itemName;
@@ -191,17 +202,17 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
           _fireExtinguishers = fireExtinguishers;
         });
       } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                response.message,
-                style: const TextStyle(fontFamily: 'Almarai'),
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+        // if (mounted) {
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     SnackBar(
+        //       content: Text(
+        //         response.message,
+        //         style: const TextStyle(fontFamily: 'Almarai'),
+        //       ),
+        //       backgroundColor: Colors.red,
+        //     ),
+        //   );
+        // }
       }
     } catch (e) {
       if (mounted) {
@@ -273,14 +284,14 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
       ),
       body: _isLoadingBranches || _isLoadingBranchDetails
           ? const Center(
-              child: CircularProgressIndicator(
+              child: SpinKitDoubleBounce(
                 color: AppColors.primaryRed,
               ),
             )
           : _showProviderSelection
               ? _buildCompleteForm(context, isRTL, localizations)
               : const Center(
-                  child: CircularProgressIndicator(
+                  child: SpinKitDoubleBounce(
                     color: AppColors.primaryRed,
                   ),
                 ),
@@ -413,7 +424,7 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
           context: context,
           barrierDismissible: false,
           builder: (context) => const Center(
-            child: CircularProgressIndicator(
+            child: SpinKitDoubleBounce(
               color: AppColors.primaryRed,
             ),
           ),

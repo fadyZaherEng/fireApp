@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:safetyZone/Features/contract/contract_screen.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../cubit/receive_offers_cubit.dart';
@@ -70,7 +75,11 @@ class ReceiveOffersContent extends StatelessWidget {
             Navigator.of(context)
                 .push(
               MaterialPageRoute(
-                builder: (context) => PaymentView(invoice: state.invoice),
+                builder: (context) => PaymentView(
+                  invoice: state.invoice,
+                  emergencyVisitPrice: state.emergencyVisitPrice,
+                  visitPrice: state.visitPrice,
+                ),
               ),
             )
                 .then((_) {
@@ -84,7 +93,7 @@ class ReceiveOffersContent extends StatelessWidget {
 
           if (state is ReceiveOffersLoading) {
             return const Center(
-              child: CircularProgressIndicator(
+              child: SpinKitDoubleBounce(
                 color: Color(0xFF2196F3),
               ),
             );
@@ -177,7 +186,9 @@ class ReceiveOffersContent extends StatelessWidget {
           }
 
           return const Center(
-            child: CircularProgressIndicator(),
+            child: SpinKitDoubleBounce(
+              color: Color(0xFF2196F3),
+            ),
           );
         },
       ),
@@ -302,8 +313,18 @@ class ReceiveOffersContent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       _buildInfoItem(Icons.schedule, offer.timeAgo, isArabic),
-                      _buildInfoItem(Icons.print,
-                          localizations.translate('print'), isArabic),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ContractScreen(),
+                            ),
+                          );
+                        },
+                        child: _buildInfoItem(Icons.print,
+                            localizations.translate('print'), isArabic),
+                      ),
                       Row(
                         textDirection:
                             isArabic ? TextDirection.rtl : TextDirection.ltr,
@@ -356,11 +377,8 @@ class ReceiveOffersContent extends StatelessWidget {
                                     ? SizedBox(
                                         width: 16.w,
                                         height: 16.h,
-                                        child: const CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Color(0xFFE53935)),
+                                        child: const SpinKitDoubleBounce(
+                                          color: Color(0xFFE53935),
                                         ),
                                       )
                                     : Text(
@@ -415,12 +433,8 @@ class ReceiveOffersContent extends StatelessWidget {
                                     ? SizedBox(
                                         width: 16.w,
                                         height: 16.h,
-                                        child: const CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.white),
-                                        ),
+                                        child: const SpinKitDoubleBounce(
+                                            color: Colors.white),
                                       )
                                     : Text(
                                         localizations.translate('accept'),

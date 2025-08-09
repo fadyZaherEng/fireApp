@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safetyZone/Features/card_payment/card_payment_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../../receive_offers_feature/data/models/accept_offer_models.dart';
 import '../cubit/payment_cubit.dart';
 import '../cubit/payment_states.dart';
@@ -9,13 +10,25 @@ import '../cubit/payment_states.dart';
 class PaymentView extends StatelessWidget {
   final Invoice invoice;
 
-  const PaymentView({super.key, required this.invoice});
+  final int visitPrice;
+  final int emergencyVisitPrice;
+
+  const PaymentView({
+    super.key,
+    required this.invoice,
+    required this.visitPrice,
+    required this.emergencyVisitPrice,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PaymentCubit()..setInvoiceData(invoice),
-      child: PaymentContent(invoice: invoice),
+      child: PaymentContent(
+        invoice: invoice,
+        visitPrice: visitPrice,
+        emergencyVisitPrice: emergencyVisitPrice,
+      ),
     );
   }
 }
@@ -23,7 +36,15 @@ class PaymentView extends StatelessWidget {
 class PaymentContent extends StatelessWidget {
   final Invoice invoice;
 
-  const PaymentContent({super.key, required this.invoice});
+  final int visitPrice;
+  final int emergencyVisitPrice;
+
+  const PaymentContent({
+    super.key,
+    required this.invoice,
+    required this.visitPrice,
+    required this.emergencyVisitPrice,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +55,7 @@ class PaymentContent extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Text(
-          'تعميد الطلب',
+          AppLocalizations.of(context).translate("approveRequest"),
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
@@ -90,7 +111,8 @@ class PaymentContent extends StatelessWidget {
                     ),
                     SizedBox(width: 8.w),
                     Text(
-                      'طلب خدم من مقدم الخدمة',
+                      AppLocalizations.of(context)
+                          .translate("requestServiceFromServiceProvider"),
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
@@ -114,7 +136,7 @@ class PaymentContent extends StatelessWidget {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: _buildPriceButton(
-                        'قيمة العقد',
+                        AppLocalizations.of(context).translate('contractPrice'),
                         Icons.description,
                         isRed: false,
                       ),
@@ -136,7 +158,52 @@ class PaymentContent extends StatelessWidget {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: _buildPriceButton(
-                        'العمولة',
+                        AppLocalizations.of(context).translate('commission'),
+                        Icons.percent,
+                        isRed: false,
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 12.h),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildPriceButton(
+                        '${visitPrice}',
+                        null,
+                        isRed: true,
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: _buildPriceButton(
+                        AppLocalizations.of(context).translate('visitPrice'),
+                        Icons.percent,
+                        isRed: false,
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 12.h),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildPriceButton(
+                        '${emergencyVisitPrice}',
+                        null,
+                        isRed: true,
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: _buildPriceButton(
+                        AppLocalizations.of(context)
+                            .translate('emergencyPrice'),
                         Icons.percent,
                         isRed: false,
                       ),
@@ -166,7 +233,8 @@ class PaymentContent extends StatelessWidget {
                           ),
                           SizedBox(width: 8.w),
                           Text(
-                            'وسائل الدفع',
+                            AppLocalizations.of(context)
+                                .translate('paymentMethods'),
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,

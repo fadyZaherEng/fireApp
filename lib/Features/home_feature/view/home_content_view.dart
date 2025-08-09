@@ -9,6 +9,7 @@ import 'package:safetyZone/Features/fire_extinguisher_feature/view/fire_extingui
 import 'package:safetyZone/Features/fire_prevention_maintenance_contract_feature/cubit/fire_prevention_maintenance_cubit.dart';
 import 'package:safetyZone/Features/fire_prevention_maintenance_contract_feature/data/services/fire_prevention_maintenance_api_service.dart';
 import 'package:safetyZone/Features/fire_prevention_maintenance_contract_feature/view/fire_prevention_maintenance_view.dart';
+import 'package:safetyZone/Features/repair_reports/repair_reports_screen.dart';
 import '../../../constants/app_constants.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../engineering_inspection_report_feature/cubit/engineering_inspection_report_cubit.dart';
@@ -351,6 +352,12 @@ class HomeContentView extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                       // Navigate to reports
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RepairReportsScreen(),
+                        ),
+                      );
                     },
                   ),
                   SizedBox(height: 10.h),
@@ -370,6 +377,7 @@ class HomeContentView extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                       // Navigate to visit reports
+
                     },
                   ),
                   SizedBox(height: 10.h),

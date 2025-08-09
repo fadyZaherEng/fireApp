@@ -50,10 +50,10 @@ class ServiceProviderDropdown extends StatelessWidget {
               border: InputBorder.none,
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-              suffixIcon: Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.grey.shade600,
-              ),
+              // suffixIcon: Icon(
+              //   Icons.keyboard_arrow_down,
+              //   color: Colors.grey.shade600,
+              // ),
             ),
             isExpanded: true,
             items: providers.map((provider) {

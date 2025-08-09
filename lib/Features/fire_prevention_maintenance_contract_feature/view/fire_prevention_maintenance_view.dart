@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
+import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../data/models/certificate_models.dart';
@@ -42,7 +46,7 @@ class _ServiceProviderSelectionViewState
   @override
   void initState() {
     super.initState();
-    _durationController.text = '12'; // Default to 12 months
+    _durationController.text = '1'; // Default to 12 months
     _fetchBranches();
     // Auto-show provider selection after a short delay
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -65,18 +69,6 @@ class _ServiceProviderSelectionViewState
         setState(() {
           _branches = response.data!;
         });
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                response.message,
-                style: const TextStyle(fontFamily: 'Almarai'),
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
       }
     } catch (e) {
       if (mounted) {
@@ -113,18 +105,6 @@ class _ServiceProviderSelectionViewState
         setState(() {
           _providers = response.data!;
         });
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                response.message,
-                style: const TextStyle(fontFamily: 'Almarai'),
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
       }
     } catch (e) {
       if (mounted) {
@@ -162,12 +142,26 @@ class _ServiceProviderSelectionViewState
 
         // Convert items to alert devices and fire extinguishers
         List<AlertDevice> alertDevices = branchDetails.alarmItem
-            .map((item) => AlertDevice(
-                type: item.itemDetails.itemName, count: item.quantity))
+            .map(
+              (item) => AlertDevice(
+                type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                        'en'
+                    ? item.itemDetails.itemName.en.toString()
+                    : item.itemDetails.itemName.ar.toString(),
+                count: item.quantity,
+              ),
+            )
             .toList();
         List<FireExtinguisher> fireExtinguishers = branchDetails.fireSystemItem
-            .map((item) => FireExtinguisher(
-                type: item.itemDetails.itemName, count: item.quantity))
+            .map(
+              (item) => FireExtinguisher(
+                type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                        'en'
+                    ? item.itemDetails.itemName.en.toString()
+                    : item.itemDetails.itemName.ar.toString(),
+                count: item.quantity,
+              ),
+            )
             .toList();
 
         // for (final item in branchDetails.items) {
@@ -284,14 +278,14 @@ class _ServiceProviderSelectionViewState
       ),
       body: _isLoadingBranches || _isLoadingBranchDetails
           ? const Center(
-              child: CircularProgressIndicator(
+              child: SpinKitDoubleBounce(
                 color: AppColors.primaryRed,
               ),
             )
           : _showProviderSelection
               ? _buildCompleteForm(context, isRTL, localizations)
               : const Center(
-                  child: CircularProgressIndicator(
+                  child: SpinKitDoubleBounce(
                     color: AppColors.primaryRed,
                   ),
                 ),
@@ -334,12 +328,10 @@ class _ServiceProviderSelectionViewState
                 // Update state with branch information
                 setState(() {
                   _selectedBranch = value;
-                  _systemType =
-                      selectedBranch.systemType; // Set system type from branch
-                  _areaController.text =
-                      selectedBranch.space.toString(); // Set area from branch
-                  _systemTypeEnabled = false; // Disable system type editing
-                  _areaEnabled = false; // Disable area editing
+                  _systemType = selectedBranch.systemType;
+                  _areaController.text = selectedBranch.space.toString();
+                  _systemTypeEnabled = false;
+                  _areaEnabled = false;
                 });
 
                 // Fetch providers and branch details
@@ -349,11 +341,11 @@ class _ServiceProviderSelectionViewState
                 // If branch is deselected, reset and enable fields
                 setState(() {
                   _selectedBranch = '';
-                  _systemType = 'عادي'; // Default system type
-                  _areaController.clear(); // Clear area
-                  _systemTypeEnabled = true; // Enable system type editing
-                  _areaEnabled = true; // Enable area editing
-                  _providers.clear(); // Clear providers list
+                  _systemType = 'عادي';
+                  _areaController.clear();
+                  _systemTypeEnabled = true;
+                  _areaEnabled = true;
+                  _providers.clear();
                   _selectedProvider = null;
                 });
               }
@@ -419,7 +411,7 @@ class _ServiceProviderSelectionViewState
         // Create the request
         final request = CertificateInstallationRequest(
           branch: _selectedBranch,
-          requestType: 'InstallationCertificate',
+          requestType: 'MaintenanceContract',
           providers: _selectedProvider != null
               ? [ProviderSelection(provider: _selectedProvider!.id)]
               : _providers.isNotEmpty
@@ -429,8 +421,8 @@ class _ServiceProviderSelectionViewState
                       .toList()
                   : null,
           // Pass null if no providers available
-          visitsPerYear: _visitsPerYear,
-          durationInMonths: duration,
+          numberOfVisits: _visitsPerYear,
+          duration: duration,
         );
 
         // Show loading indicator
@@ -438,7 +430,7 @@ class _ServiceProviderSelectionViewState
           context: context,
           barrierDismissible: false,
           builder: (context) => const Center(
-            child: CircularProgressIndicator(
+            child: SpinKitDoubleBounce(
               color: AppColors.primaryRed,
             ),
           ),

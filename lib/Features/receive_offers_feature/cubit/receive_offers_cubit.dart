@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 import '../../../core/base/base_cubit.dart';
 import '../data/models/offer_models.dart';
- import '../data/services/receive_offers_api_service.dart';
+import '../data/services/receive_offers_api_service.dart';
 import 'receive_offers_states.dart';
 
 class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
@@ -13,6 +13,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
   ReceiveOffersCubit(this._apiService) : super(ReceiveOffersInitial());
 
   List<OfferRequest> get offers => _offers;
+
   Future<void> fetchOffers() async {
     try {
       emit(ReceiveOffersLoading());
@@ -41,7 +42,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
     }
   }
 
-  Future<void> acceptOffer(String offerId,bool isNavigate) async {
+  Future<void> acceptOffer(String offerId, bool isNavigate) async {
     if (isClosed) return;
 
     try {
@@ -54,9 +55,13 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       _logger.i('Successfully accepted offer: $offerId');
 
       // Navigate to payment instead of showing success message
-      if (!isClosed&&isNavigate) {
-        emit(OfferAcceptedNavigateToPayment(response.invoice));
-      }else{
+      if (!isClosed && isNavigate) {
+        emit(OfferAcceptedNavigateToPayment(
+          response.invoice,
+          response.result.visitPrice,
+          response.result.emergencyVisitPrice,
+        ));
+      } else {
         emit(OfferActionSuccess('تم قبول العرض بنجاح'));
       }
     } catch (e) {

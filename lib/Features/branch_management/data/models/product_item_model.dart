@@ -28,7 +28,7 @@ class ProductItemResponse {
 
 class ProductItem {
   final String id;
-  final String itemName;
+  final ItemName itemName;
   final String itemCode;
   final String image;
   final String supplierName;
@@ -62,7 +62,7 @@ class ProductItem {
   factory ProductItem.fromJson(Map<String, dynamic> json) {
     return ProductItem(
       id: json['_id'] as String? ?? '',
-      itemName: json['itemName'] as String? ?? '',
+      itemName: ItemName.fromJson(json['itemName'] as Map<String, dynamic>? ?? {}),
       itemCode: json['itemCode'] as String? ?? '',
       image: json['image'] as String? ?? '',
       supplierName: json['supplierName'] as String? ?? '',
@@ -98,4 +98,25 @@ class ProductItem {
       '__v': version,
     };
   }
+}
+
+class ItemName {
+  final String en ;
+  final String ar ;
+
+  ItemName({
+    required this.en,
+    required this.ar,
+  });
+
+  factory ItemName.fromJson(Map<String, dynamic> json) {
+    return ItemName(
+      en: json['en'] as String? ?? '',
+      ar: json['ar'] as String? ?? '',
+    );
+  }
+  mapToJson() => {
+    'en': en,
+    'ar': ar,
+  };
 }

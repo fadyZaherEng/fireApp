@@ -22,10 +22,15 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
   bool _isLoading = false;
 
   List<ProductData> get products => _products;
+
   bool get isLoading => _isLoading;
+
   String get systemType => _systemType;
+
   BranchData? get branchData => _branchData;
+
   Map<String, List<ProductItem>> get variantsCache => _variantsCache;
+
   Map<String, bool> get loadingVariants => _loadingVariants;
 
   BranchQuantitiesViewModel({
@@ -66,7 +71,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ProductType(
         id: 'control_panel',
         nameKey: 'control panel',
-        imagePath: 'assets/images/lo7a.png',
+        imagePath: 'assets/images/1.png',
         type: 'alarm-item',
         subCategory: 'control panel',
         alarmType: 'fire alarm',
@@ -74,7 +79,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ProductType(
         id: 'smoke_detector',
         nameKey: 'fire detector',
-        imagePath: 'assets/images/kashefDokhan.png',
+        imagePath: 'assets/images/2.png',
         type: 'alarm-item',
         subCategory: 'fire detector',
         alarmType: 'smoke detection',
@@ -82,7 +87,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ProductType(
         id: 'fire_bell',
         nameKey: 'alarm bell',
-        imagePath: 'assets/images/alarmBell.png',
+        imagePath: 'assets/images/3.png',
         type: 'alarm-item',
         subCategory: 'alarm bell',
         alarmType: 'sound alarm',
@@ -90,7 +95,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ProductType(
         id: 'manual_call_point',
         nameKey: 'glass breaker',
-        imagePath: 'assets/images/glassBreaker.png',
+        imagePath: 'assets/images/4.png',
         type: 'alarm-item',
         subCategory: 'glass breaker',
         alarmType: 'manual trigger',
@@ -98,7 +103,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ProductType(
         id: 'emergency_light',
         nameKey: 'Emergency Lighting',
-        imagePath: 'assets/images/spareLight.png',
+        imagePath: 'assets/images/5.png',
         type: 'alarm-item',
         subCategory: 'Emergency Lighting',
         alarmType: 'visual indicator',
@@ -106,7 +111,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ProductType(
         id: 'emergency_exit',
         nameKey: 'Emergency Exit',
-        imagePath: 'assets/images/emergency_exit.png',
+        imagePath: 'assets/images/6.png',
         type: 'alarm-item',
         subCategory: 'Emergency Exit',
         alarmType: 'exit guidance',
@@ -116,7 +121,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ProductType(
         id: 'fire_pumps',
         nameKey: 'Fire pumps',
-        imagePath: 'assets/images/fire_pump.png',
+        imagePath: 'assets/images/7.png',
         type: 'fire-system-item',
         subCategory: 'Fire pumps',
         madeIn: 'Germany',
@@ -132,7 +137,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ProductType(
         id: 'fire_cabinets',
         nameKey: 'Fire Cabinets',
-        imagePath: 'assets/images/fire_cabinet.png',
+        imagePath: 'assets/images/9.png',
         type: 'fire-system-item',
         subCategory: 'Fire Cabinets',
         madeIn: 'UAE',
@@ -230,7 +235,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     return currentSelection == 'Loading...' ||
         currentSelection == 'No variants available' ||
         (currentSelection != null &&
-            !variants.any((item) => item.itemName == currentSelection));
+            !variants.any((item) => item.itemName.en == currentSelection||item.itemName.ar==currentSelection));
   }
 
   void _clearInvalidSelections(String nameKey) {
@@ -293,14 +298,14 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     if (variant != null && variants.isNotEmpty) {
       try {
         selectedItem = variants.firstWhere(
-          (item) => item.itemName == variant,
+          (item) => item.itemName.en == variant||item.itemName.ar==variant,
         );
       } catch (e) {
         selectedItem = null;
         variant = null;
       }
     }
-   print('Selected variant: $variant');
+    print('Selected variant: $variant');
     print('Selected item: $productIndex');
     _products[productIndex] = productData.copyWith(
       selectedVariant: variant,
@@ -428,23 +433,25 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
 
     if (validProducts.isNotEmpty) {
       final List<BranchItem> alarmItems = validProducts
-      .where((product) => product.type.type == 'alarm-item')
+          .where((product) => product.type.type == 'alarm-item')
           .map((product) => BranchItem(
                 itemId: product.selectedVariantItem!.id,
                 quantity: product.quantity!,
               ))
           .toList();
       final List<BranchItem> fireSystemItems = validProducts
-      .where((product) => product.type.type == 'fire-system-item'&&
-      product.type.subCategory!="Fire extinguisher maintenance")
+          .where((product) =>
+              product.type.type == 'fire-system-item' &&
+              product.type.subCategory != "Fire extinguisher maintenance")
           .map((product) => BranchItem(
                 itemId: product.selectedVariantItem!.id,
                 quantity: product.quantity!,
               ))
           .toList();
       final List<BranchItem> fireExtinguisherItems = validProducts
-      .where((product) => product.type.type == 'fire-system-item'&&
-          product.type.subCategory=="Fire extinguisher maintenance")
+          .where((product) =>
+              product.type.type == 'fire-system-item' &&
+              product.type.subCategory == "Fire extinguisher maintenance")
           .map((product) => BranchItem(
                 itemId: product.selectedVariantItem!.id,
                 quantity: product.quantity!,
@@ -467,7 +474,8 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
         status: true,
       );
 
-      await _branchApiService.addItemsToBranch(branchId, addItemsRequest,fireExtinguisherItems);
+      await _branchApiService.addItemsToBranch(
+          branchId, addItemsRequest, fireExtinguisherItems);
     }
   }
 

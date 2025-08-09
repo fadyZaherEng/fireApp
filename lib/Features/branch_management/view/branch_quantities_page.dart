@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:safetyZone/Features/auth_features/login_feature/widgets/primary_button.dart';
 import 'package:safetyZone/Features/branch_management/models/product_data.dart';
 import 'package:safetyZone/Features/branch_management/models/product_type.dart';
+import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
+import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import 'package:safetyZone/core/utils/constants/colors.dart';
 import 'package:safetyZone/core/widgets/branch_widgets.dart' as branch_widgets;
 import '../../../core/localization/app_localizations.dart';
@@ -51,7 +54,7 @@ class BranchQuantitiesView extends StatelessWidget {
             Expanded(
               child: viewModel.isLoading
                   ? const Center(
-                      child: CircularProgressIndicator(color: CColors.primary))
+                      child: SpinKitDoubleBounce(color: CColors.primary))
                   : _buildProductList(context, viewModel, localizations, isRTL),
             ),
             _buildBottomButton(context, viewModel, localizations),
@@ -111,80 +114,59 @@ class BranchQuantitiesView extends StatelessWidget {
     AppLocalizations localizations,
     bool isRTL,
   ) {
-    return ListView.builder(
+    final productTypes = viewModel.getUniqueProductTypes();
+
+    return ListView.separated(
       controller: viewModel.scrollController,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      itemCount: viewModel.getUniqueProductTypes().length,
+      itemCount: productTypes.length,
+      separatorBuilder: (_, __) => SizedBox(height: 12.h),
       itemBuilder: (context, index) {
-        final productType = viewModel.getUniqueProductTypes()[index];
-        final sameTypeProducts = viewModel.products
-            .where((p) => p.type.id == productType.id)
-            .toList();
+        final type = productTypes[index];
+        final products =
+            viewModel.products.where((p) => p.type.id == type.id).toList();
+        final variants = viewModel.variantsCache[type.nameKey] ?? [];
+        final isLoading = viewModel.loadingVariants[type.nameKey] == true;
+        final hasLoaded = viewModel.variantsCache.containsKey(type.nameKey);
 
-        final variants = viewModel.variantsCache[productType.nameKey] ?? [];
-        final isLoadingVariants =
-            viewModel.loadingVariants[productType.nameKey] == true;
-        final hasLoadedVariants =
-            viewModel.variantsCache.containsKey(productType.nameKey);
-
-        List<String> variantNames = _getVariantNames(
-          isLoadingVariants,
-          hasLoadedVariants,
-          variants,
-        );
+        final variantNames = _getVariantNames(isLoading, hasLoaded, variants);
 
         return Stack(
           children: [
             ProductGroupWidget(
-              productType: productType,
-              products: sameTypeProducts,
+              productType: type,
+              products: products,
               variantNames: variantNames,
-              isLoadingVariants: false,
-              hasLoadedVariants: false,
+              isLoadingVariants: isLoading,
+              hasLoadedVariants: hasLoaded,
               selectedVariantIndex: index,
-              onVariantChanged: (variant, idx) {
-                print("ffffffffffff$variant");
-                print("ffffffffffff${idx}");
-                for (var product in sameTypeProducts) {
-                  final index = viewModel.products.indexOf(product);
-                  print("FFFFFFFFFFFFFFFFtttttttttttttttF$index $idx");
-                  if (index != -1 && idx == index) {
-                    print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK$index $idx");
-                    viewModel.handleVariantSelection(
-                      variant,
-                      idx,
-                      product,
-                      variants,
-                    );
-                  }
-                }
-              },
-              onQuantityChanged: (quantity, idx) {
-                if (sameTypeProducts.isNotEmpty) {
-                  final index =
-                      viewModel.products.indexOf(sameTypeProducts.first);
-                  if (index != -1) {
-                    viewModel.updateQuantity(
-                      index,
-                      sameTypeProducts.first,
-                      quantity ?? 0,
-                    );
-                  }
-                }
-              },
               onDropdownOpened: () =>
-                  viewModel.loadVariantsForType(productType.nameKey),
-              onAddMore: () => viewModel.addMoreProduct(productType),
+                  viewModel.loadVariantsForType(type.nameKey),
+              onAddMore: () => viewModel.addMoreProduct(type),
               localizations: localizations,
               isRTL: isRTL,
+              onVariantChanged: (variant, prodIndex) {
+                final targetProduct = products[prodIndex];
+                final idx = viewModel.products.indexOf(targetProduct);
+                if (idx != -1) {
+                  viewModel.handleVariantSelection(
+                      variant, idx, targetProduct, variants);
+                }
+              },
+              onQuantityChanged: (quantity, prodIndex) {
+                final targetProduct = products[prodIndex];
+                final idx = viewModel.products.indexOf(targetProduct);
+                if (idx != -1) {
+                  viewModel.updateQuantity(idx, targetProduct, quantity ?? 0);
+                }
+              },
             ),
-            if (isLoadingVariants)
+            if (isLoading)
               Positioned.fill(
                 child: Container(
                   color: Colors.transparent,
                   child: const Center(
-                    child: CircularProgressIndicator(color: CColors.primary),
-                  ),
+                      child: SpinKitDoubleBounce(color: CColors.primary)),
                 ),
               ),
           ],
@@ -203,11 +185,22 @@ class BranchQuantitiesView extends StatelessWidget {
     } else if (hasLoadedVariants && variants.isEmpty) {
       return ['No variants available'];
     } else if (hasLoadedVariants && variants.isNotEmpty) {
-      return variants
-          .map((item) => item.itemName.toString())
+      final names = variants
+          .map((item) =>
+              //check lang
+              (SharedPref().getString(PrefKeys.languageCode) ?? 'en') == 'en'
+                  ? item.itemName.en.toString()
+                  : item.itemName.ar.toString())
           .toSet()
           .toList()
+          //remove item if it is null or empty
+          .where((item) => item.isNotEmpty)
+          .toList()
           .cast<String>();
+      if (names.isEmpty) {
+        return ['No variants available'];
+      }
+      return names;
     }
     return [];
   }
@@ -267,7 +260,10 @@ class ProductGroupWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...products.map((productData) {
+        ...products.asMap().entries.map((entry) {
+          final idx = entry.key;
+          final productData = entry.value;
+
           String? validatedSelectedVariant = _getValidatedSelectedVariant(
             productData.selectedVariant,
             variantNames,
@@ -277,14 +273,15 @@ class ProductGroupWidget extends StatelessWidget {
 
           return ProductCard(
             title: localizations.translate(productType.nameKey),
-            imagePath: productType.imagePath,
+            imagePath:
+                entry.value.selectedVariantItem?.image ?? productType.imagePath,
             variantList: variantNames,
             selectedVariant: validatedSelectedVariant,
             quantity: productData.quantity,
             onDropdownOpened: onDropdownOpened,
             onVariantChanged: onVariantChanged,
             onQuantityChanged: onQuantityChanged,
-            selectedVariantIndex: selectedVariantIndex,
+            selectedVariantIndex: idx,
           );
         }),
         SizedBox(height: 8.h),
@@ -355,7 +352,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
-
+   print("imageeeeeeeee${widget.imagePath}");
     return Container(
       height: BranchSpacing.cardHeight.h + 15.h,
       margin: EdgeInsets.symmetric(vertical: BranchSpacing.md.h),
@@ -445,17 +442,30 @@ class _ProductCardState extends State<ProductCard> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6.r),
-                child: Image.asset(
+                child: Image.network(
                   widget.imagePath,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[200],
-                      child: Icon(
-                        Icons.image_not_supported,
-                        color: Colors.grey[400],
-                        size: 32.sp,
-                      ),
+                    return Image.asset(
+                    widget.imagePath,
+                      fit: BoxFit.fill,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: BranchSpacing.imageSize.w,
+                          height: BranchSpacing.imageSize.h,
+                          color: Colors.grey,
+                          child: Center(
+                            child: Text(
+                              widget.title,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
                 ),

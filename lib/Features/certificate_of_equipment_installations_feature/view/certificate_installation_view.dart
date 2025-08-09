@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../cubit/certificate_installation_cubit.dart';
 import '../cubit/certificate_installation_state.dart';
@@ -300,7 +302,7 @@ class _CertificateInstallationViewState
       builder: (context, state) {
         if (state is CertificateInstallationLoading) {
           return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF005CB9)),
+            child: SpinKitDoubleBounce(color: Color(0xFF005CB9)),
           );
         }
 
@@ -444,7 +446,7 @@ class _CertificateInstallationViewState
                   return const Center(
                     child: Padding(
                       padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(
+                      child: SpinKitDoubleBounce(
                         color: Color(0xFF005CB9),
                       ),
                     ),
