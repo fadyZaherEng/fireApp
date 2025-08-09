@@ -8,3 +8,4 @@ Integrated push notifications, service history, and an intuitive booking flow. B
 <img width="1383" height="332" alt="f6" src="https://github.com/user-attachments/assets/d4876322-aadb-42bc-b0a9-f4ec2139dadb" />
 <img width="1339" height="437" alt="f5" src="https://github.com/user-attachments/assets/f9e68b0b-485e-49fb-9b9c-b59a22fb1ea4" />
 <img width="1159" height="829" alt="f4" src="https://github.com/user-attachments/assets/5cfe08cd-c396-448a-b202-277e1e6f68ee" />
+<img width="1500" height="3248" alt="splash" src="https://github.com/user-attachments/assets/a02949ea-067a-440a-a066-062d6db75f00" />
