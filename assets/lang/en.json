@@ -478,5 +478,6 @@
   "contractPrice": "Contract Price",
   "commission": "العموله",
   "requestServiceFromServiceProvider": "Request Service from Service Provider",
-  "year": "Year"
+  "year": "Year",
+  "totalPrice": "Total Price",
  }

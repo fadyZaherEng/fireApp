@@ -483,5 +483,6 @@
   "contractPrice": "قيمة العقد",
   "commission": "الضريبة",
   "requestServiceFromServiceProvider": "طلب خدمة من مزود الخدمة",
-  "year": "سنة"
+  "year": "سنة",
+  "totalPrice": "السعر الكلي"
 }

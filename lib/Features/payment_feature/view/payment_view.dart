@@ -122,51 +122,7 @@ class PaymentContent extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                SizedBox(height: 24.h), // Price section
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildPriceButton(
-                        '${invoice.price.toInt()} ${invoice.currency}',
-                        null,
-                        isRed: true,
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _buildPriceButton(
-                        AppLocalizations.of(context).translate('contractPrice'),
-                        Icons.description,
-                        isRed: false,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 12.h),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildPriceButton(
-                        '${invoice.fees.toInt()}  ${invoice.currency}',
-                        null,
-                        isRed: true,
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _buildPriceButton(
-                        AppLocalizations.of(context).translate('commission'),
-                        Icons.percent,
-                        isRed: false,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 12.h),
+                SizedBox(height: 24.h),
 
                 Row(
                   children: [
@@ -211,6 +167,71 @@ class PaymentContent extends StatelessWidget {
                   ],
                 ),
 
+                SizedBox(height: 12.h), // Price section
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildPriceButton(
+                        '${invoice.price.toInt()} ${invoice.currency}',
+                        null,
+                        isRed: true,
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: _buildPriceButton(
+                        AppLocalizations.of(context).translate('contractPrice'),
+                        Icons.description,
+                        isRed: false,
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 12.h),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildPriceButton(
+                        '${invoice.fees.toInt()}  ${invoice.currency}',
+                        null,
+                        isRed: true,
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: _buildPriceButton(
+                        AppLocalizations.of(context).translate('commission'),
+                        Icons.percent,
+                        isRed: false,
+                      ),
+                    ),
+                  ],
+                ),
+
+
+                SizedBox(height: 12.h),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildPriceButton(
+                        '${invoice.fees.toInt()+invoice.price.toInt()}  ${invoice.currency}',
+                        null,
+                        isRed: true,
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: _buildPriceButton(
+                        AppLocalizations.of(context).translate('totalPrice'),
+                        Icons.percent,
+                        isRed: false,
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(height: 40.h),
 
                 // Payment methods section
