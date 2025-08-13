@@ -38,7 +38,7 @@ class _BeneficiaryRegistrationFormState
           RegistrationInputField(
             controller: widget.formController.companyNameController,
             icon: Icons.business,
-            placeholder: _localizations.translate('enterFacilityName'),
+            placeholder: _localizations.translate("enterFacilityName"),
             validator: (value) => widget.formController
                 .validateFacilityName(value, _localizations),
           ),
@@ -102,16 +102,16 @@ class _BeneficiaryRegistrationFormState
 
           SizedBox(height: 12.h),
 
-          // Facility Activity Field
-          RegistrationInputField(
-            controller: widget.formController.facilityActivityController,
-            icon: Icons.work,
-            placeholder: _localizations.translate('facilityActivity'),
-            validator: (value) => widget.formController
-                .validateFacilityActivity(value, _localizations),
-          ),
-
-          SizedBox(height: 16.h),
+          // // Facility Activity Field
+          // RegistrationInputField(
+          //   controller: widget.formController.facilityActivityController,
+          //   icon: Icons.work,
+          //   placeholder: _localizations.translate('facilityActivity'),
+          //   validator: (value) => widget.formController
+          //       .validateFacilityActivity(value, _localizations),
+          // ),
+          //
+          // SizedBox(height: 16.h),
 
           // Checkboxes
           RegistrationCheckbox(

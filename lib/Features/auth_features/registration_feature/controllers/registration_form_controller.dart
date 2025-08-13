@@ -108,7 +108,7 @@ class RegistrationFormController {
   // Field validators
   String? validateFacilityName(String? value, AppLocalizations localizations) {
     if (value == null || value.trim().isEmpty) {
-      return localizations.translate('facilityNameRequired');
+      return localizations.translate('enterFacilityName');
     }
     return null;
   }

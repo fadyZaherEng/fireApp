@@ -21,51 +21,74 @@ class RegistrationInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: const Color(0xFF005B99),
-          width: 1.w,
-        ),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        validator: validator,
-        style: TextStyle(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w500,
-          color: const Color(0xFF3B3B3B),
-          fontFamily: 'Almarai',
-        ),
-        textAlign: TextAlign.right,
-        decoration: InputDecoration(
-          hintText: placeholder,
-          hintStyle: TextStyle(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          controller: controller,
+          keyboardType: keyboardType,
+          validator: validator,
+          style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: const Color(0xFF3B3B3B),
             fontFamily: 'Almarai',
           ),
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(left: 12.w, right: 8.w),
-            child: Icon(
-              icon,
-              color: const Color(0xFF005B99),
-              size: 20.sp,
+          textAlign: TextAlign.right,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xFF3B3B3B),
+              fontFamily: 'Almarai',
+            ),
+            prefixIcon: Padding(
+              padding: EdgeInsets.only(left: 12.w, right: 8.w),
+              child: Icon(
+                icon,
+                color: const Color(0xFF005B99),
+                size: 20.sp,
+              ),
+            ),
+            suffixIcon: suffixIcon,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(
+                color: const Color(0xFF005B99),
+                width: 1.w,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(
+                color: const Color(0xFF005B99),
+                width: 1.w,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(
+                color: Colors.red,
+                width: 1.w,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.r),
+              borderSide: BorderSide(
+                color: Colors.red,
+                width: 1.w,
+              ),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+              vertical: 12.h,
             ),
           ),
-          suffixIcon: suffixIcon,
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 12.w,
-            vertical: 12.h,
-          ),
         ),
-      ),
+      ],
     );
   }
 }

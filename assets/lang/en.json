@@ -479,5 +479,7 @@
   "commission": "العموله",
   "requestServiceFromServiceProvider": "Request Service from Service Provider",
   "year": "Year",
-  "totalPrice": "Total Price"
+  "totalPrice": "Total Price",
+  "drawerLogout": "Logout",
+  "commercialRegistrationRequired": "Commercial Registration Number is required"
  }

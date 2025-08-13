@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/auth_features/login_feature/view/login_view.dart';
 import 'package:safetyZone/Features/engineering_inspection_report_feature/data/services/engineering_inspection_report_api_service.dart';
 import 'package:safetyZone/Features/engineering_inspection_report_feature/view/engineering_inspection_report_view.dart';
 import 'package:safetyZone/Features/fire_extinguisher_feature/cubit/fire_extinguisher_cubit.dart';
@@ -73,9 +74,7 @@ class HomeContentView extends StatelessWidget {
                           userName: state.userName,
                           imageNetwork: state.imageNetwork,
                         ),
-
                         SizedBox(height: 24.h),
-
                         // Featured Services Carousel
                         FeaturedServiceCarousel(
                           services: state.featuredServices,
@@ -338,15 +337,6 @@ class HomeContentView extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   _buildDrawerItem(
-                    icon: Icons.map_outlined,
-                    title: localizations.translate('drawerCity'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      // Navigate to city selection
-                    },
-                  ),
-                  SizedBox(height: 10.h),
-                  _buildDrawerItem(
                     icon: Icons.description_outlined,
                     title: localizations.translate('drawerModificationReports'),
                     onTap: () {
@@ -377,7 +367,6 @@ class HomeContentView extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                       // Navigate to visit reports
-
                     },
                   ),
                   SizedBox(height: 10.h),
@@ -446,6 +435,22 @@ class HomeContentView extends StatelessWidget {
                     title: localizations.translate('drawerContactUs'),
                     onTap: () {
                       Navigator.pop(context);
+                      // Open contact options
+                    },
+                  ),
+
+                  SizedBox(height: 10.h),
+                  _buildDrawerItem(
+                    icon: Icons.phone,
+                    title: localizations.translate('drawerLogout'),
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginView(),
+                        ),
+                        (route) => false,
+                      );
                       // Open contact options
                     },
                   ),

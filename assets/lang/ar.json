@@ -54,6 +54,7 @@
   "emailHint": "أدخل عنوان بريد إلكتروني صالح للعمل يمكننا التواصل معك من خلاله",
   "emailPlaceholder": "مثال: info@yourcompany.com",
   "emailRequired": "البريد الإلكتروني مطلوب",
+  "commercialRegistrationRequired": "السجل التجاري مطلوب",
   "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
   "enterEmailAddress": "ادخل البريد الإلكتروني",
   "phoneLabel": "رقم الهاتف",
@@ -484,5 +485,6 @@
   "commission": "الضريبة",
   "requestServiceFromServiceProvider": "طلب خدمة من مزود الخدمة",
   "year": "سنة",
-  "totalPrice": "السعر الكلي"
+  "totalPrice": "السعر الكلي",
+  "drawerLogout": "تسجيل الخروج"
 }
