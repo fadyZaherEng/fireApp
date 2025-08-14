@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/auth_features/login_feature/cubit/auth_cubit.dart';
+import 'package:safetyZone/Features/auth_features/login_feature/data/services/auth_api_service.dart';
+import 'package:safetyZone/Features/auth_features/login_feature/widgets/phone_input_field.dart';
 import '../../../../../core/localization/app_localizations.dart';
 import '../../controllers/registration_form_controller.dart';
 import '../registration_input_field.dart';
@@ -27,6 +30,23 @@ class BeneficiaryRegistrationForm extends StatefulWidget {
 class _BeneficiaryRegistrationFormState
     extends State<BeneficiaryRegistrationForm> {
   AppLocalizations get _localizations => AppLocalizations.of(context);
+
+  // final TextEditingController _phoneController = TextEditingController();
+  String _selectedCountryCode = '+966';
+  late AuthCubit _authCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _authCubit = AuthCubit(AuthApiService());
+  }
+
+  @override
+  void dispose() {
+    // _phoneController.dispose();
+    _authCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +111,25 @@ class _BeneficiaryRegistrationFormState
           SizedBox(height: 12.h),
 
           // Phone Field
-          RegistrationInputField(
-            controller: widget.formController.phoneController,
-            icon: Icons.phone,
-            placeholder: _localizations.translate('directManagerPhone'),
-            keyboardType: TextInputType.phone,
-            validator: (value) =>
-                widget.formController.validatePhone(value, _localizations),
+          // RegistrationInputField(
+          //   controller: widget.formController.phoneController,
+          //   icon: Icons.phone,
+          //   placeholder: _localizations.translate('directManagerPhone'),
+          //   keyboardType: TextInputType.phone,
+          //   validator: (value) =>
+          //       widget.formController.validatePhone(value, _localizations),
+          // ),
+          // Phone Input Field
+          PhoneInputField(
+            selectedCountryname: _localizations.translate('saudiArabia'),
+            hint: _localizations.translate('directManagerPhone'),
+            phoneController: widget.formController.phoneController,
+            selectedCountryCode: _selectedCountryCode,
+            onCountryCodeChanged: (String countryCode) {
+              setState(() {
+                _selectedCountryCode = countryCode;
+              });
+            },
           ),
 
           SizedBox(height: 12.h),
