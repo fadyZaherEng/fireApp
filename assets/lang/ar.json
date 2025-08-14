@@ -486,5 +486,10 @@
   "requestServiceFromServiceProvider": "طلب خدمة من مزود الخدمة",
   "year": "سنة",
   "totalPrice": "السعر الكلي",
-  "drawerLogout": "تسجيل الخروج"
+  "drawerLogout": "تسجيل الخروج",
+  "nameAuthorizedToSign": "اسم المصرح له بتوثيق العقود",
+  "addOtherTerms": "اضافة بند اخرى",
+  "otherTerms": "بند اخرى",
+  "TermsAndConditions": "الشروط والاحكام",
+  "enterTerms": "ادخل البند"
 }

@@ -444,7 +444,6 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: BranchSpacing.fieldHeight.h,
       decoration: BoxDecoration(
         color: enabled ? BranchColors.white : Colors.grey.shade100,
         border: Border.all(

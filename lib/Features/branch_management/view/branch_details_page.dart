@@ -284,7 +284,7 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
               hintText: localizations.translate('enterBranchName'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Branch name is required';
+                  return localizations.translate('enterBranchName');
                 }
                 return null;
               },
@@ -973,7 +973,7 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
         ? _workingDays[dayKey]!.startTime
         : _workingDays[dayKey]!.endTime;
 
-    showCupertinoModalPopup(
+    showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(

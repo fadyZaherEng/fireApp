@@ -110,7 +110,7 @@ class Employee {
   final String phoneNumber;
   final String? profileImage;
   final String jobTitle;
-  final String permission;
+  final List<dynamic> permission;
   final String employeeType;
   final bool isDeleted;
 

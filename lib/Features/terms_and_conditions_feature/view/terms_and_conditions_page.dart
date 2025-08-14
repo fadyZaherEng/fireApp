@@ -14,7 +14,7 @@ class TermsAndConditionsPage extends StatefulWidget {
 }
 
 class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
-  final TextEditingController _termsController = TextEditingController();
+  // final TextEditingController _termsController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final TermsAndConditionsApiService _termsApiService =
       TermsAndConditionsApiService();
@@ -24,16 +24,43 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
   List<Employee> _employees = [];
   Employee? _selectedEmployee;
   String? _employeesError;
+  late List<String> terms;
+  final TextEditingController _termsController = TextEditingController();
+  bool _addingTerm = false;
 
   @override
   void initState() {
     super.initState();
+    terms = List.from([]);
     _loadEmployees();
+  }
+
+  void _startAddTerm() {
+    setState(() {
+      _addingTerm = true;
+    });
+  }
+
+  void _cancelAddTerm() {
+    setState(() {
+      _addingTerm = false;
+      _termsController.clear();
+    });
+  }
+
+  void _addCustomTerm() {
+    if (_termsController.text.trim().isNotEmpty) {
+      setState(() {
+        terms.add(_termsController.text.trim());
+        _addingTerm = false;
+        _termsController.clear();
+      });
+    }
   }
 
   @override
   void dispose() {
-    _termsController.dispose();
+    // _termsController.dispose();
     super.dispose();
   }
 
@@ -78,16 +105,16 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
     try {
       // Parse terms text into clauses (split by lines for now)
-      final termsText = _termsController.text.trim();
-      final clauses = termsText
-          .split('\n')
-          .where((line) => line.trim().isNotEmpty)
+      debugPrint("ffffffffffffffffffffffffffffffffffffffffff$terms");
+      // final termsText = _termsController.text.trim();
+      final clauses = terms
+           .where((line) => line.trim().isNotEmpty)
           .map((line) => TermsClause(text: line.trim()))
           .toList();
 
-      if (clauses.isEmpty) {
-        clauses.add(TermsClause(text: termsText));
-      }
+      // if (clauses.isEmpty) {
+      //   clauses.add(TermsClause(text: termsText));
+      // }
 
       final request = CreateTermsRequest(
         employee: _selectedEmployee!.id, // Use selected employee's ID
@@ -160,7 +187,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
                       // Name field label
                       _buildLabel(
-                        text: 'اسم المصرح له بتوثيق العقود',
+                        text: localizations.translate('nameAuthorizedToSign'),
                         color: const Color(0xFF4A90E2),
                         isRTL: isRTL,
                       ),
@@ -172,15 +199,104 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
                       SizedBox(height: 16.h),
 
-                      // Terms label with icon
-                      _buildTermsLabel(isRTL, localizations),
-
-                      SizedBox(height: 6.h),
-
-                      // Terms text area
-                      _buildTermsTextArea(isRTL),
-
-                      SizedBox(height: 24.h),
+                      // // Terms label with icon
+                      // _buildTermsLabel(isRTL, localizations),
+                      //
+                      // SizedBox(height: 6.h),
+                      //
+                      // // Terms text area
+                      // _buildTermsTextArea(isRTL),
+                      _buildSectionHeader(
+                        localizations.translate('TermsAndConditions'),
+                      ),
+                      SizedBox(height: 8.h),
+                      ...List.generate(terms.length, (i) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 8.h),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${i + 1}. ',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: const Color(0xFF4A4A4A),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  terms[i],
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: const Color(0xFF4A4A4A),
+                                    height: 1.4,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                      if (_addingTerm)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _termsController,
+                                autofocus: true,
+                                decoration: InputDecoration(
+                                  hintText:
+                                      localizations.translate('otherTerms'),
+                                  hintStyle: TextStyle(
+                                    color: const Color(0xFFA0A0A0),
+                                    fontSize: 14.sp,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 12.h),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFFDADADA)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFFA40000)),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                onSubmitted: (_) => _addCustomTerm(),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.check,
+                                  color: Color(0xFFA40000)),
+                              onPressed: _addCustomTerm,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.close, color: Colors.grey),
+                              onPressed: _cancelAddTerm,
+                            ),
+                          ],
+                        ),
+                      TextButton.icon(
+                        onPressed: _startAddTerm,
+                        icon: const Icon(Icons.add, color: Color(0xFFA40000)),
+                        label: Text(
+                          localizations.translate('addOtherTerms'),
+                          style: TextStyle(
+                            color: const Color(0xFFA40000),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          alignment: Alignment.centerLeft,
+                        ),
+                      ),
+                      SizedBox(height: 32.h),
 
                       // Save button
                       _buildSaveButton(isRTL),
@@ -194,6 +310,26 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Row(
+      children: [
+        Icon(
+          Icons.circle,
+          color: const Color(0xFF4A90E2),
+          size: 20.sp,
+        ),
+        SizedBox(width: 8.w),
+        Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+          ),
+        ),
+      ],
     );
   }
 
@@ -429,43 +565,43 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
     );
   }
 
-  Widget _buildTermsTextArea(bool isRTL) {
-    return Container(
-      height: 150.h,
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFF1976D2)),
-        borderRadius: BorderRadius.circular(8.r),
-        color: Colors.white,
-      ),
-      child: TextFormField(
-        controller: _termsController,
-        maxLines: null,
-        expands: true,
-        textAlign: isRTL ? TextAlign.right : TextAlign.left,
-        textAlignVertical: TextAlignVertical.top,
-        style: TextStyle(
-          fontSize: 14.sp,
-          fontFamily: 'Almarai',
-        ),
-        decoration: InputDecoration(
-          hintText: 'ادخل البنود والشروط...',
-          hintStyle: TextStyle(
-            fontSize: 14.sp,
-            color: const Color(0xFF9E9E9E),
-            fontFamily: 'Almarai',
-          ),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.all(12.w),
-        ),
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return 'يرجى إدخال البنود والشروط';
-          }
-          return null;
-        },
-      ),
-    );
-  }
+  // Widget _buildTermsTextArea(bool isRTL) {
+  //   return Container(
+  //     height: 150.h,
+  //     decoration: BoxDecoration(
+  //       border: Border.all(color: const Color(0xFF1976D2)),
+  //       borderRadius: BorderRadius.circular(8.r),
+  //       color: Colors.white,
+  //     ),
+  //     child: TextFormField(
+  //       controller: _termsController,
+  //       maxLines: null,
+  //       expands: true,
+  //       textAlign: isRTL ? TextAlign.right : TextAlign.left,
+  //       textAlignVertical: TextAlignVertical.top,
+  //       style: TextStyle(
+  //         fontSize: 14.sp,
+  //         fontFamily: 'Almarai',
+  //       ),
+  //       decoration: InputDecoration(
+  //         hintText: 'ادخل البنود والشروط...',
+  //         hintStyle: TextStyle(
+  //           fontSize: 14.sp,
+  //           color: const Color(0xFF9E9E9E),
+  //           fontFamily: 'Almarai',
+  //         ),
+  //         border: InputBorder.none,
+  //         contentPadding: EdgeInsets.all(12.w),
+  //       ),
+  //       validator: (value) {
+  //         if (value == null || value.trim().isEmpty) {
+  //           return 'يرجى إدخال البنود والشروط';
+  //         }
+  //         return null;
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget _buildSaveButton(bool isRTL) {
     return SizedBox(

@@ -352,7 +352,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
-   print("imageeeeeeeee${widget.imagePath}");
+    print("imageeeeeeeee${widget.imagePath}");
     return Container(
       height: BranchSpacing.cardHeight.h + 15.h,
       margin: EdgeInsets.symmetric(vertical: BranchSpacing.md.h),
@@ -417,8 +417,10 @@ class _ProductCardState extends State<ProductCard> {
                       hintText: _getLocalizedText('selectQuantity'),
                       onChanged: (value) {
                         if (value != null) {
-                          widget.onQuantityChanged?.call(int.tryParse(value),
-                              widget.selectedVariantIndex ?? 0);
+                          widget.onQuantityChanged?.call(
+                            int.tryParse(value),
+                            widget.selectedVariantIndex ?? 0,
+                          );
                         }
                       },
                     ),
@@ -447,7 +449,7 @@ class _ProductCardState extends State<ProductCard> {
                   fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                    widget.imagePath,
+                      widget.imagePath,
                       fit: BoxFit.fill,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
@@ -457,6 +459,7 @@ class _ProductCardState extends State<ProductCard> {
                           child: Center(
                             child: Text(
                               widget.title,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,

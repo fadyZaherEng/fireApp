@@ -481,5 +481,10 @@
   "year": "Year",
   "totalPrice": "Total Price",
   "drawerLogout": "Logout",
-  "commercialRegistrationRequired": "Commercial Registration Number is required"
+  "commercialRegistrationRequired": "Commercial Registration Number is required",
+  "addOtherTerms": "Add Other Terms",
+  "otherTerms": "Other Terms",
+  "TermsAndConditions": "Terms and Conditions",
+  "enterTerms": "Enter Terms and Conditions",
+  "nameAuthorizedToSign": "Name Authorized to Sign"
  }
