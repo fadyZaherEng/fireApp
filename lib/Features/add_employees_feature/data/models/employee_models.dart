@@ -3,7 +3,7 @@ import 'dart:io';
 class AddEmployeeRequest {
   final String fullName;
   final String phoneNumber;
-  final String permission;
+  final List<String> permission;
   final String profileImage;
   final String jobTitle;
 

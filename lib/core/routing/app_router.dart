@@ -6,7 +6,6 @@ import '../../Features/language_feature/view/language_selection_view.dart';
 import '../../Features/onboarding_feature/view/onboarding_view.dart';
 import '../../Features/auth_features/login_feature/view/login_view.dart';
 import '../../Features/auth_features/login_feature/view/whatsapp_verification_view.dart';
-import '../../Features/auth_features/registration_feature/view/beneficiary_registration_view.dart';
 import '../../Features/bottom_navigation/view/main_app_container.dart';
 import '../../Features/add_employees_feature/view/add_employees_success_view.dart';
 import '../../Features/branch_management/view/branch_details_page.dart';
@@ -105,9 +104,11 @@ class NavigationService {
   RouteObserver<Route<dynamic>> routeObserver = RouteObserver<Route<dynamic>>();
 
   static final NavigationService _instance = NavigationService._private();
+
   factory NavigationService() {
     return _instance;
   }
+
   NavigationService._private();
 
   static NavigationService get instance => _instance;

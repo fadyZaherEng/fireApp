@@ -13,7 +13,7 @@ class AddEmployeeCubit extends Cubit<AddEmployeeState> {
   Future<void> addEmployee({
     required String fullName,
     required String phoneNumber,
-    required String permission,
+    required List<String> permission,
     required String profileImage,
     required String jobTitle,
   }) async {
@@ -79,7 +79,7 @@ class AddEmployeeCubit extends Cubit<AddEmployeeState> {
     required String employeeId,
     required String fullName,
     required String phoneNumber,
-    required String permission,
+    required List<String> permission,
     required String profileImage,
     required String jobTitle,
   }) async {

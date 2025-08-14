@@ -6,15 +6,16 @@ import 'input_field.dart';
 import 'dropdown_field.dart';
 import 'phone_field.dart';
 
-class EmployeeForm extends StatelessWidget {
+class EmployeeForm extends StatefulWidget {
   final int index;
   final TextEditingController nameController;
   final TextEditingController phoneController;
-  final String selectedRole;
+   final List<String> selectedRole ;
+
   final String selectedCountry;
   final File? selectedImage;
   final Function(int) pickImage;
-  final Function(String?) onRoleChanged;
+  final Function(List<String>?) onRoleChanged;
   final Function(int) showCountryPicker;
   final List<String> roles;
   final List<Map<String, String>> countries;
@@ -34,8 +35,13 @@ class EmployeeForm extends StatelessWidget {
     required this.countries,
   });
 
+  @override
+  State<EmployeeForm> createState() => _EmployeeFormState();
+}
+
+class _EmployeeFormState extends State<EmployeeForm> {
   Map<String, String> _getSelectedCountryData() =>
-      countries.firstWhere((country) => country['code'] == selectedCountry);
+      widget.countries.firstWhere((country) => country['code'] == widget.selectedCountry);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +71,7 @@ class EmployeeForm extends StatelessWidget {
           // Profile Image Section
           Center(
             child: GestureDetector(
-              onTap: () => pickImage(index),
+              onTap: () => widget.pickImage(widget.index),
               child: Stack(
                 children: [
                   Container(
@@ -74,14 +80,14 @@ class EmployeeForm extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.grey[200],
-                      image: selectedImage != null
+                      image: widget.selectedImage != null
                           ? DecorationImage(
-                              image: FileImage(selectedImage!),
+                              image: FileImage(widget.selectedImage!),
                               fit: BoxFit.cover,
                             )
                           : null,
                     ),
-                    child: selectedImage == null
+                    child: widget.selectedImage == null
                         ? Icon(
                             Icons.person,
                             size: 48,
@@ -115,28 +121,34 @@ class EmployeeForm extends StatelessWidget {
           // Name Field
           InputField(
             label: localizations.translate('employeeName'),
-            controller: nameController,
+            controller: widget.nameController,
             hintText: localizations.translate('enterEmployeeName'),
             suffixIcon: Icons.person_outline,
           ),
           const SizedBox(height: AppSizes.paddingLarge),
 
           // Role Dropdown
-          DropdownField(
+          // DropdownField(
+          //   label: localizations.translate('employeeRole'),
+          //   value: widget.selectedRole,
+          //   items: widget.roles,
+          //   onChanged: widget.onRoleChanged,
+          // ),
+          MultiSelectDropdownField(
             label: localizations.translate('employeeRole'),
-            value: selectedRole,
-            items: roles,
-            onChanged: onRoleChanged,
+            selectedValues: widget.selectedRole,
+            items: widget.roles,
+            onChanged: widget.onRoleChanged,
           ),
           const SizedBox(height: AppSizes.paddingLarge),
 
           // Phone Field
           PhoneField(
-            index: index,
-            phoneController: phoneController,
-            selectedCountry: selectedCountry,
-            countries: countries,
-            showCountryPicker: showCountryPicker,
+            index: widget.index,
+            phoneController: widget.phoneController,
+            selectedCountry: widget.selectedCountry,
+            countries: widget.countries,
+            showCountryPicker: widget.showCountryPicker,
             getSelectedCountryData: _getSelectedCountryData,
           ),
         ],

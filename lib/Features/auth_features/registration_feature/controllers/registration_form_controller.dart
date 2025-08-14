@@ -96,7 +96,7 @@ class RegistrationFormController {
       phoneNumber: "+966${phoneController.text.trim()}",
       commercialRegistrationNumber:
           commercialRegistrationController.text.trim(),
-      facilityActivity: facilityActivityController.text.trim(),
+      facilityActivity: "no",
       location: LocationData(
         type: 'Point',
         coordinates: [selectedLongitude!, selectedLatitude!],

@@ -24,11 +24,12 @@ class AddEmployeeView extends StatefulWidget {
 class _AddEmployeeViewState extends State<AddEmployeeView> {
   final List<TextEditingController> _nameControllers = [];
   final List<TextEditingController> _phoneControllers = [];
-  final List<String> _selectedRoles = [];
+  final List<List<String>> _selectedRoles = [];
   final List<String> _selectedCountries = [];
   final List<File?> _selectedImages = [];
   final ImagePicker _picker = ImagePicker();
   late AddEmployeeCubit _addEmployeeCubit;
+
   AppLocalizations get _localizations => AppLocalizations.of(context);
   int currentEmployeeIndex = 0;
 
@@ -42,7 +43,7 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
   void _addInitialEmployee() {
     _nameControllers.add(TextEditingController());
     _phoneControllers.add(TextEditingController());
-    _selectedRoles.add('management');
+    _selectedRoles.add(['management']);
     _selectedCountries.add('SA');
     _selectedImages.add(null);
   }
@@ -51,7 +52,7 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
     setState(() {
       _nameControllers.add(TextEditingController());
       _phoneControllers.add(TextEditingController());
-      _selectedRoles.add('management');
+      _selectedRoles.add(['management']);
       _selectedCountries.add('SA');
       _selectedImages.add(null);
       currentEmployeeIndex = _nameControllers.length - 1;
@@ -82,7 +83,7 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: 300,
           child: Column(
             children: [
@@ -188,6 +189,25 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
                       const SizedBox(height: AppSizes.paddingLarge),
 
                       // Main Form Card Container
+                      // EmployeeForm(
+                      //   index: currentEmployeeIndex,
+                      //   nameController: _nameControllers[currentEmployeeIndex],
+                      //   phoneController:
+                      //       _phoneControllers[currentEmployeeIndex],
+                      //   selectedRole: _selectedRoles,
+                      //   selectedCountry:
+                      //       _selectedCountries[currentEmployeeIndex],
+                      //   selectedImage: _selectedImages[currentEmployeeIndex],
+                      //   pickImage: _pickImage,
+                      //   onRoleChanged: (List<String>? newValue) {
+                      //     setState(() {
+                      //       _selectedRoles = newValue!;
+                      //     });
+                      //   },
+                      //   showCountryPicker: _showCountryPicker,
+                      //   roles: EmployeeConstants.roles,
+                      //   countries: EmployeeConstants.countries,
+                      // ),
                       EmployeeForm(
                         index: currentEmployeeIndex,
                         nameController: _nameControllers[currentEmployeeIndex],
@@ -198,7 +218,7 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
                             _selectedCountries[currentEmployeeIndex],
                         selectedImage: _selectedImages[currentEmployeeIndex],
                         pickImage: _pickImage,
-                        onRoleChanged: (String? newValue) {
+                        onRoleChanged: (List<String>? newValue) {
                           setState(() {
                             _selectedRoles[currentEmployeeIndex] = newValue!;
                           });
@@ -268,10 +288,6 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
     );
   }
 
-  // Removed _buildEmployeeForm as it's now in EmployeeForm widget
-
-  // Removed _buildInputField, _buildDropdownField, and _buildPhoneField as they've been moved to separate widget files
-
   void _saveEmployee() {
     // Validate current employee
     if (_nameControllers[currentEmployeeIndex].text.trim().isEmpty) {
@@ -284,26 +300,47 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
       return;
     }
 
+    final selectedRolesForEmployee = _selectedRoles[currentEmployeeIndex];
+    final selectedRoles = List<String>.from(selectedRolesForEmployee);
+    final permission = selectedRoles
+        .map((role) => EmployeeConstants.roleMapping[role] ?? 'management')
+        .toList();
+    final jobTitle = selectedRoles
+        .map((role) => EmployeeConstants.jobTitleMapping[role] ?? 'مدير النظام')
+        .toList();
+
+    // final permissions = selectedRolesForEmployee
+    //     .map((role) => EmployeeConstants.roleMapping[role] ?? 'management')
+    //     .toList();
+
+    // مثال لو هتاخد أول واحد فقط (لو النظام يحتاج role واحد)
+    // final selectedRole = selectedRolesForEmployee.first;
+    // final permission = permissions.first;
+
+    // العنوان
+    // final jobTitle =
+    //     EmployeeConstants.jobTitleMapping[selectedRole] ?? 'مدير النظام';
+
     // Use the selected role to get the permission
-    final selectedRole = _selectedRoles[currentEmployeeIndex];
+    // final selectedRole = _selectedRoles[currentEmployeeIndex];
     final selectedCountryData = _getSelectedCountryData(currentEmployeeIndex);
     final fullPhoneNumber = selectedCountryData['dialCode']! +
         _phoneControllers[currentEmployeeIndex].text.trim();
 
     // Use the correct permission mapping
-    final permission =
-        EmployeeConstants.roleMapping[selectedRole] ?? 'management';
+    // final permission =
+    //     EmployeeConstants.roleMapping[selectedRole] ?? 'management';
 
     final profileImageUrl = _selectedImages[currentEmployeeIndex] != null
         ? "https://cdn3d.iconscout.com/3d/premium/thumb/boy-avatar-3d-icon-download-in-png-blend-fbx-gltf-file-formats--male-person-character-mens-style-pack-people-icons-8330281.png?f=webp"
         : "https://cdn3d.iconscout.com/3d/premium/thumb/boy-avatar-3d-icon-download-in-png-blend-fbx-gltf-file-formats--male-person-character-mens-style-pack-people-icons-8330281.png?f=webp";
 
     // Use the selected role to get the job title
-    final jobTitle =
-        EmployeeConstants.jobTitleMapping[selectedRole] ?? 'مدير النظام';
+    // final jobTitle =
+    //     EmployeeConstants.jobTitleMapping[selectedRole] ?? 'مدير النظام';
 
     // Remove debug prints for production
-    print('🐛 DEBUG: selectedRole = $selectedRole');
+    print('🐛 DEBUG: selectedRole = $selectedRoles');
     print('🐛 DEBUG: permission = $permission');
     print('🐛 DEBUG: jobTitle = $jobTitle');
 
@@ -312,7 +349,7 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
       phoneNumber: fullPhoneNumber,
       permission: permission,
       profileImage: profileImageUrl,
-      jobTitle: jobTitle,
+      jobTitle: jobTitle.first,
     );
   }
 
