@@ -25,15 +25,15 @@ class DeviceListSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'Almarai',
-            fontSize: 16.sp,
-            color: AppColors.blackTextColor,
-          ),
-        ),
-        SizedBox(height: 12.h),
+        // Text(
+        //   title,
+        //   style: TextStyle(
+        //     fontFamily: 'Almarai',
+        //     fontSize: 16.sp,
+        //     color: AppColors.blackTextColor,
+        //   ),
+        // ),
+        // SizedBox(height: 12.h),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -95,8 +95,8 @@ class DeviceListSection extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(16.w),
                       child: Text(
-                        device
-                            .type, // Using the type which now contains the itemName
+                        device.type,
+                        // Using the type which now contains the itemName
                         style: TextStyle(
                           fontFamily: 'Almarai',
                           fontSize: 14.sp,
@@ -120,7 +120,7 @@ class DeviceListSection extends StatelessWidget {
                     ),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

@@ -21,15 +21,15 @@ class FireExtinguisherSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'Almarai',
-            fontSize: 16.sp,
-            color: AppColors.blackTextColor,
-          ),
-        ),
-        SizedBox(height: 12.h),
+        // Text(
+        //   title,
+        //   style: TextStyle(
+        //     fontFamily: 'Almarai',
+        //     fontSize: 16.sp,
+        //     color: AppColors.blackTextColor,
+        //   ),
+        // ),
+        // SizedBox(height: 12.h),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -54,7 +54,9 @@ class FireExtinguisherSection extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(16.w),
                     child: Text(
-                      localizations.translate('fireExtinguishers'),
+                      title == localizations.translate('alertDevices')
+                          ? localizations.translate('alertDevices')
+                          : localizations.translate('fireExtinguishers'),
                       style: TextStyle(
                         fontFamily: 'Almarai',
                         fontSize: 14.sp,
@@ -93,8 +95,8 @@ class FireExtinguisherSection extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(16.w),
                       child: Text(
-                        extinguisher
-                            .type, // Using the type which now contains the itemName
+                        extinguisher.type,
+                        // Using the type which now contains the itemName
                         style: TextStyle(
                           fontFamily: 'Almarai',
                           fontSize: 14.sp,

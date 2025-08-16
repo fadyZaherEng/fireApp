@@ -116,18 +116,6 @@ class _ServiceProviderSelectionViewState
         setState(() {
           _providers = response.data!;
         });
-      } else {
-        // if (mounted) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(
-        //       content: Text(
-        //         response.message,
-        //         style: const TextStyle(fontFamily: 'Almarai'),
-        //       ),
-        //       backgroundColor: Colors.red,
-        //     ),
-        //   );
-        // }
       }
     } catch (e) {
       if (mounted) {
@@ -184,37 +172,7 @@ class _ServiceProviderSelectionViewState
                 count: item.quantity))
             .toList();
 
-        // for (final item in branchDetails.items) {
-        //   final itemType = item.itemDetails.type;
-        //   final itemName = item.itemDetails.itemName;
-        //   final quantity = item.quantity;
-        //
-        //   // Categorize items based on type and subcategory
-        //   if (itemType == 'alarm-item') {
-        //     // Map alarm items to alert devices
-        //     String deviceType = itemName;
-        //
-        //     // Use the actual itemName for display, but try to map to localized categories for grouping
-        //     deviceType = itemName; // Use the actual item name for display
-        //
-        //     alertDevices.add(AlertDevice(type: deviceType, count: quantity));
-        //   } else if (itemType == 'fire-item' ||
-        //       itemName.contains('حريق') ||
-        //       itemName.contains('إطفاء')) {
-        //     // Map fire items to fire extinguishers
-        //     String extinguisherType =
-        //         itemName; // Use the actual item name for display
-        //
-        //     fireExtinguishers
-        //         .add(FireExtinguisher(type: extinguisherType, count: quantity));
-        //   }
-        // }
-        //
-        // setState(() {
-        //   _alertDevices = alertDevices;
-        //   _fireExtinguishers = fireExtinguishers;
-        // });
-      } else {
+       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -461,6 +419,7 @@ class _ServiceProviderSelectionViewState
                 Navigator.of(context).pop(); // Close dialog
                 Navigator.of(context).pop(); // Go back to home
               },
+              response.data!.requestNumber.toString(),
             );
           } else {
             // Show error message

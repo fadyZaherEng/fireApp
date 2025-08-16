@@ -145,8 +145,10 @@ class FirePreventionMaintenanceApiService {
           '💥 Error submitting certificate installation request: ${e.message}');
       return ApiResponse(
         success: false,
-        message: e.response?.data['message'] ??
-            'Network error occurred while submitting request',
+        message: SharedPref().getString(PrefKeys.languageCode) == 'ar'
+            ? e.response?.data['message']['ar']
+            : e.response?.data['message']['en'] ??
+                'Network error occurred while submitting request',
       );
     } catch (e) {
       _logger.e(

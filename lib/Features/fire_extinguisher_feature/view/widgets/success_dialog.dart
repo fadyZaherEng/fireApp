@@ -6,11 +6,13 @@ import '../../../../../core/localization/app_localizations.dart';
 class SuccessDialog extends StatelessWidget {
   final AppLocalizations localizations;
   final VoidCallback onConfirm;
+  final String number;
 
   const SuccessDialog({
     super.key,
     required this.localizations,
     required this.onConfirm,
+    required this.number,
   });
 
   @override
@@ -50,7 +52,7 @@ class SuccessDialog extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             Text(
-              localizations.translate('contactSoonMessage'),
+              "${localizations.translate('contactSoonMessage')} $number",
               style: TextStyle(
                 fontFamily: 'Almarai',
                 fontSize: 14.sp,
@@ -87,14 +89,19 @@ class SuccessDialog extends StatelessWidget {
     );
   }
 
-  static void show(BuildContext context, AppLocalizations localizations,
-      VoidCallback onConfirm) {
+  static void show(
+      BuildContext context,
+      AppLocalizations localizations,
+      VoidCallback onConfirm,
+      String number,
+      ) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => SuccessDialog(
         localizations: localizations,
         onConfirm: onConfirm,
+        number: number,
       ),
     );
   }

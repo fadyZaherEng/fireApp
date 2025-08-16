@@ -21,15 +21,15 @@ class FireExtinguisherSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'Almarai',
-            fontSize: 16.sp,
-            color: AppColors.blackTextColor,
-          ),
-        ),
-        SizedBox(height: 12.h),
+        // Text(
+        //   title,
+        //   style: TextStyle(
+        //     fontFamily: 'Almarai',
+        //     fontSize: 16.sp,
+        //     color: AppColors.blackTextColor,
+        //   ),
+        // ),
+        // SizedBox(height: 12.h),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
