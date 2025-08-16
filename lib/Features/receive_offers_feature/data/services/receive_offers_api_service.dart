@@ -91,11 +91,11 @@ class ReceiveOffersApiService {
       );
     }
   }
-  Future<String> cancelOffers() async {
+  Future<String> cancelOffers(String offerId) async {
     try {
       _logger.i('Fetching offers from API...');
 
-      final response = await _dio.patch('/api/consumer/consumer-request/cancel/689b97fe6939fc2ef100ee99');
+      final response = await _dio.patch('/api/consumer/consumer-request/cancel/$offerId');
 
       if (response.statusCode == 200) {
         _logger.i('Successfully fetched offers');

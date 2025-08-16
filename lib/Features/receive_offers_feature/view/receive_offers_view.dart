@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:safetyZone/Features/contract/contract_screen.dart';
+import 'package:safetyZone/Features/payment_feature/view/payment_view.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
 import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
 import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
@@ -124,6 +125,40 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                 ],
               ),
             );
+          } else if (state is OfferActionSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.green,
+              ),
+            );
+            context.read<ReceiveOffersCubit>().clearActionState();
+            context.read<ReceiveOffersCubit>().fetchOffers();
+          } else if (state is OfferActionError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
+            );
+            context.read<ReceiveOffersCubit>().clearActionState();
+          } else if (state is OfferAcceptedNavigateToPayment) {
+            // Navigate to payment page
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (context) => PaymentView(
+                  invoice: state.invoice,
+                  emergencyVisitPrice: state.emergencyVisitPrice,
+                  visitPrice: state.visitPrice,
+                  isMaintance: state.isMaintance,
+                ),
+              ),
+            )
+                .then((_) {
+              // Refresh offers when coming back from payment
+              context.read<ReceiveOffersCubit>().fetchOffers();
+            });
           }
         },
         builder: (context, state) => DefaultTabController(
@@ -654,12 +689,22 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                                 .then((value) {
                                               context
                                                   .read<ReceiveOffersCubit>()
-                                                  .acceptOffer(offer.id, false);
+                                                  .acceptOffer(
+                                                    offer.id,
+                                                    false,
+                                                    offerRequest.requestType ==
+                                                        "MaintenanceContract",
+                                                  );
                                             });
                                           } else {
                                             context
                                                 .read<ReceiveOffersCubit>()
-                                                .acceptOffer(offer.id, true);
+                                                .acceptOffer(
+                                                  offer.id,
+                                                  true,
+                                                  offerRequest.requestType ==
+                                                      "MaintenanceContract",
+                                                );
                                           }
                                         },
                                   child: isLoading
@@ -906,7 +951,9 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                   ElevatedButton(
                     onPressed: () {
                       if (offerRequest.status == 'pending') {
-                        context.read<ReceiveOffersCubit>().cancelPriceOffer();
+                        context
+                            .read<ReceiveOffersCubit>()
+                            .cancelPriceOffer(offerRequest.id);
                       }
                     },
                     style: ElevatedButton.styleFrom(

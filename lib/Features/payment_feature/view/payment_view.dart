@@ -12,12 +12,14 @@ class PaymentView extends StatelessWidget {
 
   final int visitPrice;
   final int emergencyVisitPrice;
+  final bool isMaintance;
 
   const PaymentView({
     super.key,
     required this.invoice,
     required this.visitPrice,
     required this.emergencyVisitPrice,
+    required this.isMaintance,
   });
 
   @override
@@ -28,6 +30,7 @@ class PaymentView extends StatelessWidget {
         invoice: invoice,
         visitPrice: visitPrice,
         emergencyVisitPrice: emergencyVisitPrice,
+        isMaintance: isMaintance,
       ),
     );
   }
@@ -35,7 +38,7 @@ class PaymentView extends StatelessWidget {
 
 class PaymentContent extends StatelessWidget {
   final Invoice invoice;
-
+  final bool isMaintance;
   final int visitPrice;
   final int emergencyVisitPrice;
 
@@ -44,6 +47,7 @@ class PaymentContent extends StatelessWidget {
     required this.invoice,
     required this.visitPrice,
     required this.emergencyVisitPrice,
+    required this.isMaintance,
   });
 
   @override
@@ -123,51 +127,49 @@ class PaymentContent extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 24.h),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildPriceButton(
-                        '${visitPrice}',
-                        null,
-                        isRed: true,
+                if (isMaintance)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildPriceButton(
+                          '${visitPrice}',
+                          null,
+                          isRed: true,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _buildPriceButton(
-                        AppLocalizations.of(context).translate('visitPrice'),
-                        Icons.percent,
-                        isRed: false,
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: _buildPriceButton(
+                          AppLocalizations.of(context).translate('visitPrice'),
+                          Icons.percent,
+                          isRed: false,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 12.h),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildPriceButton(
-                        '${emergencyVisitPrice}',
-                        null,
-                        isRed: true,
+                    ],
+                  ),
+                if (isMaintance) SizedBox(height: 12.h),
+                if (isMaintance)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildPriceButton(
+                          '${emergencyVisitPrice}',
+                          null,
+                          isRed: true,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _buildPriceButton(
-                        AppLocalizations.of(context)
-                            .translate('emergencyPrice'),
-                        Icons.percent,
-                        isRed: false,
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: _buildPriceButton(
+                          AppLocalizations.of(context)
+                              .translate('emergencyPrice'),
+                          Icons.percent,
+                          isRed: false,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 12.h), // Price section
+                    ],
+                  ),
+                if (isMaintance) SizedBox(height: 12.h), // Price section
                 Row(
                   children: [
                     Expanded(
@@ -210,14 +212,13 @@ class PaymentContent extends StatelessWidget {
                   ],
                 ),
 
-
                 SizedBox(height: 12.h),
 
                 Row(
                   children: [
                     Expanded(
                       child: _buildPriceButton(
-                        '${invoice.fees.toInt()+invoice.price.toInt()}  ${invoice.currency}',
+                        '${invoice.fees.toInt() + invoice.price.toInt()}  ${invoice.currency}',
                         null,
                         isRed: true,
                       ),

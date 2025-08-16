@@ -43,12 +43,12 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       emit(ReceiveOffersError(errorMessage));
     }
   }
-  Future<void> cancelPriceOffer() async {
+  Future<void> cancelPriceOffer(String offerId) async {
     try {
       emit(CancelPriceOffersLoading());
       _logger.i('Fetching offers...');
 
-      final response = await _apiService.cancelOffers();
+      final response = await _apiService.cancelOffers(offerId);
 
 
       _logger.i('Successfully fetched ${_offers.length} offers');
@@ -108,7 +108,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
     }
   }
 
-  Future<void> acceptOffer(String offerId, bool isNavigate) async {
+  Future<void> acceptOffer(String offerId, bool isNavigate,bool isMaintance) async {
     if (isClosed) return;
 
     try {
@@ -126,6 +126,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
           response.invoice,
           response.result.visitPrice,
           response.result.emergencyVisitPrice,
+          isMaintance
         ));
       } else {
         emit(OfferActionSuccess('تم قبول العرض بنجاح'));

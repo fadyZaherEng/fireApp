@@ -262,6 +262,7 @@ class OfferPricing {
   final String requestNumber;
   final String requestType;
   final String status;
+  final String id;
 
   OfferPricing({
     required this.branchName,
@@ -269,6 +270,7 @@ class OfferPricing {
     required this.requestNumber,
     required this.requestType,
     required this.status,
+    required this.id,
   });
 
   factory OfferPricing.fromJson(Map<String, dynamic> json) {
@@ -278,6 +280,7 @@ class OfferPricing {
       requestNumber: json['requestNumber'] as String,
       requestType: json['requestType'] as String,
       status: json['status'] as String,
+      id: json['_id'] as String,
     );
   }
 }
