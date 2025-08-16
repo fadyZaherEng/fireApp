@@ -5,6 +5,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:safetyZone/Features/contract/contract_screen.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
+import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
+import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import 'package:safetyZone/core/utils/constants/colors.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../cubit/receive_offers_cubit.dart';
@@ -353,20 +355,19 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
             iconColor: const Color(0xFF4CAF50),
             collapsedIconColor: Colors.grey,
             // tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            childrenPadding:
-                EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+            childrenPadding: EdgeInsets.symmetric(horizontal: 8.w),
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _buildDetailRow(localizations.translate('facilityNameLabel'),
                     offerRequest.branch.employee.fullName, isArabic),
-                SizedBox(height: 6.h),
+                SizedBox(height: 2.h),
                 _buildDetailRow(localizations.translate('branchNameLabel'),
                     offerRequest.branch.branchName, isArabic),
-                SizedBox(height: 6.h),
+                SizedBox(height: 2.h),
                 _buildDetailRow(localizations.translate('requestTypeLabel'),
-                    offerRequest.requestTypeDisplay, isArabic),
-                SizedBox(height: 6.h),
+                    _getRequestType(offerRequest.requestTypeDisplay), isArabic),
+                SizedBox(height: 2.h),
                 _buildDetailRow(localizations.translate('requestNumberLabel'),
                     offerRequest.requestNumber, isArabic),
               ],
@@ -384,8 +385,6 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                   children: [
                     // Company name and rating row
                     Row(
-                      textDirection:
-                          isArabic ? TextDirection.rtl : TextDirection.ltr,
                       children: [
                         Expanded(
                           child: Text(
@@ -404,17 +403,13 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 8.w, vertical: 4.h),
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
                           decoration: BoxDecoration(
                             color: const Color(0xFFF5F5F5),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
-                            textDirection: isArabic
-                                ? TextDirection.rtl
-                                : TextDirection.ltr,
                             children: [
                               Icon(
                                 Icons.star,
@@ -437,12 +432,10 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                       ],
                     ),
 
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 4.h),
 
                     // Info items row
                     Row(
-                      textDirection:
-                          isArabic ? TextDirection.rtl : TextDirection.ltr,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         _buildInfoItem(Icons.schedule, offer.timeAgo, isArabic),
@@ -480,7 +473,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 4.h),
                     BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
                       builder: (context, state) {
                         final isLoading = state is OfferActionLoading &&
@@ -492,11 +485,11 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           children: [
                             Expanded(
                               child: Container(
-                                height: 40.h,
+                                height: 36.h,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: const Color(0xFFE53935)),
-                                  borderRadius: BorderRadius.circular(20.r),
+                                  borderRadius: BorderRadius.circular(15.r),
                                 ),
                                 child: TextButton(
                                   onPressed: isLoading
@@ -530,13 +523,13 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 12.w),
+                            SizedBox(width: 24.w),
                             Expanded(
                               child: Container(
-                                height: 40.h,
+                                height: 36.h,
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF4CAF50),
-                                  borderRadius: BorderRadius.circular(20.r),
+                                  borderRadius: BorderRadius.circular(15.r),
                                 ),
                                 child: TextButton(
                                   onPressed: isLoading
@@ -758,7 +751,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                     child: Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -786,13 +779,11 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                   )
                 ],
               ),
-              SizedBox(height: 6.h),
               _buildDetailRow(localizations.translate('branchNameLabel'),
                   offerRequest.branchName, isArabic),
-              SizedBox(height: 6.h),
+              SizedBox(height: 8.h),
               _buildDetailRow(localizations.translate('requestTypeLabel'),
-                  offerRequest.requestType, isArabic),
-              SizedBox(height: 6.h),
+                  _getRequestsType(offerRequest.requestType), isArabic),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -827,8 +818,33 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
             ],
           ),
         ),
-        SizedBox(height: 8.h),
       ],
     );
+  }
+
+  String _getRequestsType(requestType) {
+    switch (requestType) {
+      case 'InstallationCertificate':
+        return 'طلب دار رخص فورية';
+      case 'FireExtinguisher':
+        return 'طفايات حريق';
+      case 'FireAlarm':
+        return 'أجهزة إنذار حريق';
+      case 'MaintenanceContract':
+        return 'عقد صيانة';
+      default:
+        return requestType;
+    }
+  }
+
+  String _getRequestType(String requestTypeDisplay) {
+    if (requestTypeDisplay == 'EngineeringInspection') {
+      if (SharedPref.preferences.getString(PrefKeys.languageCode) == 'ar') {
+        return 'فحص هندسي';
+      } else {
+        return 'Engineering Inspection';
+      }
+    }
+    return requestTypeDisplay;
   }
 }

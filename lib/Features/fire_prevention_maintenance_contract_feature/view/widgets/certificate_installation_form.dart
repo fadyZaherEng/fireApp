@@ -135,14 +135,14 @@ class CertificateInstallationForm extends StatelessWidget {
           SizedBox(height: 20.h),
 
           // Fire Extinguishers - Only display if there are items
-          if (fireExtinguishers.isNotEmpty) ...[
-            FireExtinguisherSection(
-              extinguishers: fireExtinguishers,
-              localizations: localizations,
-              title: localizations.translate('fireExtinguishers'),
-            ),
-            SizedBox(height: 30.h),
-          ],
+          // if (fireExtinguishers.isNotEmpty) ...[
+          //   FireExtinguisherSection(
+          //     extinguishers: fireExtinguishers,
+          //     localizations: localizations,
+          //     title: localizations.translate('fireExtinguishers'),
+          //   ),
+          //   SizedBox(height: 30.h),
+          // ],
 
           // Submit Button
           SubmitButton(
