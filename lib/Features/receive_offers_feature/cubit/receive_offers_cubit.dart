@@ -46,7 +46,11 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
   Future<void> fetchPriceOffers({
     int page = 1,
     int limit = 2,
+    bool isStart = false,
 }) async {
+    if(isStart){
+      _priceOffers.clear();
+    }
     try {
       emit(ReceivePriceOffersLoading());
       _logger.i('Fetching offers...');
@@ -55,7 +59,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
         page: page,
         limit: limit,
       );
-      _priceOffers = response.data;
+      _priceOffers.addAll(response.data);
 
       _logger.i('Successfully fetched ${_offers.length} offers');
       emit(ReceivePriceOffersSuccess(_priceOffers));

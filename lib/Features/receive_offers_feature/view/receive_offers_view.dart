@@ -37,26 +37,49 @@ class ReceiveOffersContent extends StatefulWidget {
 class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
   List<OfferRequest> offerRequests = [];
   int page = 1;
-  int limit = 2;
-  bool isHaveMore = true; // لتحديد ما إذا كان هناك المزيد من البيانات لتحميلها
+  int limit = 10;
   final ScrollController _scrollController = ScrollController();
+  bool _isLoadingMore = false;
+  bool _hasMore = true;
+  List<OfferPricing> priceOffers = [];
 
   @override
   void initState() {
+    context.read<ReceiveOffersCubit>().fetchPriceOffers(
+          page: page,
+          limit: limit,
+          isStart: true, // لبدء التحميل من الصفحة الأولى
+        );
     super.initState();
-    // إضافة مستمع للتمرير لتحميل المزيد من البيانات عند الوصول إلى نهاية القائمة
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        if (isHaveMore) {
-          context.read<ReceiveOffersCubit>().fetchPriceOffers(
-                page: page,
-                limit: limit,
-              );
-          page++;
-        }
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      if (!_isLoadingMore && _hasMore) {
+        _isLoadingMore = true;
+        page += 1; // ✅ مش page += limit
+        context
+            .read<ReceiveOffersCubit>()
+            .fetchPriceOffers(
+              page: page,
+              limit: limit,
+            )
+            .then((_) {
+          _isLoadingMore = false;
+          if (context.read<ReceiveOffersCubit>().priceOffers.isEmpty) {
+            _hasMore = false;
+          }
+        });
       }
-    });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -88,8 +111,6 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                     context.read<ReceiveOffersCubit>().fetchOffers();
                   } else if (index == 1) {
                     // Reset the page and isHaveMore when switching tabs
-                    page = 1;
-                    isHaveMore = true;
                     context.read<ReceiveOffersCubit>().fetchPriceOffers(
                           page: page,
                           limit: limit,
@@ -173,157 +194,204 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                 final offers = context
                     .watch<ReceiveOffersCubit>()
                     .offers; // القائمة الحالية
-                final priceOffers = context
+                List<OfferPricing> priceOffers = context
                     .watch<ReceiveOffersCubit>()
                     .priceOffers; // قائمة الأسعار
                 final isLoadingPriceOffers = state
                     is ReceivePriceOffersLoading; // حالة التحميل لطلبات الأسعار
                 final isErrorPriceOffers = state
                     is ReceivePriceOffersError; // حالة الخطأ لطلبات الأسعار
-
-                return TabBarView(
+                // if (state is ReceivePriceOffersSuccess) {
+                //   if (page == 1) {
+                //     priceOffers.clear(); // إذا كانت الصفحة الأولى، نبدأ من جديد
+                //   }
+                //   priceOffers.addAll(state.offersPrices);
+                //   _isLoadingMore = false;
+                //   _hasMore = state.offersPrices.length ==
+                //       limit; // أقل من pageSize يعني مفيش بيانات تانية
+                // }
+                return Stack(
                   children: [
-                    // تبويب "استلام العروض"
-                    RefreshIndicator(
-                      onRefresh: () async {
-                        await context.read<ReceiveOffersCubit>().fetchOffers();
-                      },
-                      child: Builder(
-                        builder: (_) {
-                          // 1) Loading => ListView قابلة للسحب
-                          if (isLoading) {
-                            return ListView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              children: const [
-                                SizedBox(height: 200),
-                                Center(
-                                    child: SpinKitDoubleBounce(
-                                        color: Color(0xFF2196F3))),
-                                SizedBox(height: 600),
-                                // يضمن سحب للأسفل على أي حال
-                              ],
-                            );
-                          }
-
-                          // 2) Error => برضه داخل ListView قابلة للسحب
-                          if (isError) {
-                            return ListView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: EdgeInsets.all(16.w),
-                              children: [
-                                _buildErrorDialog(
-                                    context,
-                                    (state as ReceiveOffersError).message,
-                                    localizations),
-                              ],
-                            );
-                          }
-
-                          // 3) Empty
-                          if (offers.isEmpty) {
-                            return ListView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: EdgeInsets.all(16.w),
-                              children: [
-                                _buildNoOffersDialog(context, localizations),
-                              ],
-                            );
-                          }
-
-                          // 4) Success + بيانات
-                          return ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: offers.length,
-                            itemBuilder: (context, index) {
-                              final offerRequest = offers[index];
-                              return _buildOfferRequestCard(
-                                  context, offerRequest);
-                            },
-                          );
-                        },
-                      ),
-                    ),
-
-                    RefreshIndicator(
-                      onRefresh: () async {
-                        await context
-                            .read<ReceiveOffersCubit>()
-                            .fetchPriceOffers(
-                              page: page,
-                              limit: limit,
-                            );
-                      },
-                      child: Builder(
-                        builder: (_) {
-                          // 1) Loading => ListView قابلة للسحب
-                          if (isLoadingPriceOffers) {
-                            return ListView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              children: const [
-                                SizedBox(height: 200),
-                                Center(
-                                    child: SpinKitDoubleBounce(
-                                        color: Color(0xFF2196F3))),
-                                SizedBox(height: 600),
-                                // يضمن سحب للأسفل على أي حال
-                              ],
-                            );
-                          }
-
-                          // 2) Error => برضه داخل ListView قابلة للسحب
-                          if (isErrorPriceOffers) {
-                            return ListView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: EdgeInsets.all(16.w),
-                              children: [
-                                _buildErrorDialog(
-                                    context,
-                                    (state as ReceivePriceOffersError).message,
-                                    localizations),
-                              ],
-                            );
-                          }
-
-                          // 3) Empty
-                          if (priceOffers.isEmpty) {
-                            return ListView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: EdgeInsets.all(16.w),
-                              children: [
-                                _buildNoOffersDialog(context, localizations),
-                              ],
-                            );
-                          }
-
-                          // 4) Success + بيانات
-                          return ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: priceOffers.length,
-                            itemBuilder: (context, index) {
-                              if (index == priceOffers.length && isHaveMore) {
-                                // إذا كان هذا هو آخر عنصر في القائمة، نعرض مؤشر التحميل
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 16.h),
-                                  child: Center(
-                                    child: SpinKitDoubleBounce(
-                                      color: const Color(0xFF2196F3),
-                                    ),
-                                  ),
+                    TabBarView(
+                      children: [
+                        // تبويب "استلام العروض"
+                        RefreshIndicator(
+                          onRefresh: () async {
+                            await context
+                                .read<ReceiveOffersCubit>()
+                                .fetchOffers();
+                          },
+                          child: Builder(
+                            builder: (_) {
+                              // 1) Loading => ListView قابلة للسحب
+                              if (isLoading) {
+                                return ListView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  children: const [
+                                    SizedBox(height: 200),
+                                    Center(
+                                        child: SpinKitDoubleBounce(
+                                            color: Color(0xFF2196F3))),
+                                    SizedBox(height: 600),
+                                    // يضمن سحب للأسفل على أي حال
+                                  ],
                                 );
                               }
 
-                              final offerRequest = priceOffers[index];
-                              return _buildPriceOfferRequestCard(
-                                context,
-                                offerRequest,
-                                localizations.isArabic(),
-                                localizations,
+                              // 2) Error => برضه داخل ListView قابلة للسحب
+                              if (isError) {
+                                return ListView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  padding: EdgeInsets.all(16.w),
+                                  children: [
+                                    _buildErrorDialog(
+                                        context,
+                                        (state as ReceiveOffersError).message,
+                                        localizations),
+                                  ],
+                                );
+                              }
+
+                              // 3) Empty
+                              if (offers.isEmpty && !isLoading && !isError) {
+                                return ListView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  padding: EdgeInsets.all(16.w),
+                                  children: [
+                                    _buildNoOffersDialog(
+                                      context,
+                                      localizations,
+                                    ),
+                                  ],
+                                );
+                              }
+
+                              // 4) Success + بيانات
+                              return ListView.builder(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: offers.length,
+                                itemBuilder: (context, index) {
+                                  final offerRequest = offers[index];
+                                  return _buildOfferRequestCard(
+                                    context,
+                                    offerRequest,
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+
+                        RefreshIndicator(
+                          onRefresh: () async {
+                            page = 1;
+                            _hasMore = true;
+                            priceOffers.clear();
+                            await context
+                                .read<ReceiveOffersCubit>()
+                                .fetchPriceOffers(
+                                  page: page,
+                                  limit: limit,
+                                  isStart: true,
+                                );
+                          },
+                          child: Builder(
+                            builder: (_) {
+                              // 1) Loading => ListView قابلة للسحب
+                              if (isLoadingPriceOffers) {
+                                return ListView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  children: const [
+                                    SizedBox(height: 200),
+                                    Center(
+                                        child: SpinKitDoubleBounce(
+                                            color: Color(0xFF2196F3))),
+                                    SizedBox(height: 600),
+                                    // يضمن سحب للأسفل على أي حال
+                                  ],
+                                );
+                              }
+
+                              // 2) Error => برضه داخل ListView قابلة للسحب
+                              if (isErrorPriceOffers) {
+                                return ListView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  padding: EdgeInsets.all(16.w),
+                                  children: [
+                                    _buildErrorDialog(
+                                        context,
+                                        (state as ReceivePriceOffersError)
+                                            .message,
+                                        localizations),
+                                  ],
+                                );
+                              }
+
+                              // 3) Empty
+                              if (priceOffers.isEmpty &&
+                                  !isLoadingPriceOffers) {
+                                return ListView(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  padding: EdgeInsets.all(16.w),
+                                  children: [
+                                    _buildNoOffersDialog(
+                                        context, localizations),
+                                  ],
+                                );
+                              }
+
+                              // 4) Success + بيانات
+                              return ListView.builder(
+                                controller: _scrollController,
+                                // ✅ لازم علشان onScroll تشتغل
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount:
+                                    priceOffers.length + (_hasMore ? 1 : 0),
+                                // ✅
+                                itemBuilder: (context, index) {
+                                  if (index == priceOffers.length) {
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 16.h),
+                                      child: Center(
+                                        child: SpinKitDoubleBounce(
+                                            color: Color(0xFF2196F3)),
+                                      ),
+                                    );
+                                  }
+
+                                  final offerRequest = priceOffers[index];
+                                  return _buildPriceOfferRequestCard(
+                                    context,
+                                    offerRequest,
+                                    localizations.isArabic(),
+                                    localizations,
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
+                    if (isLoadingPriceOffers)
+                      Positioned.fill(
+                        child: Container(
+                          color: Colors.white.withOpacity(0.8),
+                          child: Center(
+                            child: SpinKitDoubleBounce(
+                              color: Color(0xFF2196F3),
+                              size: 40.sp,
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 );
               },
@@ -832,6 +900,12 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
         return 'أجهزة إنذار حريق';
       case 'MaintenanceContract':
         return 'عقد صيانة';
+      case 'EngineeringInspection':
+        if (SharedPref.preferences.getString(PrefKeys.languageCode) == 'ar') {
+          return 'فحص هندسي';
+        } else {
+          return 'Engineering Inspection';
+        }
       default:
         return requestType;
     }
