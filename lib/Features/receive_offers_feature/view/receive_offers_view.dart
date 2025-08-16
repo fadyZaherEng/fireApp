@@ -87,7 +87,45 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
     final localizations = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-      child: BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
+      child: BlocConsumer<ReceiveOffersCubit, ReceiveOffersState>(
+        listener: (context, state) {
+          final localizations = AppLocalizations.of(context);
+
+          if (state is CancelPriceOffersSuccess) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(localizations.translate('success')),
+                content: Text(state.message),
+                actions: [
+                  TextButton(
+                    child: Text(localizations.translate('ok')),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            );
+            // Reset the page and isHaveMore when switching tabs
+            context.read<ReceiveOffersCubit>().fetchPriceOffers(
+                  page: page,
+                  limit: limit,
+                );
+          } else if (state is CancelPriceOffersError) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(localizations.translate('error')),
+                content: Text(state.message),
+                actions: [
+                  TextButton(
+                    child: Text(localizations.translate('ok')),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
         builder: (context, state) => DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -210,6 +248,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                 //   _hasMore = state.offersPrices.length ==
                 //       limit; // أقل من pageSize يعني مفيش بيانات تانية
                 // }
+
                 return Stack(
                   children: [
                     TabBarView(
@@ -833,7 +872,11 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            offerRequest.status.trim().toUpperCase(),
+                            SharedPref.preferences
+                                        .getString(PrefKeys.languageCode) ==
+                                    'ar'
+                                ? getRequestStatus(offerRequest.status)
+                                : offerRequest.status.trim().toUpperCase(),
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
@@ -862,12 +905,14 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                   //button cancel request
                   ElevatedButton(
                     onPressed: () {
-                      // context
-                      //     .read<ReceiveOffersCubit>()
-                      //     .cancelPriceOffer(offerRequest.requestNumber);
+                      if (offerRequest.status == 'pending') {
+                        context.read<ReceiveOffersCubit>().cancelPriceOffer();
+                      }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor: offerRequest.status != 'pending'
+                          ? Colors.grey
+                          : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.r),
                       ),
@@ -876,7 +921,9 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                       localizations.translate('cancelRequest'),
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: Colors.red,
+                        color: offerRequest.status != 'pending'
+                            ? Colors.white
+                            : Colors.red,
                         fontFamily: 'Almarai',
                       ),
                     ),
@@ -920,5 +967,26 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
       }
     }
     return requestTypeDisplay;
+  }
+
+  // export enum RequestStatusEnum {
+  // Pending = 'pending',
+  // InProgress = "inProgress",
+  // Completed = 'completed',
+  // Cancelled = 'cancelled'
+  // }
+  String getRequestStatus(String status) {
+    switch (status) {
+      case 'pending':
+        return 'قيد الانتظار';
+      case 'inProgress':
+        return 'قيد التنفيذ';
+      case 'completed':
+        return 'مكتمل';
+      case 'cancelled':
+        return 'ملغي';
+      default:
+        return status;
+    }
   }
 }

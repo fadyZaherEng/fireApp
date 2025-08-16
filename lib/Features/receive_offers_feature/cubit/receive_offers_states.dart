@@ -18,6 +18,18 @@ class ReceiveOffersError extends ReceiveOffersState {
 
   ReceiveOffersError(this.message);
 }
+class CancelPriceOffersLoading extends ReceiveOffersState {}
+
+class CancelPriceOffersSuccess extends ReceiveOffersState {
+  final String message;
+
+  CancelPriceOffersSuccess(this.message);
+}
+class CancelPriceOffersError extends ReceiveOffersState {
+  final String message;
+
+  CancelPriceOffersError(this.message);
+}
 
 class ReceivePriceOffersLoading extends ReceiveOffersState {}
 

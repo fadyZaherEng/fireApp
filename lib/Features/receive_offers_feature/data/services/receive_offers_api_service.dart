@@ -91,6 +91,35 @@ class ReceiveOffersApiService {
       );
     }
   }
+  Future<String> cancelOffers() async {
+    try {
+      _logger.i('Fetching offers from API...');
+
+      final response = await _dio.patch('/api/consumer/consumer-request/cancel/689b97fe6939fc2ef100ee99');
+
+      if (response.statusCode == 200) {
+        _logger.i('Successfully fetched offers');
+        return response.data['message'];
+      } else {
+        _logger
+            .e('Failed to fetch offers. Status code: ${response.statusCode}');
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: 'Failed to fetch offers',
+        );
+      }
+    } on DioException catch (e) {
+      _logger.e('DioException while fetching offers: ${e.message}', error: e);
+      rethrow;
+    } catch (e) {
+      _logger.e('Unexpected error while fetching offers: $e', error: e);
+      throw DioException(
+        requestOptions: RequestOptions(path: '/api/consumer/offer'),
+        message: 'Unexpected error: $e',
+      );
+    }
+  }
 
   Future<OfferPricingResponse> getPriceOffers({
     int page = 1,

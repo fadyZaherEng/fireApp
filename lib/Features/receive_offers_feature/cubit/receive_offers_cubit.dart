@@ -43,6 +43,33 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       emit(ReceiveOffersError(errorMessage));
     }
   }
+  Future<void> cancelPriceOffer() async {
+    try {
+      emit(CancelPriceOffersLoading());
+      _logger.i('Fetching offers...');
+
+      final response = await _apiService.cancelOffers();
+
+
+      _logger.i('Successfully fetched ${_offers.length} offers');
+      emit(CancelPriceOffersSuccess(response));
+    } catch (e) {
+      _logger.e('Error fetching offers: $e');
+      String errorMessage = 'حدث خطأ أثناء جلب العروض';
+
+      if (e.toString().contains('SocketException') ||
+          e.toString().contains('TimeoutException')) {
+        errorMessage = 'تأكد من اتصالك بالإنترنت وحاول مرة أخرى';
+      } else if (e.toString().contains('401') ||
+          e.toString().contains('Unauthorized')) {
+        errorMessage = 'انتهت صلاحية جلستك، يرجى تسجيل الدخول مرة أخرى';
+      } else if (e.toString().contains('500')) {
+        errorMessage = 'خطأ في الخادم، يرجى المحاولة لاحقاً';
+      }
+
+      emit(CancelPriceOffersError(errorMessage));
+    }
+  }
   Future<void> fetchPriceOffers({
     int page = 1,
     int limit = 2,
