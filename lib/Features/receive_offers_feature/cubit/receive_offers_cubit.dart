@@ -9,10 +9,12 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
   final Logger _logger = Logger();
 
   List<OfferRequest> _offers = [];
+  List<OfferPricing> _priceOffers = [];
 
   ReceiveOffersCubit(this._apiService) : super(ReceiveOffersInitial());
 
   List<OfferRequest> get offers => _offers;
+  List<OfferPricing> get priceOffers => _priceOffers;
 
   Future<void> fetchOffers() async {
     try {
@@ -39,6 +41,39 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       }
 
       emit(ReceiveOffersError(errorMessage));
+    }
+  }
+  Future<void> fetchPriceOffers({
+    int page = 1,
+    int limit = 2,
+}) async {
+    try {
+      emit(ReceivePriceOffersLoading());
+      _logger.i('Fetching offers...');
+
+      final response = await _apiService.getPriceOffers(
+        page: page,
+        limit: limit,
+      );
+      _priceOffers = response.data;
+
+      _logger.i('Successfully fetched ${_offers.length} offers');
+      emit(ReceivePriceOffersSuccess(_priceOffers));
+    } catch (e) {
+      _logger.e('Error fetching offers: $e');
+      String errorMessage = 'حدث خطأ أثناء جلب العروض';
+
+      if (e.toString().contains('SocketException') ||
+          e.toString().contains('TimeoutException')) {
+        errorMessage = 'تأكد من اتصالك بالإنترنت وحاول مرة أخرى';
+      } else if (e.toString().contains('401') ||
+          e.toString().contains('Unauthorized')) {
+        errorMessage = 'انتهت صلاحية جلستك، يرجى تسجيل الدخول مرة أخرى';
+      } else if (e.toString().contains('500')) {
+        errorMessage = 'خطأ في الخادم، يرجى المحاولة لاحقاً';
+      }
+
+      emit(ReceivePriceOffersError(errorMessage));
     }
   }
 

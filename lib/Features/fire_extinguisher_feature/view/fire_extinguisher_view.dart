@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
 import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import '../../../../constants/app_constants.dart';
@@ -114,18 +112,6 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
         setState(() {
           _providers = response.data!;
         });
-      } else {
-        // if (mounted) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(
-        //       content: Text(
-        //         response.message,
-        //         style: const TextStyle(fontFamily: 'Almarai'),
-        //       ),
-        //       backgroundColor: Colors.red,
-        //     ),
-        //   );
-        // }
       }
     } catch (e) {
       if (mounted) {
@@ -173,46 +159,10 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
                     : item.itemDetails.itemName.ar.toString(),
                 count: item.quantity))
             .toList();
-        // for (final item in branchDetails.items) {
-        //   final itemType = item.itemDetails.type;
-        //   final itemName = item.itemDetails.itemName;
-        //   final quantity = item.quantity;
-        //
-        //   // Categorize items based on type and subcategory
-        //   if (itemType == 'alarm-item') {
-        //     // Map alarm items to alert devices
-        //     String deviceType = itemName;
-        //
-        //     // Use the actual itemName for display, but try to map to localized categories for grouping
-        //     deviceType = itemName; // Use the actual item name for display
-        //
-        //     alertDevices.add(AlertDevice(type: deviceType, count: quantity));
-        //   } else if (itemType == 'fire-item') {
-        //     // Map fire items to fire extinguishers
-        //     String extinguisherType =
-        //         itemName; // Use the actual item name for display
-        //
-        //     fireExtinguishers
-        //         .add(FireExtinguisher(type: extinguisherType, count: quantity));
-        //   }
-        // }
-
         setState(() {
           _alertDevices = alertDevices;
           _fireExtinguishers = fireExtinguishers;
         });
-      } else {
-        // if (mounted) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(
-        //       content: Text(
-        //         response.message,
-        //         style: const TextStyle(fontFamily: 'Almarai'),
-        //       ),
-        //       backgroundColor: Colors.red,
-        //     ),
-        //   );
-        // }
       }
     } catch (e) {
       if (mounted) {
@@ -476,15 +426,38 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
           );
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              localizations.translate('fillAllFields'),
-              style: const TextStyle(fontFamily: 'Almarai'),
+        debugPrint('Area: $area, hasDevices: $hasDevices');
+        if (area <= 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                localizations.translate('areaRequired'),
+                style: const TextStyle(fontFamily: 'Almarai'),
+              ),
+              backgroundColor: Colors.red,
             ),
-            backgroundColor: Colors.red,
-          ),
-        );
+          );
+        } else if (!hasDevices) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                localizations.translate('devicesRequired'),
+                style: const TextStyle(fontFamily: 'Almarai'),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                localizations.translate('fillAllFields'),
+                style: const TextStyle(fontFamily: 'Almarai'),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       }
     }
   }

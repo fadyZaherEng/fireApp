@@ -491,5 +491,8 @@
   "addOtherTerms": "اضافة بند اخرى",
   "otherTerms": "بند اخرى",
   "TermsAndConditions": "الشروط والاحكام",
-  "enterTerms": "ادخل البند"
+  "enterTerms": "ادخل البند",
+  "devicesRequired": "الأجهزة  مطلوبة",
+  "pricingRequests": "طلبات التسعير",
+  "cancelRequest": "إلغاء الطلب"
 }

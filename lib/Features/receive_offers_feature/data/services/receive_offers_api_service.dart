@@ -92,6 +92,40 @@ class ReceiveOffersApiService {
     }
   }
 
+  Future<OfferPricingResponse> getPriceOffers({
+    int page = 1,
+    int limit = 2,
+  }) async {
+    try {
+      _logger.i('Fetching offers from API...');
+
+      final response = await _dio
+          .get('/api/consumer/consumer-request/all?page=$page&limit=$limit');
+
+      if (response.statusCode == 200) {
+        _logger.i('Successfully fetched offers');
+        return OfferPricingResponse.fromJson(response.data);
+      } else {
+        _logger
+            .e('Failed to fetch offers. Status code: ${response.statusCode}');
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: 'Failed to fetch offers',
+        );
+      }
+    } on DioException catch (e) {
+      _logger.e('DioException while fetching offers: ${e.message}', error: e);
+      rethrow;
+    } catch (e) {
+      _logger.e('Unexpected error while fetching offers: $e', error: e);
+      throw DioException(
+        requestOptions: RequestOptions(path: '/api/consumer/offer'),
+        message: 'Unexpected error: $e',
+      );
+    }
+  }
+
   Future<AcceptOfferResponse> acceptOffer(String offerId) async {
     try {
       _logger.i('Accepting offer: $offerId');

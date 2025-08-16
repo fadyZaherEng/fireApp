@@ -19,6 +19,20 @@ class ReceiveOffersError extends ReceiveOffersState {
   ReceiveOffersError(this.message);
 }
 
+class ReceivePriceOffersLoading extends ReceiveOffersState {}
+
+class ReceivePriceOffersSuccess extends ReceiveOffersState {
+  final List<OfferPricing> offersPrices;
+
+  ReceivePriceOffersSuccess(this.offersPrices);
+}
+
+class ReceivePriceOffersError extends ReceiveOffersState {
+  final String message;
+
+  ReceivePriceOffersError(this.message);
+}
+
 class OfferActionLoading extends ReceiveOffersState {
   final String offerId;
 

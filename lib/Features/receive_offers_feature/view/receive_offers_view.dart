@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:safetyZone/Features/contract/contract_screen.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
+import 'package:safetyZone/core/utils/constants/colors.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../cubit/receive_offers_cubit.dart';
 import '../cubit/receive_offers_states.dart';
 import '../data/models/offer_models.dart';
 import '../data/services/receive_offers_api_service.dart';
-import '../../payment_feature/view/payment_view.dart';
 
 class ReceiveOffersView extends StatelessWidget {
   const ReceiveOffersView({super.key});
@@ -28,169 +25,309 @@ class ReceiveOffersView extends StatelessWidget {
   }
 }
 
-class ReceiveOffersContent extends StatelessWidget {
+class ReceiveOffersContent extends StatefulWidget {
   const ReceiveOffersContent({super.key});
+
+  @override
+  State<ReceiveOffersContent> createState() => _ReceiveOffersContentState();
+}
+
+class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
+  List<OfferRequest> offerRequests = [];
+  int page = 1;
+  int limit = 2;
+  bool isHaveMore = true; // لتحديد ما إذا كان هناك المزيد من البيانات لتحميلها
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // إضافة مستمع للتمرير لتحميل المزيد من البيانات عند الوصول إلى نهاية القائمة
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (isHaveMore) {
+          context.read<ReceiveOffersCubit>().fetchPriceOffers(
+                page: page,
+                limit: limit,
+              );
+          page++;
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          localizations.translate('receiveOffers'),
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF2196F3),
-            fontFamily: 'Almarai',
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: BlocConsumer<ReceiveOffersCubit, ReceiveOffersState>(
-        listener: (context, state) {
-          if (state is OfferActionSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.green,
-              ),
-            );
-            context.read<ReceiveOffersCubit>().clearActionState();
-            context.read<ReceiveOffersCubit>().fetchOffers();
-          } else if (state is OfferActionError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-              ),
-            );
-            context.read<ReceiveOffersCubit>().clearActionState();
-          } else if (state is OfferAcceptedNavigateToPayment) {
-            // Navigate to payment page
-            Navigator.of(context)
-                .push(
-              MaterialPageRoute(
-                builder: (context) => PaymentView(
-                  invoice: state.invoice,
-                  emergencyVisitPrice: state.emergencyVisitPrice,
-                  visitPrice: state.visitPrice,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      child: BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
+        builder: (context, state) => DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            backgroundColor: const Color(0xFFF5F5F5),
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              title: Text(
+                localizations.translate('receiveOffers'),
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF2196F3),
+                  fontFamily: 'Almarai',
                 ),
               ),
-            )
-                .then((_) {
-              // Refresh offers when coming back from payment
-              context.read<ReceiveOffersCubit>().fetchOffers();
-            });
-          }
-        },
-        builder: (context, state) {
-          final localizations = AppLocalizations.of(context);
-
-          if (state is ReceiveOffersLoading) {
-            return const Center(
-              child: SpinKitDoubleBounce(
-                color: Color(0xFF2196F3),
-              ),
-            );
-          } else if (state is ReceiveOffersError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 80.sp,
-                    color: const Color(0xFFE53935),
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    state.message,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: const Color(0xFF666666),
-                      fontFamily: 'Almarai',
+              centerTitle: true,
+              bottom: TabBar(
+                onTap: (int index) {
+                  if (index == 0) {
+                    context.read<ReceiveOffersCubit>().fetchOffers();
+                  } else if (index == 1) {
+                    // Reset the page and isHaveMore when switching tabs
+                    page = 1;
+                    isHaveMore = true;
+                    context.read<ReceiveOffersCubit>().fetchPriceOffers(
+                          page: page,
+                          limit: limit,
+                        );
+                  }
+                },
+                dividerColor: Colors.transparent,
+                labelColor: Colors.white,
+                unselectedLabelColor: const Color(0xFF4A4A4A),
+                indicator: BoxDecoration(
+                  color: const Color(0xFF2196F3),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelStyle: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Almarai',
+                ),
+                tabs: [
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(localizations.translate('receiveOffers')),
+                        SizedBox(width: 6.w),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2196F3),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Text(
+                            context
+                                .read<ReceiveOffersCubit>()
+                                .offers
+                                .length
+                                .toString(), // عداد الطلبات
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 12.sp),
+                          ),
+                        )
+                      ],
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<ReceiveOffersCubit>().fetchOffers();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2196F3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      localizations.translate('retryAttempt'),
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.white,
-                        fontFamily: 'Almarai',
-                      ),
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(localizations.translate('pricingRequests')),
+                        SizedBox(width: 6.w),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2196F3),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Text(
+                            context
+                                .read<ReceiveOffersCubit>()
+                                .priceOffers
+                                .length
+                                .toString(), // عداد الاستلام
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 12.sp),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],
               ),
-            );
-          } else if (state is ReceiveOffersSuccess) {
-            final offers = context.read<ReceiveOffersCubit>().offers;
+            ),
+            body: BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
+              builder: (context, state) {
+                final localizations = AppLocalizations.of(context);
+                final isLoading = state is ReceiveOffersLoading;
+                final isError = state is ReceiveOffersError;
+                final offers = context
+                    .watch<ReceiveOffersCubit>()
+                    .offers; // القائمة الحالية
+                final priceOffers = context
+                    .watch<ReceiveOffersCubit>()
+                    .priceOffers; // قائمة الأسعار
+                final isLoadingPriceOffers = state
+                    is ReceivePriceOffersLoading; // حالة التحميل لطلبات الأسعار
+                final isErrorPriceOffers = state
+                    is ReceivePriceOffersError; // حالة الخطأ لطلبات الأسعار
 
-            if (offers.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                return TabBarView(
                   children: [
-                    Icon(
-                      Icons.inbox,
-                      size: 80.sp,
-                      color: const Color(0xFF4CAF50),
+                    // تبويب "استلام العروض"
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        await context.read<ReceiveOffersCubit>().fetchOffers();
+                      },
+                      child: Builder(
+                        builder: (_) {
+                          // 1) Loading => ListView قابلة للسحب
+                          if (isLoading) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              children: const [
+                                SizedBox(height: 200),
+                                Center(
+                                    child: SpinKitDoubleBounce(
+                                        color: Color(0xFF2196F3))),
+                                SizedBox(height: 600),
+                                // يضمن سحب للأسفل على أي حال
+                              ],
+                            );
+                          }
+
+                          // 2) Error => برضه داخل ListView قابلة للسحب
+                          if (isError) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: EdgeInsets.all(16.w),
+                              children: [
+                                _buildErrorDialog(
+                                    context,
+                                    (state as ReceiveOffersError).message,
+                                    localizations),
+                              ],
+                            );
+                          }
+
+                          // 3) Empty
+                          if (offers.isEmpty) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: EdgeInsets.all(16.w),
+                              children: [
+                                _buildNoOffersDialog(context, localizations),
+                              ],
+                            );
+                          }
+
+                          // 4) Success + بيانات
+                          return ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: offers.length,
+                            itemBuilder: (context, index) {
+                              final offerRequest = offers[index];
+                              return _buildOfferRequestCard(
+                                  context, offerRequest);
+                            },
+                          );
+                        },
+                      ),
                     ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      localizations.translate('noOffersAvailable'),
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF666666),
-                        fontFamily: 'Almarai',
+
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        await context
+                            .read<ReceiveOffersCubit>()
+                            .fetchPriceOffers(
+                              page: page,
+                              limit: limit,
+                            );
+                      },
+                      child: Builder(
+                        builder: (_) {
+                          // 1) Loading => ListView قابلة للسحب
+                          if (isLoadingPriceOffers) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              children: const [
+                                SizedBox(height: 200),
+                                Center(
+                                    child: SpinKitDoubleBounce(
+                                        color: Color(0xFF2196F3))),
+                                SizedBox(height: 600),
+                                // يضمن سحب للأسفل على أي حال
+                              ],
+                            );
+                          }
+
+                          // 2) Error => برضه داخل ListView قابلة للسحب
+                          if (isErrorPriceOffers) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: EdgeInsets.all(16.w),
+                              children: [
+                                _buildErrorDialog(
+                                    context,
+                                    (state as ReceivePriceOffersError).message,
+                                    localizations),
+                              ],
+                            );
+                          }
+
+                          // 3) Empty
+                          if (priceOffers.isEmpty) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: EdgeInsets.all(16.w),
+                              children: [
+                                _buildNoOffersDialog(context, localizations),
+                              ],
+                            );
+                          }
+
+                          // 4) Success + بيانات
+                          return ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: priceOffers.length,
+                            itemBuilder: (context, index) {
+                              if (index == priceOffers.length && isHaveMore) {
+                                // إذا كان هذا هو آخر عنصر في القائمة، نعرض مؤشر التحميل
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                                  child: Center(
+                                    child: SpinKitDoubleBounce(
+                                      color: const Color(0xFF2196F3),
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              final offerRequest = priceOffers[index];
+                              return _buildPriceOfferRequestCard(
+                                context,
+                                offerRequest,
+                                localizations.isArabic(),
+                                localizations,
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ],
-                ),
-              );
-            }
-
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<ReceiveOffersCubit>().fetchOffers();
+                );
               },
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: ListView.builder(
-                  itemCount: offers.length,
-                  itemBuilder: (context, index) {
-                    final offerRequest = offers[index];
-                    return _buildOfferRequestCard(context, offerRequest);
-                  },
-                ),
-              ),
-            );
-          }
-
-          return const Center(
-            child: SpinKitDoubleBounce(
-              color: Color(0xFF2196F3),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -204,294 +341,286 @@ class ReceiveOffersContent extends StatelessWidget {
       children: [
         // Request details card
         Container(
-          padding: EdgeInsets.all(16.w),
+          margin: EdgeInsets.symmetric(vertical: 8.h),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+            borderRadius: BorderRadius.circular(16.r),
           ),
-          child: Column(
-            children: [
-              _buildDetailRow(localizations.translate('facilityNameLabel'),
-                  offerRequest.branch.employee.fullName, isArabic),
-              SizedBox(height: 8.h),
-              _buildDetailRow(localizations.translate('branchNameLabel'),
-                  offerRequest.branch.branchName, isArabic),
-              SizedBox(height: 8.h),
-              _buildDetailRow(localizations.translate('requestTypeLabel'),
-                  offerRequest.requestTypeDisplay, isArabic),
-              SizedBox(height: 8.h),
-              _buildDetailRow(localizations.translate('requestNumberLabel'),
-                  offerRequest.requestNumber, isArabic),
-            ],
-          ),
-        ),
-        SizedBox(height: 16.h),
+          child: ExpansionTile(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.r)),
 
-        // Offers for this request
-        ...offerRequest.offers.map((offer) => Container(
-              margin: EdgeInsets.only(bottom: 12.h),
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  // Company name and rating row
-                  Row(
-                    textDirection:
-                        isArabic ? TextDirection.rtl : TextDirection.ltr,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          offer.provider.companyName,
-                          textAlign:
-                              isArabic ? TextAlign.right : TextAlign.left,
-                          textDirection:
-                              isArabic ? TextDirection.rtl : TextDirection.ltr,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF333333),
-                            fontFamily: 'Almarai',
+            iconColor: const Color(0xFF4CAF50),
+            collapsedIconColor: Colors.grey,
+            // tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            childrenPadding:
+                EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildDetailRow(localizations.translate('facilityNameLabel'),
+                    offerRequest.branch.employee.fullName, isArabic),
+                SizedBox(height: 6.h),
+                _buildDetailRow(localizations.translate('branchNameLabel'),
+                    offerRequest.branch.branchName, isArabic),
+                SizedBox(height: 6.h),
+                _buildDetailRow(localizations.translate('requestTypeLabel'),
+                    offerRequest.requestTypeDisplay, isArabic),
+                SizedBox(height: 6.h),
+                _buildDetailRow(localizations.translate('requestNumberLabel'),
+                    offerRequest.requestNumber, isArabic),
+              ],
+            ),
+            children: offerRequest.offers.map((offer) {
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 6.h),
+                padding: EdgeInsets.all(6.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Column(
+                  children: [
+                    // Company name and rating row
+                    Row(
+                      textDirection:
+                          isArabic ? TextDirection.rtl : TextDirection.ltr,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            offer.provider.companyName,
+                            textAlign:
+                                isArabic ? TextAlign.right : TextAlign.left,
+                            textDirection: isArabic
+                                ? TextDirection.rtl
+                                : TextDirection.ltr,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF333333),
+                              fontFamily: 'Almarai',
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8.w, vertical: 4.h),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF5F5F5),
-                          borderRadius: BorderRadius.circular(12.r),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F5F5),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            textDirection: isArabic
+                                ? TextDirection.rtl
+                                : TextDirection.ltr,
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: const Color(0xFFFFA726),
+                                size: 14.sp,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                '4.9',
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF333333),
+                                  fontFamily: 'Almarai',
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
+                      ],
+                    ),
+
+                    SizedBox(height: 16.h),
+
+                    // Info items row
+                    Row(
+                      textDirection:
+                          isArabic ? TextDirection.rtl : TextDirection.ltr,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _buildInfoItem(Icons.schedule, offer.timeAgo, isArabic),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ContractScreen(),
+                              ),
+                            );
+                          },
+                          child: _buildInfoItem(Icons.print,
+                              localizations.translate('print'), isArabic),
+                        ),
+                        Row(
                           textDirection:
                               isArabic ? TextDirection.rtl : TextDirection.ltr,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
-                              Icons.star,
-                              color: const Color(0xFFFFA726),
-                              size: 14.sp,
+                            SvgPicture.asset(
+                              'assets/icons/money.svg',
+                              width: 16.w,
+                              height: 16.h,
                             ),
                             SizedBox(width: 4.w),
                             Text(
-                              '4.9',
+                              '${offer.price}',
                               style: TextStyle(
                                 fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF333333),
                                 fontFamily: 'Almarai',
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                    SizedBox(height: 16.h),
+                    BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
+                      builder: (context, state) {
+                        final isLoading = state is OfferActionLoading &&
+                            state.offerId == offer.id;
 
-                  SizedBox(height: 16.h),
-
-                  // Info items row
-                  Row(
-                    textDirection:
-                        isArabic ? TextDirection.rtl : TextDirection.ltr,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _buildInfoItem(Icons.schedule, offer.timeAgo, isArabic),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ContractScreen(),
-                            ),
-                          );
-                        },
-                        child: _buildInfoItem(Icons.print,
-                            localizations.translate('print'), isArabic),
-                      ),
-                      Row(
-                        textDirection:
-                            isArabic ? TextDirection.rtl : TextDirection.ltr,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/money.svg',
-                            width: 16.w,
-                            height: 16.h,
-                          ),
-                          SizedBox(width: 4.w),
-                          Text(
-                            '${offer.price}',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontFamily: 'Almarai',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
-                    builder: (context, state) {
-                      final isLoading = state is OfferActionLoading &&
-                          state.offerId == offer.id;
-
-                      return Row(
-                        textDirection:
-                            isArabic ? TextDirection.rtl : TextDirection.ltr,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 40.h,
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xFFE53935)),
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              child: TextButton(
-                                onPressed: isLoading
-                                    ? null
-                                    : () {
-                                        context
-                                            .read<ReceiveOffersCubit>()
-                                            .rejectOffer(offer.id);
-                                      },
-                                child: isLoading
-                                    ? SizedBox(
-                                        width: 16.w,
-                                        height: 16.h,
-                                        child: const SpinKitDoubleBounce(
-                                          color: Color(0xFFE53935),
-                                        ),
-                                      )
-                                    : Text(
-                                        localizations.translate('reject'),
-                                        textAlign: TextAlign.center,
-                                        textDirection: isArabic
-                                            ? TextDirection.rtl
-                                            : TextDirection.ltr,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: const Color(0xFFE53935),
-                                          fontFamily: 'Almarai',
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          Expanded(
-                            child: Container(
-                              height: 40.h,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF4CAF50),
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              child: TextButton(
-                                onPressed: isLoading
-                                    ? null
-                                    : () {
-                                        if (offerRequest.offers.isNotEmpty &&
-                                            offerRequest
-                                                .offers.first.is_Primary) {
-                                          ///Navigate to success
-                                          Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SuccessScreen()))
-                                              .then((value) {
-                                            context
-                                                .read<ReceiveOffersCubit>()
-                                                .acceptOffer(offer.id, false);
-                                          });
-                                        } else {
+                        return Row(
+                          textDirection:
+                              isArabic ? TextDirection.rtl : TextDirection.ltr,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 40.h,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xFFE53935)),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: TextButton(
+                                  onPressed: isLoading
+                                      ? null
+                                      : () {
                                           context
                                               .read<ReceiveOffersCubit>()
-                                              .acceptOffer(offer.id, true);
-                                        }
-                                      },
-                                child: isLoading
-                                    ? SizedBox(
-                                        width: 16.w,
-                                        height: 16.h,
-                                        child: const SpinKitDoubleBounce(
-                                            color: Colors.white),
-                                      )
-                                    : Text(
-                                        localizations.translate('accept'),
-                                        textAlign: TextAlign.center,
-                                        textDirection: isArabic
-                                            ? TextDirection.rtl
-                                            : TextDirection.ltr,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: Colors.white,
-                                          fontFamily: 'Almarai',
-                                          fontWeight: FontWeight.w600,
+                                              .rejectOffer(offer.id);
+                                        },
+                                  child: isLoading
+                                      ? SizedBox(
+                                          width: 16.w,
+                                          height: 16.h,
+                                          child: const SpinKitDoubleBounce(
+                                            color: Color(0xFFE53935),
+                                          ),
+                                        )
+                                      : Text(
+                                          localizations.translate('reject'),
+                                          textAlign: TextAlign.center,
+                                          textDirection: isArabic
+                                              ? TextDirection.rtl
+                                              : TextDirection.ltr,
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: const Color(0xFFE53935),
+                                            fontFamily: 'Almarai',
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                      ),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ],
-              ),
-            )),
-        SizedBox(height: 24.h),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Container(
+                                height: 40.h,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF4CAF50),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: TextButton(
+                                  onPressed: isLoading
+                                      ? null
+                                      : () {
+                                          if (offerRequest.offers.isNotEmpty &&
+                                              offerRequest
+                                                  .offers.first.is_Primary) {
+                                            ///Navigate to success
+                                            Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SuccessScreen()))
+                                                .then((value) {
+                                              context
+                                                  .read<ReceiveOffersCubit>()
+                                                  .acceptOffer(offer.id, false);
+                                            });
+                                          } else {
+                                            context
+                                                .read<ReceiveOffersCubit>()
+                                                .acceptOffer(offer.id, true);
+                                          }
+                                        },
+                                  child: isLoading
+                                      ? SizedBox(
+                                          width: 16.w,
+                                          height: 16.h,
+                                          child: const SpinKitDoubleBounce(
+                                              color: Colors.white),
+                                        )
+                                      : Text(
+                                          localizations.translate('accept'),
+                                          textAlign: TextAlign.center,
+                                          textDirection: isArabic
+                                              ? TextDirection.rtl
+                                              : TextDirection.ltr,
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: Colors.white,
+                                            fontFamily: 'Almarai',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+        SizedBox(height: 8.h),
       ],
     );
   }
 
   Widget _buildDetailRow(String label, String value, bool isArabic) {
     return Row(
-      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           label,
-          textAlign: isArabic ? TextAlign.right : TextAlign.left,
-          textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
           style: TextStyle(
             fontSize: 14.sp,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF333333),
+            fontWeight: FontWeight.w500,
+            color: CColors.secondary,
             fontFamily: 'Almarai',
           ),
         ),
         SizedBox(width: 8.w),
-        Expanded(
-          child: Text(
-            value,
-            textAlign: isArabic ? TextAlign.left : TextAlign.right,
-            textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.normal,
-              color: const Color(0xFF666666),
-              fontFamily: 'Almarai',
-            ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF666666),
+            fontFamily: 'Almarai',
           ),
         ),
       ],
@@ -523,6 +652,183 @@ class ReceiveOffersContent extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  _buildErrorDialog(
+      BuildContext context, String message, AppLocalizations localizations) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 80.sp,
+            color: const Color(0xFFE53935),
+          ),
+          SizedBox(height: 16.h),
+          Text(
+            message,
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: const Color(0xFF666666),
+              fontFamily: 'Almarai',
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 16.h),
+          ElevatedButton(
+            onPressed: () {
+              context.read<ReceiveOffersCubit>().fetchOffers();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF2196F3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            child: Text(
+              localizations.translate('retryAttempt'),
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.white,
+                fontFamily: 'Almarai',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNoOffersDialog(
+      BuildContext context, AppLocalizations localizations) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.inbox,
+            size: 80.sp,
+            color: const Color(0xFF4CAF50),
+          ),
+          SizedBox(height: 16.h),
+          Text(
+            localizations.translate('noOffersAvailable'),
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF666666),
+              fontFamily: 'Almarai',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPriceOfferRequestCard(
+      BuildContext context,
+      OfferPricing offerRequest,
+      bool isArabic,
+      AppLocalizations localizations) {
+    return Column(
+      children: [
+        // Request details card
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 8.h),
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildDetailRow(localizations.translate('facilityNameLabel'),
+                      offerRequest.companyName, isArabic),
+                  SizedBox(width: 8.w),
+                  Container(
+                    decoration: BoxDecoration(
+                      //yellow
+                      color: const Color(0xFFFBC02D),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/hour.svg',
+                            width: 16.w,
+                            height: 16.h,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            offerRequest.status.trim().toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontFamily: 'Almarai',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 6.h),
+              _buildDetailRow(localizations.translate('branchNameLabel'),
+                  offerRequest.branchName, isArabic),
+              SizedBox(height: 6.h),
+              _buildDetailRow(localizations.translate('requestTypeLabel'),
+                  offerRequest.requestType, isArabic),
+              SizedBox(height: 6.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildDetailRow(localizations.translate('requestNumberLabel'),
+                      offerRequest.requestNumber, isArabic),
+                  SizedBox(width: 8.w),
+                  Spacer(),
+                  //button cancel request
+                  ElevatedButton(
+                    onPressed: () {
+                      // context
+                      //     .read<ReceiveOffersCubit>()
+                      //     .cancelPriceOffer(offerRequest.requestNumber);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: Text(
+                      localizations.translate('cancelRequest'),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.red,
+                        fontFamily: 'Almarai',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 8.h),
+      ],
     );
   }
 }

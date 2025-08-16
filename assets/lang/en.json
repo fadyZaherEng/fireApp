@@ -486,5 +486,8 @@
   "otherTerms": "Other Terms",
   "TermsAndConditions": "Terms and Conditions",
   "enterTerms": "Enter Terms and Conditions",
-  "nameAuthorizedToSign": "Name Authorized to Sign"
- }
+  "nameAuthorizedToSign": "Name Authorized to Sign",
+  "devicesRequired": "Devices Required",
+  "pricingRequests": "Pricing Requests",
+  "cancelRequest": "Cancel Request"
+}

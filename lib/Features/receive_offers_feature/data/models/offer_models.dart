@@ -36,7 +36,7 @@ class OfferRequest {
     required this.status,
     required this.createdAt,
     required this.offers,
-    });
+  });
 
   factory OfferRequest.fromJson(Map<String, dynamic> json) {
     return OfferRequest(
@@ -50,7 +50,6 @@ class OfferRequest {
       offers: (json['offers'] as List<dynamic>)
           .map((item) => Offer.fromJson(item as Map<String, dynamic>))
           .toList(),
-
     );
   }
 
@@ -177,7 +176,6 @@ class Offer {
   final int createdAt;
   final bool is_Primary;
 
-
   Offer({
     required this.id,
     required this.provider,
@@ -233,6 +231,53 @@ class Provider {
       companyName: json['companyName'] as String,
       image: json['image'] as String,
       phoneNumber: json['phoneNumber'] as String,
+    );
+  }
+}
+
+//offer pricing model
+
+class OfferPricingResponse {
+  final int total;
+  final List<OfferPricing> data;
+
+  OfferPricingResponse({
+    required this.total,
+    required this.data,
+  });
+
+  factory OfferPricingResponse.fromJson(Map<String, dynamic> json) {
+    return OfferPricingResponse(
+      total: json['total'] as int,
+      data: (json['data'] as List<dynamic>)
+          .map((item) => OfferPricing.fromJson(item as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
+
+class OfferPricing {
+  final String branchName;
+  final String companyName;
+  final String requestNumber;
+  final String requestType;
+  final String status;
+
+  OfferPricing({
+    required this.branchName,
+    required this.companyName,
+    required this.requestNumber,
+    required this.requestType,
+    required this.status,
+  });
+
+  factory OfferPricing.fromJson(Map<String, dynamic> json) {
+    return OfferPricing(
+      branchName: json['branchName'] as String,
+      companyName: json['companyName'] as String,
+      requestNumber: json['requestNumber'] as String,
+      requestType: json['requestType'] as String,
+      status: json['status'] as String,
     );
   }
 }
