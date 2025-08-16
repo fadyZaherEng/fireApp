@@ -899,7 +899,15 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                   Container(
                     decoration: BoxDecoration(
                       //yellow
-                      color: const Color(0xFFFBC02D),
+                      color: offerRequest.status == 'pending'
+                          ? const Color(0xFFFBC02D)
+                          : offerRequest.status == 'completed'
+                              ? const Color(0xFF4CAF50)
+                              : offerRequest.status == 'cancel'
+                                  ? const Color(0xFFE53935)
+                                  : offerRequest.status == "inProgress"
+                                      ? const Color(0xFF2196F3)
+                                      : const Color(0xFFE53935),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     padding:
