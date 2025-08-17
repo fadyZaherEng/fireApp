@@ -45,19 +45,19 @@ dependencies:
   flutter_spinkit: ^5.2.0
   table_calendar: ^3.0.9
   gal: ^2.3.2
-  file_picker: ^6.1.1
-  video_player: ^2.8.2
-  chewie: ^1.7.5
-  audio_session: ^0.1.18
-  just_audio: ^0.9.37
-  record: ^5.0.3
+  file_picker:
+  video_player:
+  chewie:
+  audio_session:
+  just_audio:
+  record:
   mime: ^1.0.4
   cached_network_image: ^3.3.1
   pdf: ^3.10.4
   printing: ^5.11.0
   open_file: ^3.3.1
-  flutter_chat_ui: ^1.6.2
-  flutter_chat_types: ^3.6.1
+  flutter_chat_ui:
+  flutter_chat_types:
   uuid: ^4.2.2
   share_plus: ^7.2.1
   path: ^1.8.3
