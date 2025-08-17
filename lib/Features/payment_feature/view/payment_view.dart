@@ -127,112 +127,36 @@ class PaymentContent extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 24.h),
-                if (isMaintance)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildPriceButton(
-                          '${visitPrice}',
-                          null,
-                          isRed: true,
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: _buildPriceButton(
-                          AppLocalizations.of(context).translate('visitPrice'),
-                          Icons.percent,
-                          isRed: false,
-                        ),
-                      ),
-                    ],
+                if (isMaintance) ...[
+                  _buildLabelValueRow(
+                    AppLocalizations.of(context).translate('visitPrice'),
+                    '$visitPrice ${invoice.currency}',
                   ),
-                if (isMaintance) SizedBox(height: 12.h),
-                if (isMaintance)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildPriceButton(
-                          '${emergencyVisitPrice}',
-                          null,
-                          isRed: true,
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: _buildPriceButton(
-                          AppLocalizations.of(context)
-                              .translate('emergencyPrice'),
-                          Icons.percent,
-                          isRed: false,
-                        ),
-                      ),
-                    ],
+                  SizedBox(height: 12.h),
+                  _buildLabelValueRow(
+                    AppLocalizations.of(context).translate('emergencyPrice'),
+                    '$emergencyVisitPrice ${invoice.currency}',
                   ),
-                if (isMaintance) SizedBox(height: 12.h), // Price section
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildPriceButton(
-                        '${invoice.price.toInt()} ${invoice.currency}',
-                        null,
-                        isRed: true,
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _buildPriceButton(
-                        AppLocalizations.of(context).translate('contractPrice'),
-                        Icons.description,
-                        isRed: false,
-                      ),
-                    ),
-                  ],
-                ),
+                  SizedBox(height: 12.h),
+                ],
 
+                _buildLabelValueRow(
+                  AppLocalizations.of(context).translate('contractPrice'),
+                  '${invoice.price.toInt()} ${invoice.currency}',
+                ),
                 SizedBox(height: 12.h),
 
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildPriceButton(
-                        '${invoice.fees.toInt()}  ${invoice.currency}',
-                        null,
-                        isRed: true,
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _buildPriceButton(
-                        AppLocalizations.of(context).translate('commission'),
-                        Icons.percent,
-                        isRed: false,
-                      ),
-                    ),
-                  ],
+                _buildLabelValueRow(
+                  AppLocalizations.of(context).translate('commission'),
+                  '${invoice.fees.toInt()} ${invoice.currency}',
                 ),
-
                 SizedBox(height: 12.h),
 
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildPriceButton(
-                        '${invoice.fees.toInt() + invoice.price.toInt()}  ${invoice.currency}',
-                        null,
-                        isRed: true,
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _buildPriceButton(
-                        AppLocalizations.of(context).translate('totalPrice'),
-                        Icons.percent,
-                        isRed: false,
-                      ),
-                    ),
-                  ],
+                _buildLabelValueRow(
+                  AppLocalizations.of(context).translate('totalPrice'),
+                  '${invoice.fees.toInt() + invoice.price.toInt()} ${invoice.currency}',
                 ),
+
                 SizedBox(height: 40.h),
 
                 // Payment methods section
@@ -305,41 +229,32 @@ class PaymentContent extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceButton(String text, IconData? icon, {required bool isRed}) {
-    return Container(
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25.r),
-        border: Border.all(
-          color: Color(isRed ? 0xFFE53935 : 0xFF2196F3),
-          width: 1.5,
-        ),
-      ),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                color: Color(isRed ? 0xFFE53935 : 0xFF2196F3),
-                size: 10.sp,
-              ),
-              SizedBox(width: 6.w),
-            ],
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w600,
-                color: Color(isRed ? 0xFFE53935 : 0xFF2196F3),
-                fontFamily: 'Almarai',
-              ),
+  Widget _buildLabelValueRow(String label, String value) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
             ),
-          ],
+          ),
         ),
-      ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.end,
+          ),
+        ),
+        SizedBox(width: 8.w),
+      ],
     );
   }
 
