@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:safetyZone/Features/chat_feature/view/chat_view.dart';
+import 'package:safetyZone/Features/chat_feature/cubit/chat_cubit.dart';
 import 'package:safetyZone/Features/contract/contract_screen.dart';
 import 'package:safetyZone/Features/payment_feature/view/payment_view.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
@@ -592,6 +594,24 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           },
                           child: _buildInfoItem(Icons.print,
                               localizations.translate('print'), isArabic),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (context) => ChatCubit(),
+                                  child: ChatView(
+                                    chatId: offer.id, // Using offer ID as chat ID
+                                    recipientName: offer.provider.companyName,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: _buildInfoItem(Icons.chat,
+                              localizations.translate('chat'), isArabic),
                         ),
                         Row(
                           textDirection:

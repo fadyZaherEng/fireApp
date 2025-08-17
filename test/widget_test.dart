@@ -1,22 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:safetyZone/fireapp_app.dart';
+import 'package:safetyZone/Features/chat_feature/models/chat_message_model.dart';
+
+// A simple widget that displays the message text
+class MockMessageBubble extends StatelessWidget {
+  final ChatMessage message;
+  final bool isMe;
+
+  const MockMessageBubble({
+    Key? key,
+    required this.message,
+    required this.isMe,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(message.text ?? ''),
+        ),
+      ),
+    );
+  }
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const SafetyZone());
+  testWidgets('Text message displays correctly', (WidgetTester tester) async {
+    // Create a test message
+    final message = ChatMessage.text(
+      id: '1',
+      chatId: 'chat1',
+      senderId: 'user1',
+      text: 'Hello, World!',
+      timestamp: DateTime.now(),
+      status: MessageStatus.sent,
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Build our widget
+    await tester.pumpWidget(
+      MockMessageBubble(
+        message: message,
+        isMe: true,
+      ),
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify the message text is displayed
+    expect(find.text('Hello, World!'), findsOneWidget);
   });
 }

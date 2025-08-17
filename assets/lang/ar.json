@@ -336,6 +336,8 @@
   "checkInternetConnection": "تأكد من اتصالك بالإنترنت وحاول مرة أخرى",
   "sessionExpired": "انتهت صلاحية جلستك، يرجى تسجيل الدخول مرة أخرى",
   "serverError": "خطأ في الخادم، يرجى المحاولة لاحقاً",
+  "chat_default_title": "محادثة",
+  "type_message": "اكتب رسالة...",
   "offerAcceptedSuccessfully": "تم قبول العرض بنجاح",
   "offerRejected": "تم رفض العرض",
   "facilityNameLabel": "اسم المنشآة :",
