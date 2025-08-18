@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.safety_zone_consumer"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
     
     // Enable multidex support

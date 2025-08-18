@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:record/record.dart';
+// import 'package:record/record.dart';
 import 'package:video_player/video_player.dart';
 
 import 'package:safetyZone/core/localization/app_localizations.dart';
@@ -31,7 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final ImagePicker _picker = ImagePicker();
-  final Record _audioRecorder = Record();
+  // final Record _audioRecorder = Record();
   bool _isRecording = false;
   Timer? _recordingTimer;
   int _recordingDuration = 0;
@@ -67,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollController.dispose();
     _stopRecording();
     _recordingTimer?.cancel();
-    _audioRecorder.dispose();
+    // _audioRecorder.dispose();
     super.dispose();
   }
 
@@ -213,33 +213,33 @@ class _ChatScreenState extends State<ChatScreen> {
 /* <<<<<<<<<<  dc3d4779-f883-4a9a-9a47-e811fbe4717c  >>>>>>>>>>> */
   Future<void> _startRecording() async {
     try {
-      if (await _audioRecorder.hasPermission()) {
-        final tempDir = await getTemporaryDirectory();
-        final path =
-            '${tempDir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a';
-
-        await _audioRecorder.start(
-          path: path,
-          encoder: AudioEncoder.aacLc, // or other encoder
-          bitRate: 128000, // 128 kbps
-          samplingRate: 44100, // 44.1 kHz
-        );
-
-        setState(() {
-          _isRecording = true;
-          _recordingDuration = 0;
-        });
-
-        _recordingTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-          if (mounted) {
-            setState(() {
-              _recordingDuration++;
-            });
-          }
-        });
-      } else {
-        _showPermissionDeniedDialog(context);
-      }
+      // if (await _audioRecorder.hasPermission()) {
+      //   final tempDir = await getTemporaryDirectory();
+      //   final path =
+      //       '${tempDir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a';
+      //
+      //   await _audioRecorder.start(
+      //     path: path,
+      //     encoder: AudioEncoder.aacLc, // or other encoder
+      //     bitRate: 128000, // 128 kbps
+      //     samplingRate: 44100, // 44.1 kHz
+      //   );
+      //
+      //   setState(() {
+      //     _isRecording = true;
+      //     _recordingDuration = 0;
+      //   });
+      //
+      //   _recordingTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      //     if (mounted) {
+      //       setState(() {
+      //         _recordingDuration++;
+      //       });
+      //     }
+      //   });
+      // } else {
+      //   _showPermissionDeniedDialog(context);
+      // }
     } catch (e) {
       debugPrint('Error starting recording: $e');
       if (mounted) {
@@ -252,21 +252,21 @@ class _ChatScreenState extends State<ChatScreen> {
     _recordingTimer?.cancel();
     if (_isRecording) {
       try {
-        final path = await _audioRecorder.stop();
-        if (path != null && mounted) {
-          setState(() {
-            _messages.add({
-              'id': DateTime.now().millisecondsSinceEpoch.toString(),
-              'type': 'audio',
-              'path': path,
-              'duration': _recordingDuration,
-              'isMe': true,
-              'time':
-                  '${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}',
-            });
-          });
-          _scrollToBottom();
-        }
+        // final path = await _audioRecorder.stop();
+        // if (path != null && mounted) {
+        //   setState(() {
+        //     _messages.add({
+        //       'id': DateTime.now().millisecondsSinceEpoch.toString(),
+        //       'type': 'audio',
+        //       'path': path,
+        //       'duration': _recordingDuration,
+        //       'isMe': true,
+        //       'time':
+        //           '${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}',
+        //     });
+        //   });
+        //   _scrollToBottom();
+        // }
       } catch (e) {
         debugPrint('Error stopping recording: $e');
         if (mounted) {
