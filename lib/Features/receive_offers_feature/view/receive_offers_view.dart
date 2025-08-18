@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:safetyZone/Features/chat_feature/view/chats_list_screen.dart';
 import 'package:safetyZone/Features/contract/contract_screen.dart';
 import 'package:safetyZone/Features/payment_feature/view/payment_view.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
@@ -592,6 +593,19 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           },
                           child: _buildInfoItem(Icons.print,
                               localizations.translate('print'), isArabic),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            // TODO: Navigate to chat screen with the provider
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatsListScreen(),
+                              ),
+                            );
+                          },
+                          child: _buildInfoItem(Icons.chat,
+                              localizations.translate('chat'), isArabic),
                         ),
                         Row(
                           textDirection:

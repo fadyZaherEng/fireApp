@@ -489,5 +489,24 @@
   "nameAuthorizedToSign": "Name Authorized to Sign",
   "devicesRequired": "Devices Required",
   "pricingRequests": "Pricing Requests",
-  "cancelRequest": "Cancel Request"
+  "cancelRequest": "Cancel Request",
+  "search": "Search",
+  "pressAndHoldToRecord": "Press and hold to record a voice message",
+  "typeMessage": "Type a message...",
+  "permissionRequired": "Permission Required",
+  "grantMediaPermission": "Please grant the required permissions to access media files.",
+  "cancel": "Cancel",
+  "openSettings": "Open Settings",
+  "fileTooLarge": "File Too Large",
+  "imageSizeLimit": "Please select an image smaller than 10MB.",
+  "videoSizeLimit": "Please select a video smaller than 20MB.",
+  "ok": "OK",
+  "error": "Error",
+  "failedToPickImage": "Failed to pick image. Please try again.",
+  "failedToPickVideo": "Failed to pick video. Please try again.",
+  "failedToStartRecording": "Failed to start recording",
+  "failedToStopRecording": "Failed to stop recording",
+  "image": "Image",
+  "video": "Video"
+
 }

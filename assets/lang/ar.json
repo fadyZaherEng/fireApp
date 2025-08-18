@@ -494,5 +494,24 @@
   "enterTerms": "ادخل البند",
   "devicesRequired": "الأجهزة  مطلوبة",
   "pricingRequests": "طلبات التسعير",
-  "cancelRequest": "إلغاء الطلب"
+  "cancelRequest": "إلغاء الطلب",
+  "search": "بحث...",
+  "pressAndHoldToRecord": "اضغط مع الاستمرار لتسجيل رسالة صوتية",
+  "typeMessage": "اكتب رسالة...",
+  "permissionRequired": "يطلب الإذن",
+  "grantMediaPermission": "يرجى منح الأذونات المطلوبة للوصول إلى الملفات.",
+  "cancel": "إلغاء",
+  "openSettings": "فتح الإعدادات",
+  "fileTooLarge": "ملف كبير جداً",
+  "imageSizeLimit": "الرجاء اختيار صورة بحجم أقل من 10 ميجابايت",
+  "videoSizeLimit": "الرجاء اختيار فيديو بحجم أقل من 20 ميجابايت",
+  "ok": "موافق",
+  "error": "خطأ",
+  "failedToPickImage": "فشل في اختيار الصورة. الرجاء المحاولة مرة أخرى.",
+  "failedToPickVideo": "فشل في اختيار الفيديو. الرجاء المحاولة مرة أخرى.",
+  "failedToStartRecording": "فشل بدء التسجيل",
+  "failedToStopRecording": "فشل إيقاف التسجيل",
+  "image": "صورة",
+  "video": "فيديو"
+
 }

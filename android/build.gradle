@@ -1,7 +1,23 @@
+buildscript {
+    ext.kotlin_version = '1.9.22'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // Add the Google Services plugin (if you're using Firebase)
+        // classpath 'com.google.gms:google-services:4.4.0'
+    }
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' } // For Glide and other libraries
     }
 }
 
