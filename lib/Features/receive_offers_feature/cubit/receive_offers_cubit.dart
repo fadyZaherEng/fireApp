@@ -74,7 +74,8 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
     int page = 1,
     int limit = 2,
     bool isStart = false,
-}) async {
+    bool statusFlag = true,
+  }) async {
     if(isStart){
       _priceOffers.clear();
     }
@@ -85,6 +86,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       final response = await _apiService.getPriceOffers(
         page: page,
         limit: limit,
+        statusFlag: statusFlag,
       );
       _priceOffers.addAll(response.data);
 

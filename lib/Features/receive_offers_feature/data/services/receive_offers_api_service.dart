@@ -91,11 +91,13 @@ class ReceiveOffersApiService {
       );
     }
   }
+
   Future<String> cancelOffers(String offerId) async {
     try {
       _logger.i('Fetching offers from API...');
 
-      final response = await _dio.patch('/api/consumer/consumer-request/cancel/$offerId');
+      final response =
+          await _dio.patch('/api/consumer/consumer-request/cancel/$offerId');
 
       if (response.statusCode == 200) {
         _logger.i('Successfully fetched offers');
@@ -124,12 +126,13 @@ class ReceiveOffersApiService {
   Future<OfferPricingResponse> getPriceOffers({
     int page = 1,
     int limit = 2,
+    bool statusFlag = true,
   }) async {
     try {
       _logger.i('Fetching offers from API...');
 
-      final response = await _dio
-          .get('/api/consumer/consumer-request/all?page=$page&limit=$limit');
+      final response = await _dio.get(
+          '/api/consumer/consumer-request/all?page=$page&limit=$limit&statusFlag=$statusFlag');
 
       if (response.statusCode == 200) {
         _logger.i('Successfully fetched offers');

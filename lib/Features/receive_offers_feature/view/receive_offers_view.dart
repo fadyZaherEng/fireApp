@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:safetyZone/Features/chat_feature/view/chats_list_screen.dart';
 import 'package:safetyZone/Features/contract/contract_screen.dart';
 import 'package:safetyZone/Features/payment_feature/view/payment_view.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
@@ -50,9 +51,10 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
           page: page,
           limit: limit,
           isStart: true, // لبدء التحميل من الصفحة الأولى
+          statusFlag: true,
         );
     super.initState();
-    _scrollController.addListener(_onScroll);
+    // _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
@@ -66,6 +68,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
             .fetchPriceOffers(
               page: page,
               limit: limit,
+              statusFlag: true,
             )
             .then((_) {
           _isLoadingMore = false;
@@ -110,6 +113,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
             context.read<ReceiveOffersCubit>().fetchPriceOffers(
                   page: page,
                   limit: limit,
+                  statusFlag: true,
                 );
           } else if (state is CancelPriceOffersError) {
             showDialog(
@@ -187,6 +191,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                     context.read<ReceiveOffersCubit>().fetchPriceOffers(
                           page: page,
                           limit: limit,
+                          statusFlag: true,
                         );
                   }
                 },
@@ -370,6 +375,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                   page: page,
                                   limit: limit,
                                   isStart: true,
+                                  statusFlag: true,
                                 );
                           },
                           child: Builder(
@@ -425,20 +431,20 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                 controller: _scrollController,
                                 // ✅ لازم علشان onScroll تشتغل
                                 physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount:
-                                    priceOffers.length + (_hasMore ? 1 : 0),
+                                itemCount: priceOffers.length,
+                                // + (_hasMore ? 1 : 0),
                                 // ✅
                                 itemBuilder: (context, index) {
-                                  if (index == priceOffers.length) {
-                                    return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 16.h),
-                                      child: Center(
-                                        child: SpinKitDoubleBounce(
-                                            color: Color(0xFF2196F3)),
-                                      ),
-                                    );
-                                  }
+                                  // if (index == priceOffers.length) {
+                                  //   return Padding(
+                                  //     padding:
+                                  //         EdgeInsets.symmetric(vertical: 16.h),
+                                  //     child: Center(
+                                  //       child: SpinKitDoubleBounce(
+                                  //           color: Color(0xFF2196F3)),
+                                  //     ),
+                                  //   );
+                                  // }
 
                                   final offerRequest = priceOffers[index];
                                   return _buildPriceOfferRequestCard(
@@ -532,7 +538,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           child: Text(
                             offer.provider.companyName,
                             textAlign:
-                            isArabic ? TextAlign.right : TextAlign.left,
+                                isArabic ? TextAlign.right : TextAlign.left,
                             textDirection: isArabic
                                 ? TextDirection.rtl
                                 : TextDirection.ltr,
@@ -596,19 +602,19 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                         InkWell(
                           onTap: () {
                             // TODO: Navigate to chat screen with the provider
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => ChatsListScreen(),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatsListScreen(),
+                              ),
+                            );
                           },
                           child: _buildInfoItem(Icons.chat,
                               localizations.translate('chat'), isArabic),
                         ),
                         Row(
                           textDirection:
-                          isArabic ? TextDirection.rtl : TextDirection.ltr,
+                              isArabic ? TextDirection.rtl : TextDirection.ltr,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             SvgPicture.asset(
@@ -636,7 +642,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
 
                         return Row(
                           textDirection:
-                          isArabic ? TextDirection.rtl : TextDirection.ltr,
+                              isArabic ? TextDirection.rtl : TextDirection.ltr,
                           children: [
                             Expanded(
                               child: Container(
@@ -650,31 +656,31 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                   onPressed: isLoading
                                       ? null
                                       : () {
-                                    context
-                                        .read<ReceiveOffersCubit>()
-                                        .rejectOffer(offer.id);
-                                  },
+                                          context
+                                              .read<ReceiveOffersCubit>()
+                                              .rejectOffer(offer.id);
+                                        },
                                   child: isLoading
                                       ? SizedBox(
-                                    width: 16.w,
-                                    height: 16.h,
-                                    child: const SpinKitDoubleBounce(
-                                      color: Color(0xFFE53935),
-                                    ),
-                                  )
+                                          width: 16.w,
+                                          height: 16.h,
+                                          child: const SpinKitDoubleBounce(
+                                            color: Color(0xFFE53935),
+                                          ),
+                                        )
                                       : Text(
-                                    localizations.translate('reject'),
-                                    textAlign: TextAlign.center,
-                                    textDirection: isArabic
-                                        ? TextDirection.rtl
-                                        : TextDirection.ltr,
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: const Color(0xFFE53935),
-                                      fontFamily: 'Almarai',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                          localizations.translate('reject'),
+                                          textAlign: TextAlign.center,
+                                          textDirection: isArabic
+                                              ? TextDirection.rtl
+                                              : TextDirection.ltr,
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: const Color(0xFFE53935),
+                                            fontFamily: 'Almarai',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),
@@ -690,56 +696,56 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                   onPressed: isLoading
                                       ? null
                                       : () {
-                                    if (offerRequest.offers.isNotEmpty &&
-                                        offerRequest
-                                            .offers.first.is_Primary) {
-                                      ///Navigate to success
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SuccessScreen()))
-                                          .then((value) {
-                                        context
-                                            .read<ReceiveOffersCubit>()
-                                            .acceptOffer(
-                                          offer.id,
-                                          false,
-                                          offerRequest.requestType ==
-                                              "MaintenanceContract",
-                                        );
-                                      });
-                                    } else {
-                                      context
-                                          .read<ReceiveOffersCubit>()
-                                          .acceptOffer(
-                                        offer.id,
-                                        true,
-                                        offerRequest.requestType ==
-                                            "MaintenanceContract",
-                                      );
-                                    }
-                                  },
+                                          if (offerRequest.offers.isNotEmpty &&
+                                              offerRequest
+                                                  .offers.first.is_Primary) {
+                                            ///Navigate to success
+                                            Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SuccessScreen()))
+                                                .then((value) {
+                                              context
+                                                  .read<ReceiveOffersCubit>()
+                                                  .acceptOffer(
+                                                    offer.id,
+                                                    false,
+                                                    offerRequest.requestType ==
+                                                        "MaintenanceContract",
+                                                  );
+                                            });
+                                          } else {
+                                            context
+                                                .read<ReceiveOffersCubit>()
+                                                .acceptOffer(
+                                                  offer.id,
+                                                  true,
+                                                  offerRequest.requestType ==
+                                                      "MaintenanceContract",
+                                                );
+                                          }
+                                        },
                                   child: isLoading
                                       ? SizedBox(
-                                    width: 16.w,
-                                    height: 16.h,
-                                    child: const SpinKitDoubleBounce(
-                                        color: Colors.white),
-                                  )
+                                          width: 16.w,
+                                          height: 16.h,
+                                          child: const SpinKitDoubleBounce(
+                                              color: Colors.white),
+                                        )
                                       : Text(
-                                    localizations.translate('accept'),
-                                    textAlign: TextAlign.center,
-                                    textDirection: isArabic
-                                        ? TextDirection.rtl
-                                        : TextDirection.ltr,
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: Colors.white,
-                                      fontFamily: 'Almarai',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                          localizations.translate('accept'),
+                                          textAlign: TextAlign.center,
+                                          textDirection: isArabic
+                                              ? TextDirection.rtl
+                                              : TextDirection.ltr,
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: Colors.white,
+                                            fontFamily: 'Almarai',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),
