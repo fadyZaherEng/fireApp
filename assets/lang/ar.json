@@ -481,7 +481,7 @@
   "approveRequest": "تعميد الطلب",
   "emergencyPrice": "قيمة الزيارة الطارئة",
   "visitPrice": "قيمة الزيارة",
-  "contractPrice": "قيمة العقد",
+  "contractPrice": "قيمة الطلب",
   "commission": "الضريبة",
   "requestServiceFromServiceProvider": "طلب خدمة من مزود الخدمة",
   "year": "سنة",

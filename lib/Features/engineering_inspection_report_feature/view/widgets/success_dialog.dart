@@ -52,7 +52,7 @@ class SuccessDialog extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             Text(
-              "${localizations.translate('contactSoonMessage')} $number",
+              "${localizations.translate('contactSoonMessage')} \n$number",
               style: TextStyle(
                 fontFamily: 'Almarai',
                 fontSize: 14.sp,
