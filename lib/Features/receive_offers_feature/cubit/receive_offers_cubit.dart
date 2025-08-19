@@ -79,6 +79,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
     if(isStart){
       _priceOffers.clear();
     }
+    _priceOffers.clear();
     try {
       emit(ReceivePriceOffersLoading());
       _logger.i('Fetching offers...');

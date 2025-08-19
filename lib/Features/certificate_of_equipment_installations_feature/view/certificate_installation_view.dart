@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:url_launcher/url_launcher.dart';
+ import 'package:url_launcher/url_launcher.dart';
 import '../cubit/certificate_installation_cubit.dart';
 import '../cubit/certificate_installation_state.dart';
 import '../data/models/certificate_installation_model.dart';
@@ -457,8 +456,8 @@ class _CertificateInstallationViewState
                   children: [
                     _buildCompanyCard(index, displayData[index]),
                     // Add special card under the second company card (only when not searching)
-                    if (index == 1 && _searchQuery.isEmpty)
-                      _buildSpecialRequestCard(),
+                    // if (index == 1 && _searchQuery.isEmpty)
+                    //   _buildSpecialRequestCard(),
                   ],
                 );
               },
@@ -571,14 +570,14 @@ class _CertificateInstallationViewState
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  _buildHighlightedText(
-                    'رقم الطلب: $requestNumber',
-                    TextStyle(
-                      fontSize: 11.sp,
-                      color: const Color(0xFF9CA3AF),
-                      fontFamily: 'Almarai',
-                    ),
-                  ),
+                  // _buildHighlightedText(
+                  //   'رقم الطلب: $requestNumber',
+                  //   TextStyle(
+                  //     fontSize: 11.sp,
+                  //     color: const Color(0xFF9CA3AF),
+                  //     fontFamily: 'Almarai',
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -591,15 +590,128 @@ class _CertificateInstallationViewState
   }
 
   /// 📌 5️⃣ Request Box Component
+  // Widget _buildRequestBox(CertificateGroup certificateGroup) {
+  //   final firstCertificate = certificateGroup.certificates.isNotEmpty
+  //       ? certificateGroup.certificates[0]
+  //       : null;
+  //   final requestNumber = firstCertificate?.scheduleJob.requestNumber ?? 'N/A';
+  //   final employeeName =
+  //       firstCertificate?.scheduleJob.responseEmployee.fullName ?? 'غير محدد';
+  //   final certificateFile = firstCertificate?.file ?? '';
+  //
+  //   return Container(
+  //     width: double.infinity,
+  //     padding: EdgeInsets.all(12.w),
+  //     decoration: BoxDecoration(
+  //       border: Border(
+  //         top: BorderSide(color: const Color(0xFFE5E7EB), width: 1.w),
+  //       ),
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         // Request Type Header
+  //         Row(
+  //           children: [
+  //             Text(
+  //               'نوع الطلب:',
+  //               style: TextStyle(
+  //                 fontSize: 14.sp,
+  //                 fontWeight: FontWeight.bold,
+  //                 color: const Color(0xFF1E1E1E),
+  //                 fontFamily: 'Almarai',
+  //               ),
+  //             ),
+  //             SizedBox(width: 8.w),
+  //             Container(
+  //               width: 20.w,
+  //               height: 20.h,
+  //               decoration: BoxDecoration(
+  //                 color: const Color(0xFFDC2626), // Red toolbox color
+  //                 borderRadius: BorderRadius.circular(4.r),
+  //               ),
+  //               child: Icon(Icons.verified, size: 12.sp, color: Colors.white),
+  //             ),
+  //             SizedBox(width: 8.w),
+  //             Text(
+  //               'شهادة تعميد',
+  //               style: TextStyle(
+  //                 fontSize: 14.sp,
+  //                 fontWeight: FontWeight.w500,
+  //                 color: const Color(0xFF1E1E1E),
+  //                 fontFamily: 'Almarai',
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //
+  //         SizedBox(height: 8.h),
+  //
+  //         // Employee and Request Info
+  //         Container(
+  //           width: double.infinity,
+  //           padding: EdgeInsets.all(8.w),
+  //           decoration: BoxDecoration(
+  //             color: const Color(0xFFF8F9FA),
+  //             borderRadius: BorderRadius.circular(6.r),
+  //           ),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               _buildHighlightedText(
+  //                 'المسؤول: $employeeName',
+  //                 TextStyle(
+  //                   fontSize: 12.sp,
+  //                   color: const Color(0xFF6B7280),
+  //                   fontFamily: 'Almarai',
+  //                 ),
+  //               ),
+  //               SizedBox(height: 2.h),
+  //               _buildHighlightedText(
+  //                 'رقم الطلب: $requestNumber',
+  //                 TextStyle(
+  //                   fontSize: 12.sp,
+  //                   color: const Color(0xFF6B7280),
+  //                   fontFamily: 'Almarai',
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //
+  //         SizedBox(height: 16.h),
+  //
+  //         // Action Buttons Row
+  //         Row(
+  //           children: [
+  //             // عرض الشهادة Button
+  //             Expanded(
+  //               child: _buildOutlinedButton(
+  //                 text: 'عرض الشهادة',
+  //                 icon: Icons.description_outlined,
+  //                 onTap: () => _openCertificate(certificateFile),
+  //               ),
+  //             ),
+  //
+  //             SizedBox(width: 8.w),
+  //
+  //             // تحميل الشهادة Button
+  //             Expanded(
+  //               child: _buildOutlinedButton(
+  //                 text: 'تحميل الشهادة',
+  //                 icon: Icons.download_outlined,
+  //                 onTap: () => _downloadCertificate(certificateFile),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //
+  //         SizedBox(height: 6.h),
+  //       ],
+  //     ),
+  //   );
+  // }
   Widget _buildRequestBox(CertificateGroup certificateGroup) {
-    final firstCertificate = certificateGroup.certificates.isNotEmpty
-        ? certificateGroup.certificates[0]
-        : null;
-    final requestNumber = firstCertificate?.scheduleJob.requestNumber ?? 'N/A';
-    final employeeName =
-        firstCertificate?.scheduleJob.responseEmployee.fullName ?? 'غير محدد';
-    final certificateFile = firstCertificate?.file ?? '';
-
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(12.w),
@@ -628,7 +740,7 @@ class _CertificateInstallationViewState
                 width: 20.w,
                 height: 20.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFDC2626), // Red toolbox color
+                  color: const Color(0xFFDC2626),
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Icon(Icons.verified, size: 12.sp, color: Colors.white),
@@ -648,66 +760,76 @@ class _CertificateInstallationViewState
 
           SizedBox(height: 8.h),
 
-          // Employee and Request Info
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF8F9FA),
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHighlightedText(
-                  'المسؤول: $employeeName',
-                  TextStyle(
-                    fontSize: 12.sp,
-                    color: const Color(0xFF6B7280),
-                    fontFamily: 'Almarai',
+          // Loop through all certificates
+          ...certificateGroup.certificates.map((certificate) {
+            final requestNumber = certificate.scheduleJob.requestNumber ?? 'N/A';
+            final employeeName =
+                certificate.scheduleJob.responseEmployee.fullName ?? 'غير محدد';
+            final certificateFile = certificate.file ?? '';
+
+            return Padding(
+              padding: EdgeInsets.only(bottom: 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Employee and Request Info
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(8.w),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF8F9FA),
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHighlightedText(
+                          'المسؤول: $employeeName',
+                          TextStyle(
+                            fontSize: 12.sp,
+                            color: const Color(0xFF6B7280),
+                            fontFamily: 'Almarai',
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+                        _buildHighlightedText(
+                          'رقم الطلب: \u200E$requestNumber',
+                          TextStyle(
+                            fontSize: 12.sp,
+                            color: const Color(0xFF6B7280),
+                            fontFamily: 'Almarai',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: 2.h),
-                _buildHighlightedText(
-                  'رقم الطلب: $requestNumber',
-                  TextStyle(
-                    fontSize: 12.sp,
-                    color: const Color(0xFF6B7280),
-                    fontFamily: 'Almarai',
+
+                  SizedBox(height: 12.h),
+
+                  // Action Buttons Row
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildOutlinedButton(
+                          text: 'عرض الشهادة',
+                          icon: Icons.description_outlined,
+                          onTap: () => _openCertificate(certificateFile),
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: _buildOutlinedButton(
+                          text: 'تحميل الشهادة',
+                          icon: Icons.download_outlined,
+                          onTap: () => _downloadCertificate(certificateFile),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 16.h),
-
-          // Action Buttons Row
-          Row(
-            children: [
-              // عرض الشهادة Button
-              Expanded(
-                child: _buildOutlinedButton(
-                  text: 'عرض الشهادة',
-                  icon: Icons.description_outlined,
-                  onTap: () => _openCertificate(certificateFile),
-                ),
+                ],
               ),
-
-              SizedBox(width: 8.w),
-
-              // تحميل الشهادة Button
-              Expanded(
-                child: _buildOutlinedButton(
-                  text: 'تحميل الشهادة',
-                  icon: Icons.download_outlined,
-                  onTap: () => _downloadCertificate(certificateFile),
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: 6.h),
+            );
+          }).toList(),
         ],
       ),
     );
@@ -766,7 +888,7 @@ class _CertificateInstallationViewState
               children: [
                 // عرض التقارير Button (Blue outlined)
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     height: 40.h,
                     child: OutlinedButton.icon(
                       onPressed: () =>
@@ -802,7 +924,7 @@ class _CertificateInstallationViewState
 
                 // عرض التقرير Button (Blue outlined)
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     height: 40.h,
                     child: OutlinedButton.icon(
                       onPressed: () =>
@@ -875,7 +997,7 @@ class _CertificateInstallationViewState
     required IconData icon,
     required VoidCallback onTap,
   }) {
-    return Container(
+    return SizedBox(
       height: 40.h,
       child: OutlinedButton.icon(
         onPressed: onTap,
