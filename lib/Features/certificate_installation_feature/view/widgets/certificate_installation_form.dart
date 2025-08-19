@@ -18,6 +18,7 @@ class CertificateInstallationForm extends StatelessWidget {
   final String selectedSystemType;
   final List<AlertDevice> alertDevices;
   final List<FireExtinguisher> fireExtinguishers;
+  final List<FireExtinguisher> fireSystems;
   final Function(String?) onBranchChanged;
   final Function(String?) onSystemTypeChanged;
   final VoidCallback onSubmit;
@@ -51,6 +52,7 @@ class CertificateInstallationForm extends StatelessWidget {
     required this.providers,
     required this.onProviderChoiceChanged,
     required this.onProviderChanged,
+    required this.fireSystems,
     this.isLoadingProviders = false,
     this.systemTypeEnabled = true,
     this.areaEnabled = true,
@@ -111,6 +113,15 @@ class CertificateInstallationForm extends StatelessWidget {
               extinguishers: fireExtinguishers,
               localizations: localizations,
               title: localizations.translate('fireExtinguishers'),
+            ),
+            SizedBox(height: 30.h),
+          ],
+          // Fire Systems - Only display if there are items
+          if (fireSystems.isNotEmpty) ...[
+            FireExtinguisherSection(
+              extinguishers: fireSystems,
+              localizations: localizations,
+              title: localizations.translate('fireSystems'),
             ),
             SizedBox(height: 30.h),
           ],

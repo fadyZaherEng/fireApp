@@ -58,6 +58,9 @@ class DeviceListSection extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(16.w),
                     child: Text(
+                      title.isNotEmpty
+                          ? title
+                          :
                       localizations.translate('alertDevices'),
                       style: TextStyle(
                         fontFamily: 'Almarai',

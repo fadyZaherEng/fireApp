@@ -171,6 +171,15 @@ class _ServiceProviderSelectionViewState
                     : item.itemDetails.itemName.ar.toString(),
                 count: item.quantity))
             .toList();
+        _alertDevices = branchDetails.fireExtinguisherItem
+            .map((item) => AlertDevice(
+                  type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                          'en'
+                      ? item.itemDetails.itemName.en.toString()
+                      : item.itemDetails.itemName.ar.toString(),
+                  count: item.quantity,
+                ))
+            .toList();
 
        } else {
         if (mounted) {
