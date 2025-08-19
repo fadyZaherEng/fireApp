@@ -147,8 +147,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
             );
             context.read<ReceiveOffersCubit>().clearActionState();
           } else if (state is OfferAcceptedNavigateToPayment) {
-            // Navigate to payment page
-            Navigator.of(context)
+             Navigator.of(context)
                 .push(
               MaterialPageRoute(
                 builder: (context) => PaymentView(
@@ -160,8 +159,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
               ),
             )
                 .then((_) {
-              // Refresh offers when coming back from payment
-              context.read<ReceiveOffersCubit>().fetchOffers();
+               context.read<ReceiveOffersCubit>().fetchOffers();
             });
           }
         },
@@ -187,8 +185,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                   if (index == 0) {
                     context.read<ReceiveOffersCubit>().fetchOffers();
                   } else if (index == 1) {
-                    // Reset the page and isHaveMore when switching tabs
-                    context.read<ReceiveOffersCubit>().fetchPriceOffers(
+                     context.read<ReceiveOffersCubit>().fetchPriceOffers(
                           page: page,
                           limit: limit,
                           statusFlag: true,
@@ -279,22 +276,12 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                     is ReceivePriceOffersLoading; // حالة التحميل لطلبات الأسعار
                 final isErrorPriceOffers = state
                     is ReceivePriceOffersError; // حالة الخطأ لطلبات الأسعار
-                // if (state is ReceivePriceOffersSuccess) {
-                //   if (page == 1) {
-                //     priceOffers.clear(); // إذا كانت الصفحة الأولى، نبدأ من جديد
-                //   }
-                //   priceOffers.addAll(state.offersPrices);
-                //   _isLoadingMore = false;
-                //   _hasMore = state.offersPrices.length ==
-                //       limit; // أقل من pageSize يعني مفيش بيانات تانية
-                // }
 
                 return Stack(
                   children: [
                     TabBarView(
                       children: [
-                        // تبويب "استلام العروض"
-                        RefreshIndicator(
+                         RefreshIndicator(
                           onRefresh: () async {
                             await context
                                 .read<ReceiveOffersCubit>()
@@ -302,8 +289,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           },
                           child: Builder(
                             builder: (_) {
-                              // 1) Loading => ListView قابلة للسحب
-                              if (isLoading) {
+                               if (isLoading) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -313,13 +299,11 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                         child: SpinKitDoubleBounce(
                                             color: Color(0xFF2196F3))),
                                     SizedBox(height: 600),
-                                    // يضمن سحب للأسفل على أي حال
-                                  ],
+                                   ],
                                 );
                               }
 
-                              // 2) Error => برضه داخل ListView قابلة للسحب
-                              if (isError) {
+                               if (isError) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -333,8 +317,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                 );
                               }
 
-                              // 3) Empty
-                              if (offers.isEmpty && !isLoading && !isError) {
+                                if (offers.isEmpty && !isLoading && !isError) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -348,8 +331,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                 );
                               }
 
-                              // 4) Success + بيانات
-                              return ListView.builder(
+                               return ListView.builder(
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 itemCount: offers.length,
                                 itemBuilder: (context, index) {
@@ -380,8 +362,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           },
                           child: Builder(
                             builder: (_) {
-                              // 1) Loading => ListView قابلة للسحب
-                              if (isLoadingPriceOffers) {
+                               if (isLoadingPriceOffers) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -391,13 +372,10 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                         child: SpinKitDoubleBounce(
                                             color: Color(0xFF2196F3))),
                                     SizedBox(height: 600),
-                                    // يضمن سحب للأسفل على أي حال
-                                  ],
+                                   ],
                                 );
                               }
-
-                              // 2) Error => برضه داخل ListView قابلة للسحب
-                              if (isErrorPriceOffers) {
+                               if (isErrorPriceOffers) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -411,9 +389,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                   ],
                                 );
                               }
-
-                              // 3) Empty
-                              if (priceOffers.isEmpty &&
+                               if (priceOffers.isEmpty &&
                                   !isLoadingPriceOffers) {
                                 return ListView(
                                   physics:
@@ -426,8 +402,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                 );
                               }
 
-                              // 4) Success + بيانات
-                              return ListView.builder(
+                               return ListView.builder(
                                 controller: _scrollController,
                                 // ✅ لازم علشان onScroll تشتغل
                                 physics: const AlwaysScrollableScrollPhysics(),
@@ -1043,12 +1018,6 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
     return requestTypeDisplay;
   }
 
-  // export enum RequestStatusEnum {
-  // Pending = 'pending',
-  // InProgress = "inProgress",
-  // Completed = 'completed',
-  // Cancelled = 'cancelled'
-  // }
   String getRequestStatus(String status) {
     switch (status) {
       case 'pending':
