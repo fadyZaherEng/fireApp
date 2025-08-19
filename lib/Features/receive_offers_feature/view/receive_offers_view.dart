@@ -532,7 +532,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           child: Text(
                             offer.provider.companyName,
                             textAlign:
-                                isArabic ? TextAlign.right : TextAlign.left,
+                            isArabic ? TextAlign.right : TextAlign.left,
                             textDirection: isArabic
                                 ? TextDirection.rtl
                                 : TextDirection.ltr,
@@ -593,9 +593,22 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           child: _buildInfoItem(Icons.print,
                               localizations.translate('print'), isArabic),
                         ),
+                        InkWell(
+                          onTap: () {
+                            // TODO: Navigate to chat screen with the provider
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ChatsListScreen(),
+                            //   ),
+                            // );
+                          },
+                          child: _buildInfoItem(Icons.chat,
+                              localizations.translate('chat'), isArabic),
+                        ),
                         Row(
                           textDirection:
-                              isArabic ? TextDirection.rtl : TextDirection.ltr,
+                          isArabic ? TextDirection.rtl : TextDirection.ltr,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             SvgPicture.asset(
@@ -623,7 +636,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
 
                         return Row(
                           textDirection:
-                              isArabic ? TextDirection.rtl : TextDirection.ltr,
+                          isArabic ? TextDirection.rtl : TextDirection.ltr,
                           children: [
                             Expanded(
                               child: Container(
@@ -637,31 +650,31 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                   onPressed: isLoading
                                       ? null
                                       : () {
-                                          context
-                                              .read<ReceiveOffersCubit>()
-                                              .rejectOffer(offer.id);
-                                        },
+                                    context
+                                        .read<ReceiveOffersCubit>()
+                                        .rejectOffer(offer.id);
+                                  },
                                   child: isLoading
                                       ? SizedBox(
-                                          width: 16.w,
-                                          height: 16.h,
-                                          child: const SpinKitDoubleBounce(
-                                            color: Color(0xFFE53935),
-                                          ),
-                                        )
+                                    width: 16.w,
+                                    height: 16.h,
+                                    child: const SpinKitDoubleBounce(
+                                      color: Color(0xFFE53935),
+                                    ),
+                                  )
                                       : Text(
-                                          localizations.translate('reject'),
-                                          textAlign: TextAlign.center,
-                                          textDirection: isArabic
-                                              ? TextDirection.rtl
-                                              : TextDirection.ltr,
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: const Color(0xFFE53935),
-                                            fontFamily: 'Almarai',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
+                                    localizations.translate('reject'),
+                                    textAlign: TextAlign.center,
+                                    textDirection: isArabic
+                                        ? TextDirection.rtl
+                                        : TextDirection.ltr,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: const Color(0xFFE53935),
+                                      fontFamily: 'Almarai',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -677,56 +690,56 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                   onPressed: isLoading
                                       ? null
                                       : () {
-                                          if (offerRequest.offers.isNotEmpty &&
-                                              offerRequest
-                                                  .offers.first.is_Primary) {
-                                            ///Navigate to success
-                                            Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            SuccessScreen()))
-                                                .then((value) {
-                                              context
-                                                  .read<ReceiveOffersCubit>()
-                                                  .acceptOffer(
-                                                    offer.id,
-                                                    false,
-                                                    offerRequest.requestType ==
-                                                        "MaintenanceContract",
-                                                  );
-                                            });
-                                          } else {
-                                            context
-                                                .read<ReceiveOffersCubit>()
-                                                .acceptOffer(
-                                                  offer.id,
-                                                  true,
-                                                  offerRequest.requestType ==
-                                                      "MaintenanceContract",
-                                                );
-                                          }
-                                        },
+                                    if (offerRequest.offers.isNotEmpty &&
+                                        offerRequest
+                                            .offers.first.is_Primary) {
+                                      ///Navigate to success
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SuccessScreen()))
+                                          .then((value) {
+                                        context
+                                            .read<ReceiveOffersCubit>()
+                                            .acceptOffer(
+                                          offer.id,
+                                          false,
+                                          offerRequest.requestType ==
+                                              "MaintenanceContract",
+                                        );
+                                      });
+                                    } else {
+                                      context
+                                          .read<ReceiveOffersCubit>()
+                                          .acceptOffer(
+                                        offer.id,
+                                        true,
+                                        offerRequest.requestType ==
+                                            "MaintenanceContract",
+                                      );
+                                    }
+                                  },
                                   child: isLoading
                                       ? SizedBox(
-                                          width: 16.w,
-                                          height: 16.h,
-                                          child: const SpinKitDoubleBounce(
-                                              color: Colors.white),
-                                        )
+                                    width: 16.w,
+                                    height: 16.h,
+                                    child: const SpinKitDoubleBounce(
+                                        color: Colors.white),
+                                  )
                                       : Text(
-                                          localizations.translate('accept'),
-                                          textAlign: TextAlign.center,
-                                          textDirection: isArabic
-                                              ? TextDirection.rtl
-                                              : TextDirection.ltr,
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: Colors.white,
-                                            fontFamily: 'Almarai',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
+                                    localizations.translate('accept'),
+                                    textAlign: TextAlign.center,
+                                    textDirection: isArabic
+                                        ? TextDirection.rtl
+                                        : TextDirection.ltr,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.white,
+                                      fontFamily: 'Almarai',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
