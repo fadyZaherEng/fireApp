@@ -136,15 +136,15 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
       ),
       child: ListTile(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatScreen(
-                providerId: chat['id'],
-                providerName: chat['providerName'],
-              ),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => ChatScreen(
+          //       providerId: chat['id'],
+          //       providerName: chat['providerName'],
+          //     ),
+          //   ),
+          // );
         },
         leading: CircleAvatar(
           backgroundColor: CColors.secondary,
