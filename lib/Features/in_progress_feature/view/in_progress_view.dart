@@ -131,15 +131,15 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
-            title: Text(
-              localizations.translate('pricingRequests'),
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF2196F3),
-                fontFamily: 'Almarai',
-              ),
-            ),
+            // title: Text(
+            //   localizations.translate('pricingRequests'),
+            //   style: TextStyle(
+            //     fontSize: 20.sp,
+            //     fontWeight: FontWeight.bold,
+            //     color: const Color(0xFF2196F3),
+            //     fontFamily: 'Almarai',
+            //   ),
+            // ),
             centerTitle: true,
           ),
           body: BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(

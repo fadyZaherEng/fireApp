@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../core/di/dependency_injection.dart';
 import '../../home_feature/data/services/home_api_service.dart';
@@ -49,7 +50,7 @@ class _MainAppContainerState extends State<MainAppContainer> {
           builder: (context, state) {
             if (state is HomeLoading) {
               return const Center(
-                child: CircularProgressIndicator(
+                child: SpinKitDoubleBounce(
                   color: Color(0xFFB60000),
                 ),
               );

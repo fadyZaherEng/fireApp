@@ -80,7 +80,7 @@ class HomeUiCubit extends Cubit<HomeUiState> {
     if (isClosed) return;
 
     // Handle service card tap - emit a navigation event
-    if (service.title.contains('شهادات تركيبات ادوات الوقاية')) {
+    if (service.title.contains('شهادات التركيب')) {
       emit(HomeUiNavigateToCertificateInstallation(
         serviceTitle: service.title,
       ));
