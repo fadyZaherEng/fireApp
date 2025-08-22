@@ -625,16 +625,16 @@ class _InstallationFeesScreenState extends State<InstallationFeesScreen> {
               ),
               Padding(
                 padding: EdgeInsets.all(8.w),
-                child: Text("الأجر العادي",
+                child: Text("أجر التركيب",
                     style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 13.sp)),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.w),
-                child: Text("الأجر المعنون",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 13.sp)),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.all(8.w),
+              //   child: Text("الأجر المعنون",
+              //       style: TextStyle(
+              //           fontWeight: FontWeight.bold, fontSize: 13.sp)),
+              // ),
             ],
           ),
           // Rows
@@ -648,11 +648,11 @@ class _InstallationFeesScreenState extends State<InstallationFeesScreen> {
                 padding: EdgeInsets.all(8.w),
                 child: Text(item["normal"], style: TextStyle(fontSize: 12.sp)),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.w),
-                child:
-                    Text(item["addressed"], style: TextStyle(fontSize: 12.sp)),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.all(8.w),
+              //   child:
+              //       Text(item["addressed"], style: TextStyle(fontSize: 12.sp)),
+              // ),
             ]);
           }),
         ],
@@ -867,16 +867,16 @@ class _InstallationFeesAllScreenState extends State<InstallationFeesAllScreen> {
               ),
               Padding(
                 padding: EdgeInsets.all(8.w),
-                child: Text("الأجر العادي",
+                child: Text("أجر التركيب",
                     style: TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 13.sp)),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.w),
-                child: Text("الأجر المعنون",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 13.sp)),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.all(8.w),
+              //   child: Text("الأجر المعنون",
+              //       style: TextStyle(
+              //           fontWeight: FontWeight.bold, fontSize: 13.sp)),
+              // ),
             ],
           ),
           // Rows
@@ -890,11 +890,11 @@ class _InstallationFeesAllScreenState extends State<InstallationFeesAllScreen> {
                 padding: EdgeInsets.all(8.w),
                 child: Text(item["normal"], style: TextStyle(fontSize: 12.sp)),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.w),
-                child:
-                    Text(item["addressed"], style: TextStyle(fontSize: 12.sp)),
-              ),
+              // Padding(
+              //   padding: EdgeInsets.all(8.w),
+              //   child:
+              //       Text(item["addressed"], style: TextStyle(fontSize: 12.sp)),
+              // ),
             ]);
           }),
         ],

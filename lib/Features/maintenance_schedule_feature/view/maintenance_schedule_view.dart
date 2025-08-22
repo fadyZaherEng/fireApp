@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safetyZone/Features/engineering_inspection_report_feature/data/services/engineering_inspection_report_api_service.dart';
 import 'package:safetyZone/core/utils/constants/colors.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
@@ -175,65 +176,316 @@ class SimpleMaintenancePage extends StatefulWidget {
   State<SimpleMaintenancePage> createState() => _SimpleMaintenancePageState();
 }
 
+// class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
+//   bool _isLoading = true;
+//   List<dynamic> _contracts = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _fetchContracts();
+//   }
+//
+//   Future<void> _fetchContracts() async {
+//     final api = EngineeringInspectionReportApiService();
+//
+//     final response = await api.getMaintenanceContracts();
+//     if (response.success && response.data != null) {
+//       setState(() {
+//         _contracts = response.data!;
+//         _isLoading = false;
+//       });
+//     } else {
+//       setState(() {
+//         _isLoading = false;
+//       });
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text(response.message)),
+//       );
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final t = AppLocalizations.of(context);
+//
+//     return Scaffold(
+//       backgroundColor: const Color(0xFFF2F4F7),
+//       appBar: AppBar(
+//         backgroundColor: Colors.white,
+//         elevation: 0,
+//         centerTitle: true,
+//         title: Text(
+//           t.translate("maintenanceTitle"),
+//           style: const TextStyle(
+//             fontSize: 20,
+//             fontWeight: FontWeight.bold,
+//             color: CColors.secondary,
+//           ),
+//         ),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(12.0),
+//         child: Column(
+//           children: [
+//             // Search bar
+//             Container(
+//               padding: const EdgeInsets.symmetric(horizontal: 10),
+//               decoration: BoxDecoration(
+//                 color: Colors.white,
+//                 borderRadius: BorderRadius.circular(30),
+//                 border: Border.all(color: Colors.grey.shade300),
+//               ),
+//               child: TextField(
+//                 decoration: InputDecoration(
+//                   hintText: t.translate("searchHint"),
+//                   border: InputBorder.none,
+//                   icon: const Icon(Icons.search),
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 16),
+//
+//             // Card Example
+//             _buildMaintenanceCard(
+//               context,
+//               companyName: t.translate("company1"),
+//               branchInfo: t.translate("branchInfo"),
+//               address: "شارع عبد العزيز - المملكة العربية السعودية",
+//               visitDate: "22/06/2025",
+//               visitNumber: "2",
+//             ),
+//             const SizedBox(height: 10),
+//             _simpleCard(t.translate("company2"), t.translate("branchInfo")),
+//             const SizedBox(height: 10),
+//             _simpleCard(t.translate("company3"), t.translate("branchInfo")),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Widget _buildMaintenanceCard(
+//     BuildContext context, {
+//     required String companyName,
+//     required String branchInfo,
+//     required String address,
+//     required String visitDate,
+//     required String visitNumber,
+//   }) {
+//     final t = AppLocalizations.of(context);
+//
+//     return Container(
+//       padding: const EdgeInsets.all(12),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         border: Border.all(color: Colors.white),
+//         borderRadius: BorderRadius.circular(10),
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             companyName,
+//             style: const TextStyle(
+//                 fontWeight: FontWeight.bold,
+//                 fontSize: 14,
+//                 color: CColors.secondary),
+//           ),
+//           const SizedBox(height: 4),
+//           Text(branchInfo,
+//               style: const TextStyle(color: Colors.grey, fontSize: 12)),
+//           const SizedBox(height: 8),
+//           Row(
+//             children: [
+//               const Icon(Icons.location_on, color: CColors.primary),
+//               const SizedBox(width: 6),
+//               Expanded(child: Text(address)),
+//             ],
+//           ),
+//           const SizedBox(height: 8),
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 16),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: Row(
+//                     children: [
+//                       Text("${t.translate("visitNumber")}: ",
+//                           style: const TextStyle(color: CColors.secondary)),
+//                       Text(visitNumber,
+//                           style: const TextStyle(color: CColors.black)),
+//                     ],
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Row(
+//                     mainAxisAlignment: MainAxisAlignment.end,
+//                     children: [
+//                       Text("${t.translate("visitDate")}: ",
+//                           style: const TextStyle(color: CColors.secondary)),
+//                       Text(visitDate,
+//                           style: const TextStyle(color: CColors.black)),
+//                     ],
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           const SizedBox(height: 10),
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 32),
+//             child: ElevatedButton(
+//               style: ElevatedButton.styleFrom(
+//                 backgroundColor: CColors.primary,
+//                 minimumSize: const Size(double.infinity, 40),
+//               ),
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => const VisitDateScreen(),
+//                   ),
+//                 );
+//               },
+//               child: Text(t.translate("rescheduleButton"),
+//                   style: const TextStyle(color: Colors.white)),
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+//
+//   Widget _simpleCard(String companyName, String branchInfo) {
+//     return Container(
+//       width: double.infinity,
+//       padding: const EdgeInsets.all(12),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         border: Border.all(color: Colors.white),
+//         borderRadius: BorderRadius.circular(10),
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(companyName,
+//               style: const TextStyle(
+//                   fontWeight: FontWeight.bold,
+//                   fontSize: 14,
+//                   color: CColors.secondary)),
+//           const SizedBox(height: 4),
+//           Text(branchInfo,
+//               style: const TextStyle(color: Colors.grey, fontSize: 12)),
+//         ],
+//       ),
+//     );
+//   }
+// }
 class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
+  bool _isLoading = true;
+  List<dynamic> _contracts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchContracts();
+  }
+
+  Future<void> _fetchContracts() async {
+    final api = EngineeringInspectionReportApiService();
+
+    final response = await api.getMaintenanceContracts();
+    if (response.success && response.data != null) {
+      setState(() {
+        _contracts = response.data!;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(response.message)),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF2F4F7),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          t.translate("maintenanceTitle"),
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: CColors.secondary,
+    return RefreshIndicator(
+      onRefresh: _fetchContracts,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF2F4F7),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            t.translate("maintenanceTitle"),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: CColors.secondary,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            // Search bar
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: t.translate("searchHint"),
-                  border: InputBorder.none,
-                  icon: const Icon(Icons.search),
+        body: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ListView.builder(
+                  itemCount: _contracts.length,
+                  itemBuilder: (context, index) {
+                    final branch = _contracts[index];
+                    final branchName = branch["branchName"] ?? "";
+                    final branchJobs =
+                        branch["scheduleJobs"] as List<dynamic>? ?? [];
+
+                    // ناخد أول 3 فقط
+                    final jobs = branchJobs.toList();
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          branchName,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: CColors.secondary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        ...jobs.map((job) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0),
+                            child: _buildMaintenanceCard(
+                              context,
+                              companyName: job["providerName"] ?? "",
+                              branchInfo: branchName,
+                              address: job["providerAddress"] ?? "",
+                              visitDate: _formatDate(job["visitDate"]),
+                              visitNumber: job["visitNumber"].toString(),
+                            ),
+                          );
+                        }).toList(),
+                        const SizedBox(height: 16),
+                      ],
+                    );
+                  },
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // Card Example
-            _buildMaintenanceCard(
-              context,
-              companyName: t.translate("company1"),
-              branchInfo: t.translate("branchInfo"),
-              address: "شارع عبد العزيز - المملكة العربية السعودية",
-              visitDate: "22/06/2025",
-              visitNumber: "2",
-            ),
-            const SizedBox(height: 10),
-            _simpleCard(t.translate("company2"), t.translate("branchInfo")),
-            const SizedBox(height: 10),
-            _simpleCard(t.translate("company3"), t.translate("branchInfo")),
-          ],
-        ),
       ),
     );
+  }
+
+  String _formatDate(dynamic timestamp) {
+    if (timestamp == null) return "";
+    final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    return "${date.day}/${date.month}/${date.year}";
   }
 
   Widget _buildMaintenanceCard(
@@ -259,24 +511,40 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
           Text(
             companyName,
             style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: CColors.secondary),
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              color: CColors.secondary,
+            ),
           ),
           const SizedBox(height: 4),
-          Text(branchInfo,
-              style: const TextStyle(color: Colors.grey, fontSize: 12)),
+          Text(
+            branchInfo,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
           const SizedBox(height: 8),
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Icon(Icons.location_on, color: CColors.primary),
               const SizedBox(width: 6),
-              Expanded(child: Text(address)),
+              Expanded(
+                child: Text(
+                  address,
+                  style: const TextStyle(
+                    color: CColors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 0),
             child: Row(
               children: [
                 Expanded(
@@ -323,31 +591,6 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
                   style: const TextStyle(color: Colors.white)),
             ),
           )
-        ],
-      ),
-    );
-  }
-
-  Widget _simpleCard(String companyName, String branchInfo) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.white),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(companyName,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: CColors.secondary)),
-          const SizedBox(height: 4),
-          Text(branchInfo,
-              style: const TextStyle(color: Colors.grey, fontSize: 12)),
         ],
       ),
     );

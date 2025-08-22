@@ -108,6 +108,44 @@ class EngineeringInspectionReportApiService {
       );
     }
   }
+  Future<ApiResponse<List<dynamic>>> getMaintenanceContracts() async {
+    try {
+      _logger.i('🔍 Fetching maintenance contracts...');
+
+      final response = await _dio.get('/api/consumer/schedule-job/maintenance-contracts');
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['data'] as List<dynamic>;
+
+        _logger.i('✅ Successfully fetched ${data.length} maintenance contracts');
+
+        return ApiResponse(
+          success: true,
+          message: response.data['message'] ?? 'Maintenance contracts fetched successfully',
+          data: data,
+        );
+      } else {
+        _logger.e('❌ Failed to fetch maintenance contracts: ${response.statusCode}');
+        return ApiResponse(
+          success: false,
+          message: 'Failed to fetch maintenance contracts: ${response.statusCode}',
+        );
+      }
+    } on DioException catch (e) {
+      _logger.e('💥 Error fetching maintenance contracts: ${e.message}');
+      return ApiResponse(
+        success: false,
+        message: e.response?.data['message'] ??
+            'Network error occurred while fetching maintenance contracts',
+      );
+    } catch (e) {
+      _logger.e('💥 Unexpected error fetching maintenance contracts: $e');
+      return ApiResponse(
+        success: false,
+        message: 'An unexpected error occurred',
+      );
+    }
+  }
 
   /// Only call this after a branch is selected. Uses the branch's coordinates (longitude, latitude).
   Future<ApiResponse<List<ServiceProvider>>> getServiceProviders(
