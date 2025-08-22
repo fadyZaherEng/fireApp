@@ -39,8 +39,38 @@ class _LocationMapPickerState extends State<LocationMapPicker> {
     _mapController = MapController();
     _initializeLocation();
   }
+  void _onMapTapped(LatLng location) {
+    setState(() {
+      _selectedLocation = location;
+      _selectedAddress = null;
+    });
 
-  Future<void> _initializeLocation() async {
+    // نحرك الكاميرا على النقطة الجديدة
+    if (_mapController != null) {
+      _mapController!.move(location, 16);
+    }
+
+    _getAddressFromCoordinates(location.latitude, location.longitude);
+  }
+
+  void _confirmLocation() {
+    if (_selectedLocation != null) {
+      // Call the callback function if provided
+      widget.onLocationSelected?.call(
+        _selectedLocation!.longitude,
+        _selectedLocation!.latitude,
+      );
+
+      // هنا خليتها longitude الأول ثم latitude
+      Navigator.pop(context, {
+        'latitude': _selectedLocation!.longitude,
+        'longitude': _selectedLocation!.latitude,
+        'address': _selectedAddress,
+      });
+    }}
+
+
+      Future<void> _initializeLocation() async {
     if (widget.initialLatitude != null && widget.initialLongitude != null) {
       _selectedLocation =
           LatLng(widget.initialLatitude!, widget.initialLongitude!);
@@ -374,29 +404,29 @@ class _LocationMapPickerState extends State<LocationMapPicker> {
     }
   }
 
-  void _onMapTapped(LatLng location) {
-    setState(() {
-      _selectedLocation = location;
-      _selectedAddress = null;
-    });
-    _getAddressFromCoordinates(location.latitude, location.longitude);
-  }
-
-  void _confirmLocation() {
-    if (_selectedLocation != null) {
-      // Call the callback function if provided
-      widget.onLocationSelected?.call(
-        _selectedLocation!.latitude,
-        _selectedLocation!.longitude,
-      );
-
-      Navigator.pop(context, {
-        'latitude': _selectedLocation!.latitude,
-        'longitude': _selectedLocation!.longitude,
-        'address': _selectedAddress,
-      });
-    }
-  }
+  // void _onMapTapped(LatLng location) {
+  //   setState(() {
+  //     _selectedLocation = location;
+  //     _selectedAddress = null;
+  //   });
+  //   _getAddressFromCoordinates(location.latitude, location.longitude);
+  // }
+  //
+  // void _confirmLocation() {
+  //   if (_selectedLocation != null) {
+  //     // Call the callback function if provided
+  //     widget.onLocationSelected?.call(
+  //       _selectedLocation!.latitude,
+  //       _selectedLocation!.longitude,
+  //     );
+  //
+  //     Navigator.pop(context, {
+  //       'latitude': _selectedLocation!.latitude,
+  //       'longitude': _selectedLocation!.longitude,
+  //       'address': _selectedAddress,
+  //     });
+  //   }
+  // }
 
   void _showSuccessSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
