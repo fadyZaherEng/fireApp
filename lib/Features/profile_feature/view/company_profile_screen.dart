@@ -218,7 +218,7 @@ class CompanyProfileScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => InstallationFeesAllScreen(),
+                              builder: (_) => ClientsReviewsScreen(),
                             ),
                           );
                         },
