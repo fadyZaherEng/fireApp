@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/core/localization/app_localizations.dart';
 import '../cubit/home_ui_state.dart';
 
 class ServiceGrid extends StatelessWidget {
@@ -83,7 +84,11 @@ class ServiceGrid extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          service.title.contains("شهادات تركيبات")
+                          service.title.contains(AppLocalizations.of(context)
+                                      .translate(
+                                          'safety_equipment_installation_certificates')) ||
+                                  service.title
+                                      .contains("شهادات تركيبات ادوات الوقاية")
                               ? "شهادات التركيب"
                               : service.title,
                           style: TextStyle(

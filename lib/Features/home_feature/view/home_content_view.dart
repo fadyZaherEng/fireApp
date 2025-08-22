@@ -115,9 +115,11 @@ class HomeContentView extends StatelessWidget {
                         ServiceGrid(
                           services: state.allServices,
                           onServiceTapped: (service) {
+                            print("service title: ${service.title}");
                             if (service.title.contains(
                                 AppLocalizations.of(context).translate(
-                                    'safety_equipment_installation_certificates'))) {
+                                    'safety_equipment_installation_certificates'))||
+                                service.title.contains("شهادات تركيبات ادوات الوقاية")) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -128,135 +128,137 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
         },
         builder: (context, state) => Scaffold(
           backgroundColor: const Color(0xFFF5F5F5),
-          appBar: AppBar(
-             elevation: 0,
-            backgroundColor: const Color(0xFFF5F5F5),
-            // title: Text(
-            //   localizations.translate('pricingRequests'),
-            //   style: TextStyle(
-            //     fontSize: 20.sp,
-            //     fontWeight: FontWeight.bold,
-            //     color: const Color(0xFF2196F3),
-            //     fontFamily: 'Almarai',
-            //   ),
-            // ),
-            centerTitle: true,
-          ),
-          body: BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
-            builder: (context, state) {
-              final localizations = AppLocalizations.of(context);
-
-              List<OfferPricing> priceOffers = context
-                  .watch<ReceiveOffersCubit>()
-                  .priceOffers; // قائمة الأسعار
-              final isLoadingPriceOffers = state
-                  is ReceivePriceOffersLoading; // حالة التحميل لطلبات الأسعار
-              final isErrorPriceOffers =
-                  state is ReceivePriceOffersError; // حالة الخطأ لطلبات الأسعار
-
-              return Stack(
-                children: [
-                  RefreshIndicator(
-                    onRefresh: () async {
-                      page = 1;
-                      _hasMore = true;
-                      priceOffers.clear();
-                      await context.read<ReceiveOffersCubit>().fetchPriceOffers(
-                            page: page,
-                            limit: limit,
-                            isStart: true,
-                            statusFlag: false,
-                          );
-                    },
-                    child: Builder(
-                      builder: (_) {
-                        // 1) Loading => ListView قابلة للسحب
-                        if (isLoadingPriceOffers) {
-                          return ListView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            children: const [
-                              SizedBox(height: 200),
-                              Center(
-                                  child: SpinKitDoubleBounce(
-                                      color: Color(0xFF2196F3))),
-                              SizedBox(height: 600),
-                              // يضمن سحب للأسفل على أي حال
-                            ],
-                          );
-                        }
-
-                        // 2) Error => برضه داخل ListView قابلة للسحب
-                        if (isErrorPriceOffers) {
-                          return ListView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: EdgeInsets.all(16.w),
-                            children: [
-                              _buildErrorDialog(
-                                  context,
-                                  (state as ReceivePriceOffersError).message,
-                                  localizations),
-                            ],
-                          );
-                        }
-
-                        // 3) Empty
-                        if (priceOffers.isEmpty && !isLoadingPriceOffers) {
-                          return ListView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: EdgeInsets.all(16.w),
-                            children: [
-                              _buildNoOffersDialog(context, localizations),
-                            ],
-                          );
-                        }
-
-                        // 4) Success + بيانات
-                        return ListView.builder(
-                          controller: _scrollController,
-                          // ✅ لازم علشان onScroll تشتغل
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: priceOffers.length,
-                          // + (_hasMore ? 1 : 0),
-                          // ✅
-                          itemBuilder: (context, index) {
-                            // if (index == priceOffers.length) {
-                            //   return Padding(
-                            //     padding:
-                            //         EdgeInsets.symmetric(vertical: 16.h),
-                            //     child: Center(
-                            //       child: SpinKitDoubleBounce(
-                            //           color: Color(0xFF2196F3)),
-                            //     ),
-                            //   );
-                            // }
-
-                            final offerRequest = priceOffers[index];
-                            return _buildPriceOfferRequestCard(
-                              context,
-                              offerRequest,
-                              localizations.isArabic(),
-                              localizations,
+          // appBar: AppBar(
+          //    elevation: 0,
+          //   backgroundColor: const Color(0xFFF5F5F5),
+          //   // title: Text(
+          //   //   localizations.translate('pricingRequests'),
+          //   //   style: TextStyle(
+          //   //     fontSize: 20.sp,
+          //   //     fontWeight: FontWeight.bold,
+          //   //     color: const Color(0xFF2196F3),
+          //   //     fontFamily: 'Almarai',
+          //   //   ),
+          //   // ),
+          //   centerTitle: true,
+          // ),
+          body: SafeArea(
+            child: BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
+              builder: (context, state) {
+                final localizations = AppLocalizations.of(context);
+            
+                List<OfferPricing> priceOffers = context
+                    .watch<ReceiveOffersCubit>()
+                    .priceOffers; // قائمة الأسعار
+                final isLoadingPriceOffers = state
+                    is ReceivePriceOffersLoading; // حالة التحميل لطلبات الأسعار
+                final isErrorPriceOffers =
+                    state is ReceivePriceOffersError; // حالة الخطأ لطلبات الأسعار
+            
+                return Stack(
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        page = 1;
+                        _hasMore = true;
+                        priceOffers.clear();
+                        await context.read<ReceiveOffersCubit>().fetchPriceOffers(
+                              page: page,
+                              limit: limit,
+                              isStart: true,
+                              statusFlag: false,
                             );
-                          },
-                        );
                       },
+                      child: Builder(
+                        builder: (_) {
+                          // 1) Loading => ListView قابلة للسحب
+                          if (isLoadingPriceOffers) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              children: const [
+                                SizedBox(height: 200),
+                                Center(
+                                    child: SpinKitDoubleBounce(
+                                        color: Color(0xFF2196F3))),
+                                SizedBox(height: 600),
+                                // يضمن سحب للأسفل على أي حال
+                              ],
+                            );
+                          }
+            
+                          // 2) Error => برضه داخل ListView قابلة للسحب
+                          if (isErrorPriceOffers) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: EdgeInsets.all(16.w),
+                              children: [
+                                _buildErrorDialog(
+                                    context,
+                                    (state as ReceivePriceOffersError).message,
+                                    localizations),
+                              ],
+                            );
+                          }
+            
+                          // 3) Empty
+                          if (priceOffers.isEmpty && !isLoadingPriceOffers) {
+                            return ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: EdgeInsets.all(16.w),
+                              children: [
+                                _buildNoOffersDialog(context, localizations),
+                              ],
+                            );
+                          }
+            
+                          // 4) Success + بيانات
+                          return ListView.builder(
+                            controller: _scrollController,
+                            // ✅ لازم علشان onScroll تشتغل
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: priceOffers.length,
+                            // + (_hasMore ? 1 : 0),
+                            // ✅
+                            itemBuilder: (context, index) {
+                              // if (index == priceOffers.length) {
+                              //   return Padding(
+                              //     padding:
+                              //         EdgeInsets.symmetric(vertical: 16.h),
+                              //     child: Center(
+                              //       child: SpinKitDoubleBounce(
+                              //           color: Color(0xFF2196F3)),
+                              //     ),
+                              //   );
+                              // }
+            
+                              final offerRequest = priceOffers[index];
+                              return _buildPriceOfferRequestCard(
+                                context,
+                                offerRequest,
+                                localizations.isArabic(),
+                                localizations,
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  if (isLoadingPriceOffers)
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.white.withOpacity(0.8),
-                        child: Center(
-                          child: SpinKitDoubleBounce(
-                            color: Color(0xFF2196F3),
-                            size: 40.sp,
+                    if (isLoadingPriceOffers)
+                      Positioned.fill(
+                        child: Container(
+                          color: Colors.white.withOpacity(0.8),
+                          child: Center(
+                            child: SpinKitDoubleBounce(
+                              color: Color(0xFF2196F3),
+                              size: 40.sp,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -444,35 +446,35 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
                   _buildDetailRow(localizations.translate('requestNumberLabel'),
                       offerRequest.requestNumber, isArabic),
                   SizedBox(width: 8.w),
-                  Spacer(),
-                  //button cancel request
-                  ElevatedButton(
-                    onPressed: () {
-                      if (offerRequest.status == 'pending') {
-                        context
-                            .read<ReceiveOffersCubit>()
-                            .cancelPriceOffer(offerRequest.id);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: offerRequest.status != 'pending'
-                          ? Colors.grey
-                          : Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      localizations.translate('cancelRequest'),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: offerRequest.status != 'pending'
-                            ? Colors.white
-                            : Colors.red,
-                        fontFamily: 'Almarai',
-                      ),
-                    ),
-                  ),
+                  // Spacer(),
+                  // //button cancel request
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     if (offerRequest.status == 'pending') {
+                  //       context
+                  //           .read<ReceiveOffersCubit>()
+                  //           .cancelPriceOffer(offerRequest.id);
+                  //     }
+                  //   },
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: offerRequest.status != 'pending'
+                  //         ? Colors.grey
+                  //         : Colors.white,
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(8.r),
+                  //     ),
+                  //   ),
+                  //   child: Text(
+                  //     localizations.translate('cancelRequest'),
+                  //     style: TextStyle(
+                  //       fontSize: 12.sp,
+                  //       color: offerRequest.status != 'pending'
+                  //           ? Colors.white
+                  //           : Colors.red,
+                  //       fontFamily: 'Almarai',
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ],
