@@ -1,9 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:safetyZone/Features/engineering_inspection_report_feature/data/services/engineering_inspection_report_api_service.dart';
 import 'package:safetyZone/core/localization/app_localizations.dart';
+import 'package:safetyZone/core/utils/constants/colors.dart';
 
-class CompanyProfileScreen extends StatelessWidget {
-  const CompanyProfileScreen({super.key});
+class CompanyProfileScreen extends StatefulWidget {
+  final String providerId;
+
+  const CompanyProfileScreen({
+    super.key,
+    required this.providerId,
+  });
+
+  @override
+  State<CompanyProfileScreen> createState() => _CompanyProfileScreenState();
+}
+
+class _CompanyProfileScreenState extends State<CompanyProfileScreen> {
+  Map<String, dynamic> installationFees =
+      {}; // Map to hold installation fees data
+  bool isLoading = true;
+  Map<String, dynamic> providerData =
+      <String, dynamic>{}; // Map to hold provider data
+  void fetchData() async {
+    final api = EngineeringInspectionReportApiService();
+
+    final result = await api.getProvider(widget.providerId);
+
+    if (result.success && result.data != null) {
+      providerData = result.data!; // Map<String, dynamic>
+
+      print("✅ Company Name: ${providerData['companyName']}");
+      print("✅ Installation Fees: ${providerData['installationFees']}");
+
+      setState(() {
+        installationFees = providerData['installationFees'] ?? {};
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      print("❌ Error: ${result.message}");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,266 +58,346 @@ class CompanyProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // ====== Header ======
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                top: 40.h,
-                left: 12.w,
-                right: 12.w,
-                bottom: 40.h,
-              ),
-              color: Colors.red.shade900,
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.notifications_none,
-                      color: Colors.white,
-                      size: 24.sp,
-                    ),
-                    const Spacer(),
-                    //arrow back
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
-                        textDirection: TextDirection.ltr,
-                        size: 24.sp,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // ====== Services ======
-            Container(
-              transform: Matrix4.translationValues(0, -30, 0),
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16.r),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 6,
-                      offset: Offset(0, 3))
-                ],
-              ),
+      body: isLoading
+          ? Center(child: SpinKitDoubleBounce(color: CColors.primary))
+          : SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 60.w,
-                        height: 60.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r),
-                          color: Colors.grey[200],
-                          image: DecorationImage(
-                            image: AssetImage("assets/icons/logo.png"),
-                            fit: BoxFit.cover,
+                  // ====== Header ======
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(
+                      top: 40.h,
+                      left: 12.w,
+                      right: 12.w,
+                      bottom: 40.h,
+                    ),
+                    color: Colors.red.shade900,
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.notifications_none,
+                            color: Colors.white,
+                            size: 24.sp,
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.star,
-                                    color: Colors.amber, size: 18.sp),
-                                SizedBox(width: 4.w),
-                                Text("4.8",
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600)),
-                              ],
+                          const Spacer(),
+                          //arrow back
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_back_ios_new,
+                              color: Colors.white,
+                              textDirection: TextDirection.ltr,
+                              size: 24.sp,
                             ),
-                            SizedBox(height: 4.h),
-                            Text(localizations.translate("companyName"),
-                                style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold)),
-                            SizedBox(height: 4.h),
-                            Text(localizations.translate("companyAddress"),
-                                style: TextStyle(
-                                    fontSize: 12.sp, color: Colors.grey[600])),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // ====== Services ======
+                  Container(
+                    transform: Matrix4.translationValues(0, -30, 0),
+                    margin: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 120.h,
+                              width: 100.w,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    width: 100.w,
+                                    height: 100.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      color: Colors.grey[200],
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                          providerData['image'] ??
+                                              'https://via.placeholder.com/150',
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 5,
+                                    left: 16,
+                                    right: 16,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 4.w, vertical: 4.h),
+                                      decoration: BoxDecoration(
+                                        color: Colors.green.shade100,
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          localizations.translate("openNow"),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.green,
+                                            fontSize: 12.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.star,
+                                          color: Colors.amber, size: 18.sp),
+                                      SizedBox(width: 4.w),
+                                      Text("4.8",
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w600)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(providerData['companyName'] ?? '',
+                                      style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    providerData['address'] ?? '',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8.w, vertical: 4.h),
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade100,
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Text(localizations.translate("openNow"),
-                            style: TextStyle(
-                                color: Colors.green, fontSize: 12.sp)),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
 
-                  SizedBox(height: 12.h),
-                  Divider(),
-                  SizedBox(height: 4.h),
+                  // SizedBox(height: 12.h),
+                  // Divider(),
+                  // SizedBox(height: 4.h),
 
                   // Working Hours
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(localizations.translate("workingHours"),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          localizations.translate("workingHours"),
                           style: TextStyle(
-                              color: Colors.red.shade900,
-                              fontWeight: FontWeight.bold)),
-                      // Icon(Icons.add, color: Colors.red.shade900),
-                    ],
+                            color: Colors.red.shade900,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Icon(Icons.add, color: Colors.red.shade900),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 4.h),
-                  Text("السبت : الخميس  |  7am - 12am",
-                      style: TextStyle(fontSize: 13.sp)),
-                ],
-              ),
-            ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: buildWorkingHoursSection(
+                        providerData['workingTime'] ?? [], localizations),
+                  ),
 
-            SizedBox(height: 16.h),
-            // ====== Company Card ======
-            SizedBox(
-              height: 50.h,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      localizations.translate("installationFees"),
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 8.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => InstallationFeesAllScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        localizations.translate("showAll"),
-                        style: TextStyle(fontSize: 14.sp, color: Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: InstallationFeesScreen(),
-            ),
-            SizedBox(height: 16.h),
-            // ====== Reviews ======
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(localizations.translate("customerReviews"),
-                          style: TextStyle(
-                              fontSize: 15.sp, fontWeight: FontWeight.bold)),
-
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 8.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ClientsReviewsScreen(),
+                  SizedBox(height: 16.h),
+                  // ====== Company Card ======
+                  SizedBox(
+                    height: 50.h,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            localizations.translate("installationFees"),
+                            style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        },
-                        child: Text(
-                          localizations.translate("showAll"),
-                          style: TextStyle(fontSize: 14.sp, color: Colors.black),
-                        ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => InstallationFeesAllScreen(
+                                    installationFees: installationFees,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              localizations.translate("showAll"),
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: CColors.primary,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                  SizedBox(height: 12.h),
-                  _buildReviewCard(
-                    name: "محمد الزهراني",
-                    rating: 4.8,
-                    image: "assets/user1.png",
-                    comment: localizations.translate("review1"),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: InstallationFeesScreen(
+                      installationFees: {
+                        for (var entry in installationFees.entries)
+                          entry.key: (entry.value as List).take(2).toList(),
+                      },
+                    ),
                   ),
-                  _buildReviewCard(
-                    name: "سارة المطيري",
-                    rating: 4.9,
-                    image: "assets/user2.png",
-                    comment: localizations.translate("review2"),
+
+                  SizedBox(height: 16.h),
+                  // ====== Reviews ======
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              localizations.translate("customerReviews"),
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ClientsReviewsScreen(),
+                                  ),
+                                );
+                              },
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                color: CColors.primary,
+                                size: 18.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
+                        _buildReviewCard(
+                          name: "محمد الزهراني",
+                          rating: 4.8,
+                          image: "assets/user1.png",
+                          comment: localizations.translate("review1"),
+                        ),
+                        _buildReviewCard(
+                          name: "سارة المطيري",
+                          rating: 4.9,
+                          image: "assets/user2.png",
+                          comment: localizations.translate("review2"),
+                        ),
+                        SizedBox(height: 64.h),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 64.h),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
-  Widget _buildServiceItem(IconData icon, String title) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 8.h),
-      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
-        ],
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.blue, size: 22.sp),
-          SizedBox(width: 12.w),
-          Text(title,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500)),
-        ],
-      ),
+  Widget buildWorkingHoursSection(
+      List<dynamic> workingTime, AppLocalizations localizations) {
+    if (workingTime.isEmpty) {
+      return SizedBox.shrink();
+    }
+
+    // Flatten all workingDays من كل الـ workingTime
+    final allDays =
+        workingTime.expand((t) => t["workingDays"] as List).toList();
+
+    String formatTime(int hour, int minute) {
+      final h = hour.toString().padLeft(2, '0');
+      final m = minute.toString().padLeft(2, '0');
+      return "$h:$m";
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              localizations.translate("workingHours"),
+              style: TextStyle(
+                color: Colors.red.shade900,
+                fontWeight: FontWeight.bold,
+                fontSize: 14.sp,
+              ),
+            ),
+            Icon(Icons.access_time, color: Colors.red.shade900),
+          ],
+        ),
+        SizedBox(height: 6.h),
+
+        // List of working days
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: allDays.length,
+          itemBuilder: (context, index) {
+            final day = allDays[index];
+            final start = formatTime(day["startHour"], day["startMinute"]);
+            final end = formatTime(day["endHour"], day["endMinute"]);
+
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 2.h),
+              child: Text(
+                "${day['day']}  |  $start - $end",
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  color: Colors.black87,
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -324,7 +451,12 @@ class CompanyProfileScreen extends StatelessWidget {
 }
 
 class InstallationFeesScreen extends StatefulWidget {
-  const InstallationFeesScreen({super.key});
+  final Map<String, dynamic> installationFees;
+
+  const InstallationFeesScreen({
+    super.key,
+    required this.installationFees,
+  });
 
   @override
   State<InstallationFeesScreen> createState() => _InstallationFeesScreenState();
@@ -332,40 +464,94 @@ class InstallationFeesScreen extends StatefulWidget {
 
 class _InstallationFeesScreenState extends State<InstallationFeesScreen> {
   // بيانات محلية لكل قسم
-  final List<Map<String, dynamic>> feesData = [
-    {
+  final List<Map<String, dynamic>> feesData = [];
+  final Map<String, Map<String, dynamic>> categoryMapping = {
+    "Fire pumps": {
+      "title": "مضخات النار",
+      "icon": Icons.water,
+    },
+    "Automatic Sprinklers": {
+      "title": "الرشاشات التلقائية",
+      "icon": Icons.water_drop,
+    },
+    "Fire Cabinets": {
+      "title": "خزائن النار",
+      "icon": Icons.archive,
+    },
+    "control panel": {
       "title": "لوحة التحكم",
       "icon": Icons.tune,
-      "items": [
-        {"name": "لوحة تحكم zone-1", "normal": "350 رس", "addressed": "-"},
-        {"name": "لوحة تحكم zone-2", "normal": "350 رس", "addressed": "-"},
-        {"name": "لوحة تحكم loop-1/2", "normal": "-", "addressed": "150 رس"},
-        {"name": "لوحة تحكم zone-16", "normal": "350 رس", "addressed": "-"},
-        {"name": "لوحة تحكم zone-24", "normal": "-", "addressed": "150 رس"},
-        {"name": "لوحة تحكم zone-8", "normal": "350 رس", "addressed": "-"},
-        {"name": "لوحة تحكم loop-1/4", "normal": "-", "addressed": "150 رس"},
-      ]
     },
-    {
-      "title": "كاشف الحريق",
-      "icon": Icons.fire_extinguisher,
-      "items": [
-        {"name": "كاشف دخان", "normal": "100 رس", "addressed": "-"},
-        {"name": "كاشف حرارة", "normal": "120 رس", "addressed": "-"},
-      ]
-    },
-    {
-      "title": "جرس انذار",
+    "Fire Alarm": {
+      "title": "جرس إنذار",
       "icon": Icons.notifications_active,
-      "items": [
-        {"name": "جرس صغير", "normal": "80 رس", "addressed": "-"},
-        {"name": "جرس كبير", "normal": "150 رس", "addressed": "-"},
-      ]
-    }
-  ];
+    },
+    "Smoke Detector": {
+      "title": "كاشف دخان",
+      "icon": Icons.fire_extinguisher,
+    },
+    "Glass Breaker": {
+      "title": "كاسر زجاج",
+      "icon": Icons.window,
+    },
+    "Emergency Lighting": {
+      "title": "إنارة احتياطية",
+      "icon": Icons.lightbulb,
+    },
 
-  // متابعة العنصر المفتوح
+    // تقدر تكمل بقية الكاتيجوري اللي عندك
+  };
+
+// 🔥 هنا التعديل
+  List<Map<String, dynamic>> convertFees(
+      Map<String, dynamic> installationFees) {
+    Map<String, List<Map<String, String>>> groupedItems = {};
+
+    // loop على كل الأقسام (alarm-item, fire-system-item, ...)
+    installationFees.forEach((category, items) {
+      for (var fee in items) {
+        final subCategory = fee["subCategory"];
+        final itemNameAr = fee["itemName"]["ar"] ?? "";
+        final price = "${fee["price"]} رس";
+
+        if (!groupedItems.containsKey(subCategory)) {
+          groupedItems[subCategory] = [];
+        }
+
+        groupedItems[subCategory]!.add({
+          "name": itemNameAr,
+          "normal": price,
+          "addressed": "-", // مفيش عندك في الـ API → نخليها "-"
+        });
+      }
+    });
+
+    // حوّلها للشكل النهائي
+    List<Map<String, dynamic>> result = [];
+
+    groupedItems.forEach((subCategory, items) {
+      final mapping = categoryMapping[subCategory];
+      if (mapping != null) {
+        result.add({
+          "title": mapping["title"],
+          "icon": mapping["icon"],
+          "items": items,
+        });
+      }
+    });
+
+    return result;
+  }
+
+// متابعة العنصر المفتوح
   int expandedIndex = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    // تحويل البيانات من الـ API للشكل المطلوب
+    feesData.addAll(convertFees(widget.installationFees));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -391,6 +577,8 @@ class _InstallationFeesScreenState extends State<InstallationFeesScreen> {
           ),
           child: ExpansionTile(
             initiallyExpanded: expandedIndex == idx,
+            backgroundColor: Colors.grey.shade100,
+            collapsedBackgroundColor: Colors.grey.shade100,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.r),
             ),
@@ -399,7 +587,7 @@ class _InstallationFeesScreenState extends State<InstallationFeesScreen> {
                 expandedIndex = expanded ? idx : -1;
               });
             },
-            leading: Icon(section["icon"], color: Colors.blue),
+            leading: Icon(section["icon"], color: CColors.secondary),
             title: Text(section["title"],
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
             children: [
@@ -474,7 +662,12 @@ class _InstallationFeesScreenState extends State<InstallationFeesScreen> {
 }
 
 class InstallationFeesAllScreen extends StatefulWidget {
-  const InstallationFeesAllScreen({super.key});
+  final Map<String, dynamic> installationFees;
+
+  const InstallationFeesAllScreen({
+    super.key,
+    required this.installationFees,
+  });
 
   @override
   State<InstallationFeesAllScreen> createState() =>
@@ -483,96 +676,98 @@ class InstallationFeesAllScreen extends StatefulWidget {
 
 class _InstallationFeesAllScreenState extends State<InstallationFeesAllScreen> {
   // بيانات محلية لكل قسم
-  final List<Map<String, dynamic>> feesData = [
-    {
-      "title": "لوحة التحكم",
-      "icon": Icons.tune,
-      "items": [
-        {"name": "لوحة تحكم zone-1", "normal": "350 رس", "addressed": "-"},
-        {"name": "لوحة تحكم zone-2", "normal": "350 رس", "addressed": "-"},
-        {"name": "لوحة تحكم loop-1/2", "normal": "-", "addressed": "150 رس"},
-        {"name": "لوحة تحكم zone-16", "normal": "350 رس", "addressed": "-"},
-        {"name": "لوحة تحكم zone-24", "normal": "-", "addressed": "150 رس"},
-        {"name": "لوحة تحكم zone-8", "normal": "350 رس", "addressed": "-"},
-        {"name": "لوحة تحكم loop-1/4", "normal": "-", "addressed": "150 رس"},
-      ]
-    },
-    {
-      "title": "كاشف الحريق",
-      "icon": Icons.fire_extinguisher,
-      "items": [
-        {"name": "كاشف دخان", "normal": "100 رس", "addressed": "-"},
-        {"name": "كاشف حرارة", "normal": "120 رس", "addressed": "-"},
-      ]
-    },
-    {
-      "title": "جرس إنذار",
-      "icon": Icons.notifications_active,
-      "items": [
-        {"name": "جرس صغير", "normal": "80 رس", "addressed": "-"},
-        {"name": "جرس كبير", "normal": "150 رس", "addressed": "-"},
-      ]
-    },
-    {
-      "title": "كاسر زجاج",
-      "icon": Icons.window,
-      "items": [
-        {"name": "كاسر زجاج عادي", "normal": "50 رس", "addressed": "-"},
-        {"name": "كاسر زجاج معنون", "normal": "-", "addressed": "120 رس"},
-      ]
-    },
-    {
-      "title": "إنارة احتياطية",
-      "icon": Icons.lightbulb,
-      "items": [
-        {"name": "إنارة احتياطية صغيرة", "normal": "100 رس", "addressed": "-"},
-        {"name": "إنارة احتياطية كبيرة", "normal": "150 رس", "addressed": "-"},
-      ]
-    },
-    {
-      "title": "مخرج الطوارئ",
-      "icon": Icons.exit_to_app,
-      "items": [
-        {"name": "لوحة إرشادية صغيرة", "normal": "70 رس", "addressed": "-"},
-        {"name": "لوحة إرشادية كبيرة", "normal": "100 رس", "addressed": "-"},
-      ]
-    },
-    {
+  final List<Map<String, dynamic>> feesData = [];
+  final Map<String, Map<String, dynamic>> categoryMapping = {
+    "Fire pumps": {
       "title": "مضخات النار",
       "icon": Icons.water,
-      "items": [
-        {"name": "مضخة صغيرة", "normal": "300 رس", "addressed": "-"},
-        {"name": "مضخة كبيرة", "normal": "500 رس", "addressed": "-"},
-      ]
     },
-    {
+    "Automatic Sprinklers": {
       "title": "الرشاشات التلقائية",
       "icon": Icons.water_drop,
-      "items": [
-        {"name": "رشاش سقفي", "normal": "80 رس", "addressed": "-"},
-        {"name": "رشاش جداري", "normal": "100 رس", "addressed": "-"},
-      ]
     },
-    {
+    "Fire Cabinets": {
       "title": "خزائن النار",
       "icon": Icons.archive,
-      "items": [
-        {"name": "خزانة صغيرة", "normal": "200 رس", "addressed": "-"},
-        {"name": "خزانة كبيرة", "normal": "300 رس", "addressed": "-"},
-      ]
     },
-    {
-      "title": "صيانة طفاية الحريق",
-      "icon": Icons.build,
-      "items": [
-        {"name": "طفاية صغيرة", "normal": "50 رس", "addressed": "-"},
-        {"name": "طفاية كبيرة", "normal": "80 رس", "addressed": "-"},
-      ]
+    "control panel": {
+      "title": "لوحة التحكم",
+      "icon": Icons.tune,
     },
-  ];
+    "Fire Alarm": {
+      "title": "جرس إنذار",
+      "icon": Icons.notifications_active,
+    },
+    "Smoke Detector": {
+      "title": "كاشف دخان",
+      "icon": Icons.fire_extinguisher,
+    },
+    "Heat Detector": {
+      "title": "كاشف حرارة",
+      "icon": Icons.fire_extinguisher,
+    },
+    "Glass Breaker": {
+      "title": "كاسر زجاج",
+      "icon": Icons.window,
+    },
+    "Emergency Lighting": {
+      "title": "إنارة احتياطية",
+      "icon": Icons.lightbulb,
+    },
 
-  // متابعة العنصر المفتوح
+    // تقدر تكمل بقية الكاتيجوري اللي عندك
+  };
+
+// 🔥 هنا التعديل
+  List<Map<String, dynamic>> convertFees(
+      Map<String, dynamic> installationFees) {
+    Map<String, List<Map<String, String>>> groupedItems = {};
+
+    // loop على كل الأقسام (alarm-item, fire-system-item, ...)
+    installationFees.forEach((category, items) {
+      for (var fee in items) {
+        final subCategory = fee["subCategory"];
+        final itemNameAr = fee["itemName"]["ar"] ?? "";
+        final price = "${fee["price"]} رس";
+
+        if (!groupedItems.containsKey(subCategory)) {
+          groupedItems[subCategory] = [];
+        }
+
+        groupedItems[subCategory]!.add({
+          "name": itemNameAr,
+          "normal": price,
+          "addressed": "-", // مفيش عندك في الـ API → نخليها "-"
+        });
+      }
+    });
+
+    // حوّلها للشكل النهائي
+    List<Map<String, dynamic>> result = [];
+
+    groupedItems.forEach((subCategory, items) {
+      final mapping = categoryMapping[subCategory];
+      if (mapping != null) {
+        result.add({
+          "title": mapping["title"],
+          "icon": mapping["icon"],
+          "items": items,
+        });
+      }
+    });
+
+    return result;
+  }
+
+// متابعة العنصر المفتوح
   int expandedIndex = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    // تحويل البيانات من الـ API للشكل المطلوب
+    feesData.addAll(convertFees(widget.installationFees));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -587,7 +782,7 @@ class _InstallationFeesAllScreenState extends State<InstallationFeesAllScreen> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.red.shade900,
+        backgroundColor: CColors.primary,
         leading: IconButton(
           icon:
               Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 24.sp),
@@ -617,6 +812,8 @@ class _InstallationFeesAllScreenState extends State<InstallationFeesAllScreen> {
                     ],
                   ),
                   child: ExpansionTile(
+                    backgroundColor: Colors.grey.shade100,
+                    collapsedBackgroundColor: Colors.grey.shade100,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
@@ -626,7 +823,7 @@ class _InstallationFeesAllScreenState extends State<InstallationFeesAllScreen> {
                         expandedIndex = expanded ? index : -1;
                       });
                     },
-                    leading: Icon(section["icon"], color: Colors.blue),
+                    leading: Icon(section["icon"], color: CColors.secondary),
                     title: Text(section["title"],
                         style: TextStyle(
                             fontSize: 14.sp, fontWeight: FontWeight.w600)),
@@ -706,7 +903,6 @@ class _InstallationFeesAllScreenState extends State<InstallationFeesAllScreen> {
   }
 }
 
-
 class ClientsReviewsScreen extends StatefulWidget {
   const ClientsReviewsScreen({super.key});
 
@@ -720,31 +916,31 @@ class _ClientsReviewsScreenState extends State<ClientsReviewsScreen> {
     {
       "name": "أحمد محمد",
       "rating": 4.5,
-      "image": "assets/images/user1.png",
+      "image": "assets/images/splash.png",
       "comment": "خدمة ممتازة جدًا والتعامل راقي."
     },
     {
       "name": "منى علي",
       "rating": 5.0,
-      "image": "assets/images/user2.png",
+      "image": "assets/images/splash.png",
       "comment": "أعجبتني سرعة الاستجابة والتنفيذ."
     },
     {
       "name": "خالد يوسف",
       "rating": 4.0,
-      "image": "assets/images/user3.png",
+      "image": "assets/images/splash.png",
       "comment": "جودة جيدة ولكن محتاجين بعض التحسينات."
     },
     {
       "name": "سارة حسن",
       "rating": 4.8,
-      "image": "assets/images/user4.png",
+      "image": "assets/images/splash.png",
       "comment": "تجربة رائعة وسأكرر التعامل معهم."
     },
     {
       "name": "محمود إبراهيم",
       "rating": 5.0,
-      "image": "assets/images/user5.png",
+      "image": "assets/images/splash.png",
       "comment": "كل شيء تمام 👍."
     },
   ];
@@ -755,7 +951,25 @@ class _ClientsReviewsScreenState extends State<ClientsReviewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("آراء العملاء")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          "آراء العملاء",
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: CColors.primary,
+        leading: IconButton(
+          icon:
+              Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 24.sp),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
@@ -785,7 +999,8 @@ class _ClientsReviewsScreenState extends State<ClientsReviewsScreen> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
@@ -873,13 +1088,18 @@ class AllClientsReviewsScreen extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.r),
                 boxShadow: [
-                  BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
+                  BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4,
+                      offset: Offset(0, 2))
                 ],
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(radius: 22.r, backgroundImage: AssetImage(review["image"])),
+                  CircleAvatar(
+                      radius: 22.r,
+                      backgroundImage: AssetImage(review["image"])),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Column(
@@ -889,7 +1109,8 @@ class AllClientsReviewsScreen extends StatelessWidget {
                           children: [
                             Text(review["name"],
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14.sp)),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.sp)),
                             const Spacer(),
                             Icon(Icons.star, color: Colors.amber, size: 18.sp),
                             SizedBox(width: 4.w),
@@ -899,7 +1120,8 @@ class AllClientsReviewsScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 6.h),
                         Text(review["comment"],
-                            style: TextStyle(fontSize: 12.sp, color: Colors.grey[700])),
+                            style: TextStyle(
+                                fontSize: 12.sp, color: Colors.grey[700])),
                       ],
                     ),
                   ),

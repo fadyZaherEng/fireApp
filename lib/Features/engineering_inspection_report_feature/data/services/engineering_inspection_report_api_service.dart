@@ -70,6 +70,44 @@ class EngineeringInspectionReportApiService {
       ),
     );
   }
+  Future<ApiResponse<Map<String, dynamic>>> getProvider(String providerId) async {
+    try {
+      _logger.i('🔍 Fetching provider details for ID: $providerId');
+
+      final response = await _dio.get('/api/consumer/provider/$providerId');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = response.data as Map<String, dynamic>;
+
+        _logger.i('✅ Successfully fetched provider details: ${data['companyName']}');
+
+        return ApiResponse(
+          success: true,
+          message: 'Provider details fetched successfully',
+          data: data,
+        );
+      } else {
+        _logger.e('❌ Failed to fetch provider details: ${response.statusCode}');
+        return ApiResponse(
+          success: false,
+          message: 'Failed to fetch provider details: ${response.statusCode}',
+        );
+      }
+    } on DioException catch (e) {
+      _logger.e('💥 Error fetching provider details: ${e.message}');
+      return ApiResponse(
+        success: false,
+        message: e.response?.data['message'] ??
+            'Network error occurred while fetching provider details',
+      );
+    } catch (e) {
+      _logger.e('💥 Unexpected error fetching provider details: $e');
+      return ApiResponse(
+        success: false,
+        message: 'An unexpected error occurred',
+      );
+    }
+  }
 
   /// Only call this after a branch is selected. Uses the branch's coordinates (longitude, latitude).
   Future<ApiResponse<List<ServiceProvider>>> getServiceProviders(

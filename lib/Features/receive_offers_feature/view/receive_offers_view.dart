@@ -16,7 +16,6 @@ import '../cubit/receive_offers_cubit.dart';
 import '../cubit/receive_offers_states.dart';
 import '../data/models/offer_models.dart';
 import '../data/services/receive_offers_api_service.dart';
-import 'package:safetyZone/Features/certificate_installation_feature/data/models/certificate_models.dart';
 
 class ReceiveOffersView extends StatelessWidget {
   const ReceiveOffersView({super.key});
@@ -88,12 +87,11 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
     super.dispose();
   }
 
-  void _navigateToCompanyProfile(
-      BuildContext context, ServiceProvider provider) {
+  void _navigateToCompanyProfile(BuildContext context, String id) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CompanyProfileScreen(),
+        builder: (context) => CompanyProfileScreen(providerId: id),
       ),
     );
   }
@@ -524,23 +522,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           child: InkWell(
                             onTap: () {
                               _navigateToCompanyProfile(
-                                  context,
-                                  ServiceProvider(
-                                    id: offer.provider.id,
-                                    description: "fffffffffffffff",
-                                    name: offer.provider.companyName,
-                                    logo: "https://example.com/logo.png",
-                                    descriptionAr: "وصف الشركة باللغة العربية",
-                                    nameAr: "اسم الشركة باللغة العربية",
-                                    rating: 4.9,
-                                    phoneNumber: offer.provider.phoneNumber,
-                                    bankName: "اسم البنك",
-                                    bankAccountNumber: "1234567890",
-                                    commercialRegistrationNumber: "CR123456",
-                                    isRecommended: true,
-                                    email: "gYHdZ@example.com",
-                                    isVerified: true,
-                                  ));
+                                  context, offer.provider.id);
                             },
                             child: Text(
                               offer.provider.companyName,
