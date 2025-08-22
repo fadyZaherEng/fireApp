@@ -129,8 +129,8 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
         builder: (context, state) => Scaffold(
           backgroundColor: const Color(0xFFF5F5F5),
           appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0,
+             elevation: 0,
+            backgroundColor: const Color(0xFFF5F5F5),
             // title: Text(
             //   localizations.translate('pricingRequests'),
             //   style: TextStyle(

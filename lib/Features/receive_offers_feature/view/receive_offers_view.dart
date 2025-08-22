@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:safetyZone/Features/chat_feature/view/chats_list_screen.dart';
 import 'package:safetyZone/Features/contract/contract_screen.dart';
 import 'package:safetyZone/Features/payment_feature/view/payment_view.dart';
+import 'package:safetyZone/Features/profile_feature/view/company_profile_screen.dart';
 import 'package:safetyZone/Features/success/success_screen.dart';
 import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
 import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
@@ -15,6 +16,7 @@ import '../cubit/receive_offers_cubit.dart';
 import '../cubit/receive_offers_states.dart';
 import '../data/models/offer_models.dart';
 import '../data/services/receive_offers_api_service.dart';
+import 'package:safetyZone/Features/certificate_installation_feature/data/models/certificate_models.dart';
 
 class ReceiveOffersView extends StatelessWidget {
   const ReceiveOffersView({super.key});
@@ -86,6 +88,16 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
     super.dispose();
   }
 
+  void _navigateToCompanyProfile(
+      BuildContext context, ServiceProvider provider) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CompanyProfileScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
@@ -147,7 +159,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
             );
             context.read<ReceiveOffersCubit>().clearActionState();
           } else if (state is OfferAcceptedNavigateToPayment) {
-             Navigator.of(context)
+            Navigator.of(context)
                 .push(
               MaterialPageRoute(
                 builder: (context) => PaymentView(
@@ -159,7 +171,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
               ),
             )
                 .then((_) {
-               context.read<ReceiveOffersCubit>().fetchOffers();
+              context.read<ReceiveOffersCubit>().fetchOffers();
             });
           }
         },
@@ -185,7 +197,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                   if (index == 0) {
                     context.read<ReceiveOffersCubit>().fetchOffers();
                   } else if (index == 1) {
-                     context.read<ReceiveOffersCubit>().fetchPriceOffers(
+                    context.read<ReceiveOffersCubit>().fetchPriceOffers(
                           page: page,
                           limit: limit,
                           statusFlag: true,
@@ -281,7 +293,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                   children: [
                     TabBarView(
                       children: [
-                         RefreshIndicator(
+                        RefreshIndicator(
                           onRefresh: () async {
                             await context
                                 .read<ReceiveOffersCubit>()
@@ -289,7 +301,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           },
                           child: Builder(
                             builder: (_) {
-                               if (isLoading) {
+                              if (isLoading) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -299,11 +311,11 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                         child: SpinKitDoubleBounce(
                                             color: Color(0xFF2196F3))),
                                     SizedBox(height: 600),
-                                   ],
+                                  ],
                                 );
                               }
 
-                               if (isError) {
+                              if (isError) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -317,7 +329,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                 );
                               }
 
-                                if (offers.isEmpty && !isLoading && !isError) {
+                              if (offers.isEmpty && !isLoading && !isError) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -331,7 +343,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                 );
                               }
 
-                               return ListView.builder(
+                              return ListView.builder(
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 itemCount: offers.length,
                                 itemBuilder: (context, index) {
@@ -345,7 +357,6 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                             },
                           ),
                         ),
-
                         RefreshIndicator(
                           onRefresh: () async {
                             page = 1;
@@ -362,7 +373,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                           },
                           child: Builder(
                             builder: (_) {
-                               if (isLoadingPriceOffers) {
+                              if (isLoadingPriceOffers) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -372,10 +383,10 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                         child: SpinKitDoubleBounce(
                                             color: Color(0xFF2196F3))),
                                     SizedBox(height: 600),
-                                   ],
+                                  ],
                                 );
                               }
-                               if (isErrorPriceOffers) {
+                              if (isErrorPriceOffers) {
                                 return ListView(
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
@@ -389,7 +400,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                   ],
                                 );
                               }
-                               if (priceOffers.isEmpty &&
+                              if (priceOffers.isEmpty &&
                                   !isLoadingPriceOffers) {
                                 return ListView(
                                   physics:
@@ -402,7 +413,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                 );
                               }
 
-                               return ListView.builder(
+                              return ListView.builder(
                                 controller: _scrollController,
                                 // ✅ لازم علشان onScroll تشتغل
                                 physics: const AlwaysScrollableScrollPhysics(),
@@ -510,18 +521,40 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                     Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            offer.provider.companyName,
-                            textAlign:
-                                isArabic ? TextAlign.right : TextAlign.left,
-                            textDirection: isArabic
-                                ? TextDirection.rtl
-                                : TextDirection.ltr,
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF333333),
-                              fontFamily: 'Almarai',
+                          child: InkWell(
+                            onTap: () {
+                              _navigateToCompanyProfile(
+                                  context,
+                                  ServiceProvider(
+                                    id: offer.provider.id,
+                                    description: "fffffffffffffff",
+                                    name: offer.provider.companyName,
+                                    logo: "https://example.com/logo.png",
+                                    descriptionAr: "وصف الشركة باللغة العربية",
+                                    nameAr: "اسم الشركة باللغة العربية",
+                                    rating: 4.9,
+                                    phoneNumber: offer.provider.phoneNumber,
+                                    bankName: "اسم البنك",
+                                    bankAccountNumber: "1234567890",
+                                    commercialRegistrationNumber: "CR123456",
+                                    isRecommended: true,
+                                    email: "gYHdZ@example.com",
+                                    isVerified: true,
+                                  ));
+                            },
+                            child: Text(
+                              offer.provider.companyName,
+                              textAlign:
+                                  isArabic ? TextAlign.right : TextAlign.left,
+                              textDirection: isArabic
+                                  ? TextDirection.rtl
+                                  : TextDirection.ltr,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF333333),
+                                fontFamily: 'Almarai',
+                              ),
                             ),
                           ),
                         ),

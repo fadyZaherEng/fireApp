@@ -83,7 +83,9 @@ class ServiceGrid extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          service.title,
+                          service.title.contains("شهادات تركيبات")
+                              ? "شهادات التركيب"
+                              : service.title,
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
