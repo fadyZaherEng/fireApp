@@ -469,6 +469,7 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
                               address: job["providerAddress"] ?? "",
                               visitDate: _formatDate(job["visitDate"]),
                               visitNumber: job["visitNumber"].toString(),
+                              scheduleJobId: job["_id"] ?? "",
                             ),
                           );
                         }).toList(),
@@ -495,6 +496,7 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
     required String address,
     required String visitDate,
     required String visitNumber,
+    required String scheduleJobId,
   }) {
     final t = AppLocalizations.of(context);
 
@@ -583,7 +585,10 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const VisitDateScreen(),
+                    builder: (context) => VisitDateScreen(
+                      scheduleJobId:
+                          scheduleJobId, // نمرر معرف الوظيفة المجدولة
+                    ),
                   ),
                 );
               },
@@ -598,7 +603,11 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
 }
 
 class VisitDateScreen extends StatefulWidget {
-  const VisitDateScreen({super.key});
+  final String scheduleJobId; // معرف الوظيفة المجدولة
+  const VisitDateScreen({
+    super.key,
+    required this.scheduleJobId,
+  });
 
   @override
   State<VisitDateScreen> createState() => _VisitDateScreenState();
@@ -607,6 +616,18 @@ class VisitDateScreen extends StatefulWidget {
 class _VisitDateScreenState extends State<VisitDateScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  int? _visitDateMillis; // القيمة اللي هنبعتها للـ API
+
+  @override
+  void initState() {
+    super.initState();
+
+    // افتراضي: النهاردة مع 11PM
+    final now = DateTime.now();
+    final todayWith11PM = DateTime(now.year, now.month, now.day, 23, 0);
+    _selectedDay = now;
+    _visitDateMillis = todayWith11PM.millisecondsSinceEpoch;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -642,8 +663,8 @@ class _VisitDateScreenState extends State<VisitDateScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: TableCalendar(
-                  firstDay: DateTime.utc(2020, 1, 1),
-                  lastDay: DateTime.utc(2030, 12, 31),
+                  firstDay: DateTime.now(),
+                  lastDay: DateTime.utc(2050, 12, 31),
                   focusedDay: _focusedDay,
                   selectedDayPredicate: (day) {
                     return isSameDay(_selectedDay, day);
@@ -665,9 +686,10 @@ class _VisitDateScreenState extends State<VisitDateScreen> {
                     formatButtonVisible: false,
                     titleCentered: true,
                     titleTextStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 16),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 16,
+                    ),
                   ),
                   daysOfWeekStyle: const DaysOfWeekStyle(
                     weekendStyle: TextStyle(color: Colors.black),
@@ -677,6 +699,20 @@ class _VisitDateScreenState extends State<VisitDateScreen> {
                     setState(() {
                       _selectedDay = selectedDay;
                       _focusedDay = focusedDay;
+
+                      // نخزن التاريخ في الساعة 11PM
+                      final dateWith11PM = DateTime(
+                        selectedDay.year,
+                        selectedDay.month,
+                        selectedDay.day,
+                        23, // 11 PM
+                        0,
+                      );
+
+                      _visitDateMillis = dateWith11PM.millisecondsSinceEpoch;
+
+                      debugPrint(
+                          "📅 Selected Visit Date (millis): $_visitDateMillis");
                     });
                   },
                 ),
@@ -686,14 +722,38 @@ class _VisitDateScreenState extends State<VisitDateScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // TODO: handle save/send logic
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SuccessScreen(),
-                    ),
+                onPressed: () async {
+                  final api = EngineeringInspectionReportApiService();
+                  final result = await api.updateVisitDate(
+                    scheduleJobId: widget.scheduleJobId,
+                    visitDate: _visitDateMillis ??
+                        DateTime.now().millisecondsSinceEpoch,
                   );
+
+                  if (result.success) {
+                    print("تم التحديث: ${result.data}");
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text(AppLocalizations.of(context)
+                    //         .translate("visitDateUpdated")),
+                    //   ),
+                    // );
+
+                    // TODO: handle save/send logic
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SuccessScreen(),
+                      ),
+                    );
+                  } else {
+                    print("فشل: ${result.message}");
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(result.message),
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: CColors.primary,
@@ -720,8 +780,25 @@ class _VisitDateScreenState extends State<VisitDateScreen> {
   }
 }
 
-class SuccessScreen extends StatelessWidget {
+class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});
+
+  @override
+  State<SuccessScreen> createState() => _SuccessScreenState();
+}
+
+class _SuccessScreenState extends State<SuccessScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // يمكن إضافة أي منطق تهيئة هنا إذا لزم الأمر
+    // على سبيل المثال، يمكنك استخدام Future.delayed لإظهار الشاشة لفترة قصيرة ثم العودة
+    Future.delayed(const Duration(seconds: 2), () {
+      // Navigator.popUntil(context, ModalRoute.withName(Routes.home));
+      Navigator.pop(context);
+      Navigator.pop(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

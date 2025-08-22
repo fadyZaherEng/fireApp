@@ -70,6 +70,53 @@ class EngineeringInspectionReportApiService {
       ),
     );
   }
+  Future<ApiResponse<Map<String, dynamic>>> updateVisitDate({
+    required String scheduleJobId,
+    required int visitDate,
+  }) async {
+    try {
+      _logger.i('🛠 Updating visit date for job ID: $scheduleJobId with date: $visitDate');
+
+      final response = await _dio.put(
+        '/api/consumer/schedule-job/$scheduleJobId/visit-date',
+        data: {
+          "visitDate": visitDate,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = response.data as Map<String, dynamic>;
+
+        _logger.i('✅ Visit date updated successfully for job ID: $scheduleJobId');
+
+        return ApiResponse(
+          success: true,
+          message: data['message'] ?? 'Visit date updated successfully',
+          data: data['data'] as Map<String, dynamic>,
+        );
+      } else {
+        _logger.e('❌ Failed to update visit date: ${response.statusCode}');
+        return ApiResponse(
+          success: false,
+          message: 'Failed to update visit date: ${response.statusCode}',
+        );
+      }
+    } on DioException catch (e) {
+      _logger.e('💥 Error updating visit date: ${e.message}');
+      return ApiResponse(
+        success: false,
+        message: e.response?.data['message'] ??
+            'Network error occurred while updating visit date',
+      );
+    } catch (e) {
+      _logger.e('💥 Unexpected error updating visit date: $e');
+      return ApiResponse(
+        success: false,
+        message: 'An unexpected error occurred',
+      );
+    }
+  }
+
   Future<ApiResponse<Map<String, dynamic>>> getProvider(String providerId) async {
     try {
       _logger.i('🔍 Fetching provider details for ID: $providerId');
