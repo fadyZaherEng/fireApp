@@ -686,7 +686,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                   onPressed: isLoading
                                       ? null
                                       : () {
-                                          if ( offer.is_Primary) {
+                                          if (offer.is_Primary) {
                                             ///Navigate to success
                                             Navigator.push(
                                                     context,
