@@ -631,8 +631,8 @@ class BranchDetails {
   factory BranchDetails.fromJson(Map<String, dynamic> json) {
     final location = json['location'] ?? {};
     final coordinates = (location['coordinates'] as List<dynamic>?)
-        ?.map((coord) => (coord as num).toDouble())
-        .toList() ??
+            ?.map((coord) => (coord as num).toDouble())
+            .toList() ??
         [0.0, 0.0];
 
     return BranchDetails(
@@ -654,9 +654,10 @@ class BranchDetails {
       fireSystemItem: (json['fireSystemItem'] as List<dynamic>? ?? [])
           .map((item) => BranchItem.fromJson(item))
           .toList(),
-      fireExtinguisherItem: (json['fireExtinguisherItem'] as List<dynamic>? ?? [])
-          .map((item) => BranchItem.fromJson(item))
-          .toList(),
+      fireExtinguisherItem:
+          (json['fireExtinguisherItem'] as List<dynamic>? ?? [])
+              .map((item) => BranchItem.fromJson(item))
+              .toList(),
       createdAt: json['createdAt'] ?? 0,
     );
   }
@@ -678,7 +679,8 @@ class BranchDetails {
       'workingDays': workingDays.map((day) => day.toJson()).toList(),
       'alarmItem': alarmItem.map((item) => item.toJson()).toList(),
       'fireSystemItem': fireSystemItem.map((item) => item.toJson()).toList(),
-      'fireExtinguisherItem': fireExtinguisherItem.map((item) => item.toJson()).toList(),
+      'fireExtinguisherItem':
+          fireExtinguisherItem.map((item) => item.toJson()).toList(),
       'createdAt': createdAt,
     };
   }

@@ -108,7 +108,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
       debugPrint("ffffffffffffffffffffffffffffffffffffffffff$terms");
       // final termsText = _termsController.text.trim();
       final clauses = terms
-           .where((line) => line.trim().isNotEmpty)
+          .where((line) => line.trim().isNotEmpty)
           .map((line) => TermsClause(text: line.trim()))
           .toList();
 

@@ -60,8 +60,7 @@ class DeviceListSection extends StatelessWidget {
                     child: Text(
                       title.isNotEmpty
                           ? title
-                          :
-                      localizations.translate('alertDevices'),
+                          : localizations.translate('alertDevices'),
                       style: TextStyle(
                         fontFamily: 'Almarai',
                         fontSize: 14.sp,
@@ -123,7 +122,7 @@ class DeviceListSection extends StatelessWidget {
                     ),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

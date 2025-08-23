@@ -4,7 +4,7 @@ import '../../../../constants/app_constants.dart';
 import '../../../../core/localization/app_localizations.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+  const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

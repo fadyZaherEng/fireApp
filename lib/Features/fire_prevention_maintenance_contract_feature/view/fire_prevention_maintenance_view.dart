@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
- import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
+import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
 import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -162,7 +162,6 @@ class _ServiceProviderSelectionViewState
               ),
             )
             .toList();
-
 
         setState(() {
           _alertDevices = alertDevices;

@@ -14,7 +14,7 @@ class WorkingDayRow extends StatefulWidget {
   final ValueChanged<TimeOfDay>? onEndTimeChanged;
 
   const WorkingDayRow({
-    Key? key,
+    super.key,
     required this.dayName,
     required this.isActive,
     this.startTime,
@@ -22,7 +22,7 @@ class WorkingDayRow extends StatefulWidget {
     required this.onActiveChanged,
     this.onStartTimeChanged,
     this.onEndTimeChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<WorkingDayRow> createState() => _WorkingDayRowState();

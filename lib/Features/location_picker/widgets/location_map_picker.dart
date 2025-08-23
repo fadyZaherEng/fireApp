@@ -39,6 +39,7 @@ class _LocationMapPickerState extends State<LocationMapPicker> {
     _mapController = MapController();
     _initializeLocation();
   }
+
   void _onMapTapped(LatLng location) {
     setState(() {
       _selectedLocation = location;
@@ -67,10 +68,10 @@ class _LocationMapPickerState extends State<LocationMapPicker> {
         'longitude': _selectedLocation!.longitude,
         'address': _selectedAddress,
       });
-    }}
+    }
+  }
 
-
-      Future<void> _initializeLocation() async {
+  Future<void> _initializeLocation() async {
     if (widget.initialLatitude != null && widget.initialLongitude != null) {
       _selectedLocation =
           LatLng(widget.initialLatitude!, widget.initialLongitude!);

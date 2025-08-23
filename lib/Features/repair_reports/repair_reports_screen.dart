@@ -3,7 +3,6 @@ import 'package:safetyZone/core/localization/app_localizations.dart';
 
 import '../../core/utils/constants/colors.dart';
 
-
 class RepairReportsScreen extends StatefulWidget {
   const RepairReportsScreen({super.key});
 

@@ -37,7 +37,7 @@ class NetworkAPICall {
 
   Future<http.Response> getDataAsGuest(String baseUrl,
       {Map<String, dynamic>? params}) async {
-    print("params from network: " + params.toString());
+    print("params from network: $params");
     // Construct the full URL with parameters
     var uri = Uri.parse(baseUrl);
     if (params != null) {

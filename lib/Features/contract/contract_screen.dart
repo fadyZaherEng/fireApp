@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -265,9 +264,6 @@ class _ContractScreenState extends State<ContractScreen> {
                       RenderRepaintBoundary boundary1 =
                           contractFirstKey.currentContext!.findRenderObject()
                               as RenderRepaintBoundary;
-                      if (boundary1 == null) {
-                        throw Exception("First boundary not rendered");
-                      }
                       if (boundary1.size.isEmpty) {
                         throw Exception("First image has empty dimensions");
                       }
@@ -522,7 +518,7 @@ class _ContractScreenState extends State<ContractScreen> {
                                             fontWeight: isSideTitle
                                                 ? FontWeight.bold
                                                 : FontWeight.normal,
-                                            fontSize:isSideTitle ? 12 : 11,
+                                            fontSize: isSideTitle ? 12 : 11,
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -694,8 +690,6 @@ class _ContractScreenState extends State<ContractScreen> {
       // Capture second part
       RenderRepaintBoundary boundary2 = contractSecondKey.currentContext!
           .findRenderObject() as RenderRepaintBoundary;
-
-      if (boundary2 == null) throw Exception("Second boundary not rendered");
       if (boundary2.size.isEmpty) {
         throw Exception("Second image has empty dimensions");
       }

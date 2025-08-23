@@ -9,11 +9,11 @@ class EmployeeTabs extends StatelessWidget {
   final Function(int) onTabTap;
 
   const EmployeeTabs({
-    Key? key,
+    super.key,
     required this.count,
     required this.currentIndex,
     required this.onTabTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

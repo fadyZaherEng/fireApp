@@ -12,14 +12,14 @@ class PhoneField extends StatelessWidget {
   final Function() getSelectedCountryData;
 
   const PhoneField({
-    Key? key,
+    super.key,
     required this.index,
     required this.phoneController,
     required this.selectedCountry,
     required this.countries,
     required this.showCountryPicker,
     required this.getSelectedCountryData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

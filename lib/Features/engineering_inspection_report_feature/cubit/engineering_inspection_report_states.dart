@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../data/models/certificate_models.dart';
 
-abstract class  EngineeringInspectionReportStates extends Equatable {
+abstract class EngineeringInspectionReportStates extends Equatable {
   @override
   List<Object?> get props => [];
 }

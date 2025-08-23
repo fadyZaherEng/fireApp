@@ -145,7 +145,7 @@ class CertificateApiService {
           '💥 Error submitting certificate installation request: ${e.message}');
       return ApiResponse(
         success: false,
-        message: SharedPref().getString(PrefKeys.languageCode)== 'ar'
+        message: SharedPref().getString(PrefKeys.languageCode) == 'ar'
             ? e.response?.data['message']['ar']
             : e.response?.data['message']['en'] ??
                 'Network error occurred while submitting request',

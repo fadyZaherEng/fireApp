@@ -9,7 +9,7 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
   final Logger _logger = Logger();
 
   List<OfferRequest> _offers = [];
-  List<OfferPricing> _priceOffers = [];
+  final List<OfferPricing> _priceOffers = [];
 
   ReceiveOffersCubit(this._apiService) : super(ReceiveOffersInitial());
 
@@ -43,13 +43,13 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       emit(ReceiveOffersError(errorMessage));
     }
   }
+
   Future<void> cancelPriceOffer(String offerId) async {
     try {
       emit(CancelPriceOffersLoading());
       _logger.i('Fetching offers...');
 
       final response = await _apiService.cancelOffers(offerId);
-
 
       _logger.i('Successfully fetched ${_offers.length} offers');
       emit(CancelPriceOffersSuccess(response));
@@ -70,13 +70,14 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       emit(CancelPriceOffersError(errorMessage));
     }
   }
+
   Future<void> fetchPriceOffers({
     int page = 1,
     int limit = 2,
     bool isStart = false,
     bool statusFlag = true,
   }) async {
-    if(isStart){
+    if (isStart) {
       _priceOffers.clear();
     }
     _priceOffers.clear();
@@ -111,7 +112,8 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
     }
   }
 
-  Future<void> acceptOffer(String offerId, bool isNavigate,bool isMaintance) async {
+  Future<void> acceptOffer(
+      String offerId, bool isNavigate, bool isMaintance) async {
     if (isClosed) return;
 
     try {
@@ -126,11 +128,10 @@ class ReceiveOffersCubit extends BaseCubit<ReceiveOffersState> {
       // Navigate to payment instead of showing success message
       if (!isClosed && isNavigate) {
         emit(OfferAcceptedNavigateToPayment(
-          response.invoice,
-          response.result.visitPrice,
-          response.result.emergencyVisitPrice,
-          isMaintance
-        ));
+            response.invoice,
+            response.result.visitPrice,
+            response.result.emergencyVisitPrice,
+            isMaintance));
       } else {
         emit(OfferActionSuccess('تم قبول العرض بنجاح'));
       }

@@ -18,6 +18,7 @@ class ReceiveOffersError extends ReceiveOffersState {
 
   ReceiveOffersError(this.message);
 }
+
 class CancelPriceOffersLoading extends ReceiveOffersState {}
 
 class CancelPriceOffersSuccess extends ReceiveOffersState {
@@ -25,6 +26,7 @@ class CancelPriceOffersSuccess extends ReceiveOffersState {
 
   CancelPriceOffersSuccess(this.message);
 }
+
 class CancelPriceOffersError extends ReceiveOffersState {
   final String message;
 
@@ -68,5 +70,6 @@ class OfferAcceptedNavigateToPayment extends ReceiveOffersState {
   final bool isMaintance;
   final int visitPrice;
   final int emergencyVisitPrice;
-  OfferAcceptedNavigateToPayment(this.invoice, this.visitPrice, this.emergencyVisitPrice,this.isMaintance);
+  OfferAcceptedNavigateToPayment(this.invoice, this.visitPrice,
+      this.emergencyVisitPrice, this.isMaintance);
 }

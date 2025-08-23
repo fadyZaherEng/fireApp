@@ -5,9 +5,9 @@ class LoadingDialog extends StatelessWidget {
   final String message;
 
   const LoadingDialog({
-    Key? key,
+    super.key,
     required this.message,
-  }) : super(key: key);
+  });
 
   static void show(BuildContext context,
       {String message = 'Adding employee...'}) {

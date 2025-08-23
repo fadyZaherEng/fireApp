@@ -90,11 +90,11 @@ class SuccessDialog extends StatelessWidget {
   }
 
   static void show(
-      BuildContext context,
-      AppLocalizations localizations,
-      VoidCallback onConfirm,
-      String number,
-      ) {
+    BuildContext context,
+    AppLocalizations localizations,
+    VoidCallback onConfirm,
+    String number,
+  ) {
     showDialog(
       context: context,
       barrierDismissible: false,

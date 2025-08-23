@@ -119,7 +119,7 @@ class BranchApiService {
 
       // Set authorization header
       _dio.options.headers['Authorization'] = 'Bearer $token';
-       // Add items to the request
+      // Add items to the request
       final response = await _dio.put(
         '/api/consumer/branch/add-item/$branchId',
         data: request.toJson(),

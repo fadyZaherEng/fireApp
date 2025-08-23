@@ -8,12 +8,12 @@ class InputField extends StatelessWidget {
   final IconData suffixIcon;
 
   const InputField({
-    Key? key,
+    super.key,
     required this.label,
     required this.controller,
     required this.hintText,
     required this.suffixIcon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

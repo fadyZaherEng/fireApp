@@ -5,7 +5,7 @@ class PrefKeys {
   static const String isRemember = 'rememberMe';
   static const String token = 'token';
   static const String isAuthenticated = 'isAuthenticated';
-static const String employeeId = 'employeeId';
+  static const String employeeId = 'employeeId';
   static const String userId = 'userId';
   static const String userRole = 'userRole';
 

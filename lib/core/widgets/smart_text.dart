@@ -11,13 +11,13 @@ class SmartText extends StatelessWidget {
 
   const SmartText(
     this.text, {
-    Key? key,
+    super.key,
     this.style,
     this.textAlign,
     this.maxLines,
     this.overflow,
     this.softWrap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class SmartTextFormField extends StatelessWidget {
   final InputDecoration? decoration;
 
   const SmartTextFormField({
-    Key? key,
+    super.key,
     this.controller,
     this.hintText,
     this.labelText,
@@ -77,7 +77,7 @@ class SmartTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.maxLines = 1,
     this.decoration,
-  }) : super(key: key);
+  });
 
   TextStyle _getSmartStyle(String? text, TextStyle? baseStyle) {
     if (text == null || text.isEmpty) {

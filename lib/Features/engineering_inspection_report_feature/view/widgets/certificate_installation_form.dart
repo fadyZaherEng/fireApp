@@ -99,7 +99,6 @@ class CertificateInstallationForm extends StatelessWidget {
           ),
           SizedBox(height: 20.h),
 
-
           // Fire Extinguishers - Only display if there are items
           if (alarmItems.isNotEmpty) ...[
             FireExtinguisherSection(

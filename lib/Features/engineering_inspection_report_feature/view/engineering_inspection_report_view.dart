@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
 import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import '../../../../constants/app_constants.dart';
@@ -173,15 +171,15 @@ class _ServiceProviderSelectionViewState
             .toList();
         _alertDevices = branchDetails.fireExtinguisherItem
             .map((item) => AlertDevice(
-                  type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
-                          'en'
-                      ? item.itemDetails.itemName.en.toString()
-                      : item.itemDetails.itemName.ar.toString(),
+                  type:
+                      (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                              'en'
+                          ? item.itemDetails.itemName.en.toString()
+                          : item.itemDetails.itemName.ar.toString(),
                   count: item.quantity,
                 ))
             .toList();
-
-       } else {
+      } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

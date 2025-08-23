@@ -472,7 +472,7 @@ class _SimpleMaintenancePageState extends State<SimpleMaintenancePage> {
                               scheduleJobId: job["_id"] ?? "",
                             ),
                           );
-                        }).toList(),
+                        }),
                         const SizedBox(height: 16),
                       ],
                     );

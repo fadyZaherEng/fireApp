@@ -146,15 +146,15 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
             child: BlocBuilder<ReceiveOffersCubit, ReceiveOffersState>(
               builder: (context, state) {
                 final localizations = AppLocalizations.of(context);
-            
+
                 List<OfferPricing> priceOffers = context
                     .watch<ReceiveOffersCubit>()
                     .priceOffers; // قائمة الأسعار
                 final isLoadingPriceOffers = state
                     is ReceivePriceOffersLoading; // حالة التحميل لطلبات الأسعار
-                final isErrorPriceOffers =
-                    state is ReceivePriceOffersError; // حالة الخطأ لطلبات الأسعار
-            
+                final isErrorPriceOffers = state
+                    is ReceivePriceOffersError; // حالة الخطأ لطلبات الأسعار
+
                 return Stack(
                   children: [
                     RefreshIndicator(
@@ -162,7 +162,9 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
                         page = 1;
                         _hasMore = true;
                         priceOffers.clear();
-                        await context.read<ReceiveOffersCubit>().fetchPriceOffers(
+                        await context
+                            .read<ReceiveOffersCubit>()
+                            .fetchPriceOffers(
                               page: page,
                               limit: limit,
                               isStart: true,
@@ -185,7 +187,7 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
                               ],
                             );
                           }
-            
+
                           // 2) Error => برضه داخل ListView قابلة للسحب
                           if (isErrorPriceOffers) {
                             return ListView(
@@ -193,13 +195,11 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
                               padding: EdgeInsets.all(16.w),
                               children: [
                                 _buildErrorDialog(
-                                    context,
-                                    (state as ReceivePriceOffersError).message,
-                                    localizations),
+                                    context, (state).message, localizations),
                               ],
                             );
                           }
-            
+
                           // 3) Empty
                           if (priceOffers.isEmpty && !isLoadingPriceOffers) {
                             return ListView(
@@ -210,7 +210,7 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
                               ],
                             );
                           }
-            
+
                           // 4) Success + بيانات
                           return ListView.builder(
                             controller: _scrollController,
@@ -230,7 +230,7 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
                               //     ),
                               //   );
                               // }
-            
+
                               final offerRequest = priceOffers[index];
                               return _buildPriceOfferRequestCard(
                                 context,

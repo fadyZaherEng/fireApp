@@ -319,9 +319,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                       const AlwaysScrollableScrollPhysics(),
                                   padding: EdgeInsets.all(16.w),
                                   children: [
-                                    _buildErrorDialog(
-                                        context,
-                                        (state as ReceiveOffersError).message,
+                                    _buildErrorDialog(context, (state).message,
                                         localizations),
                                   ],
                                 );
@@ -390,10 +388,7 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                       const AlwaysScrollableScrollPhysics(),
                                   padding: EdgeInsets.all(16.w),
                                   children: [
-                                    _buildErrorDialog(
-                                        context,
-                                        (state as ReceivePriceOffersError)
-                                            .message,
+                                    _buildErrorDialog(context, (state).message,
                                         localizations),
                                   ],
                                 );

@@ -833,7 +833,7 @@ class _CertificateInstallationViewState
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

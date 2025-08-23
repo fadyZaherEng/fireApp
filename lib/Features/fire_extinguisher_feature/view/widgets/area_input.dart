@@ -26,8 +26,8 @@ class AreaInput extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.number,
-         textAlign: TextAlign.center,
-         style: TextStyle(
+        textAlign: TextAlign.center,
+        style: TextStyle(
           fontFamily: 'Almarai',
           fontSize: 14.sp,
         ),

@@ -6,7 +6,6 @@ import 'service_provider_section.dart';
 import 'system_type_selector.dart';
 import 'area_input.dart';
 import 'device_list_section.dart';
-import 'fire_extinguisher_section.dart';
 import 'submit_button.dart';
 import 'section_title.dart';
 import 'visits_per_year_selector.dart';

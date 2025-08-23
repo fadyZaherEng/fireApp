@@ -28,5 +28,4 @@ class ProductType {
       madeIn: madeIn,
     );
   }
-
 }

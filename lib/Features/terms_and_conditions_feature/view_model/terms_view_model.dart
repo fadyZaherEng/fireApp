@@ -3,7 +3,8 @@ import '../data/models/terms_models.dart';
 import '../data/services/terms_api_service.dart';
 
 class TermsViewModel extends ChangeNotifier {
-  final TermsAndConditionsApiService _termsApiService = TermsAndConditionsApiService();
+  final TermsAndConditionsApiService _termsApiService =
+      TermsAndConditionsApiService();
   final TextEditingController termsController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -30,7 +31,8 @@ class TermsViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final employees = await _termsApiService.getContractDocumentationEmployees();
+      final employees =
+          await _termsApiService.getContractDocumentationEmployees();
       _employees = employees.where((e) => !e.isDeleted).toList();
       _isLoadingEmployees = false;
       notifyListeners();

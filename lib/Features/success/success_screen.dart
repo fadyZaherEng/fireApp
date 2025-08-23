@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:safetyZone/core/localization/app_localizations.dart';
 
 class SuccessScreen extends StatefulWidget {

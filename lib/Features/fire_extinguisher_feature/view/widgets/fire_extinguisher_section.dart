@@ -118,7 +118,7 @@ class FireExtinguisherSection extends StatelessWidget {
                     ),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

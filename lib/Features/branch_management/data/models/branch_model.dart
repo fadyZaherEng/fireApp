@@ -128,6 +128,7 @@ class CreateBranchRequest {
     };
   }
 }
+
 class Items {
   final List<BranchItem> alarmItem;
   final List<BranchItem> fireSystemItem;
@@ -143,18 +144,26 @@ class Items {
     return {
       'alarmItem': alarmItem.map((item) => item.toJson()).toList(),
       'fireSystemItem': fireSystemItem.map((item) => item.toJson()).toList(),
-      'fireExtinguisherItem': fireExtinguisherItem.map((item) => item.toJson()).toList(),
+      'fireExtinguisherItem':
+          fireExtinguisherItem.map((item) => item.toJson()).toList(),
     };
   }
+
   //from json
   factory Items.fromJson(Map<String, dynamic> json) {
     return Items(
-      alarmItem: List<BranchItem>.from(json['alarmItem']?.map((item) => BranchItem.fromJson(item)) ?? []),
-      fireSystemItem: List<BranchItem>.from(json['fireSystemItem']?.map((item) => BranchItem.fromJson(item)) ?? []),
-      fireExtinguisherItem: List<BranchItem>.from(json['fireExtinguisherItem']?.map((item) => BranchItem.fromJson(item)) ?? []),
+      alarmItem: List<BranchItem>.from(
+          json['alarmItem']?.map((item) => BranchItem.fromJson(item)) ?? []),
+      fireSystemItem: List<BranchItem>.from(
+          json['fireSystemItem']?.map((item) => BranchItem.fromJson(item)) ??
+              []),
+      fireExtinguisherItem: List<BranchItem>.from(json['fireExtinguisherItem']
+              ?.map((item) => BranchItem.fromJson(item)) ??
+          []),
     );
   }
 }
+
 class FireItems {
   final List<BranchItem> fireExtinguisherItem;
 
@@ -164,18 +173,23 @@ class FireItems {
   //to json
   Map<String, dynamic> toJson() {
     return {
-      'fireExtinguisherItem': fireExtinguisherItem.map((item) => item.toJson()).toList(),
+      'fireExtinguisherItem':
+          fireExtinguisherItem.map((item) => item.toJson()).toList(),
     };
   }
+
   //from json
   factory FireItems.fromJson(Map<String, dynamic> json) {
     return FireItems(
-      fireExtinguisherItem: List<BranchItem>.from(json['fireExtinguisherItem']?.map((item) => BranchItem.fromJson(item)) ?? []),
+      fireExtinguisherItem: List<BranchItem>.from(json['fireExtinguisherItem']
+              ?.map((item) => BranchItem.fromJson(item)) ??
+          []),
     );
   }
 }
+
 class AddItemsRequest {
-  final  Items items;
+  final Items items;
   final bool status;
 
   AddItemsRequest({
@@ -190,8 +204,9 @@ class AddItemsRequest {
     };
   }
 }
+
 class AddFireItemsRequest {
-  final  FireItems items;
+  final FireItems items;
   final bool status;
 
   AddFireItemsRequest({

@@ -120,7 +120,7 @@ class DeviceListSection extends StatelessWidget {
                     ),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

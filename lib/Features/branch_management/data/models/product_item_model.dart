@@ -62,7 +62,8 @@ class ProductItem {
   factory ProductItem.fromJson(Map<String, dynamic> json) {
     return ProductItem(
       id: json['_id'] as String? ?? '',
-      itemName: ItemName.fromJson(json['itemName'] as Map<String, dynamic>? ?? {}),
+      itemName:
+          ItemName.fromJson(json['itemName'] as Map<String, dynamic>? ?? {}),
       itemCode: json['itemCode'] as String? ?? '',
       image: json['image'] as String? ?? '',
       supplierName: json['supplierName'] as String? ?? '',
@@ -101,8 +102,8 @@ class ProductItem {
 }
 
 class ItemName {
-  final String en ;
-  final String ar ;
+  final String en;
+  final String ar;
 
   ItemName({
     required this.en,
@@ -116,7 +117,7 @@ class ItemName {
     );
   }
   mapToJson() => {
-    'en': en,
-    'ar': ar,
-  };
+        'en': en,
+        'ar': ar,
+      };
 }

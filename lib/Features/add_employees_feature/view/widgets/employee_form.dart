@@ -10,7 +10,7 @@ class EmployeeForm extends StatefulWidget {
   final int index;
   final TextEditingController nameController;
   final TextEditingController phoneController;
-   final List<String> selectedRole ;
+  final List<String> selectedRole;
 
   final String selectedCountry;
   final File? selectedImage;
@@ -40,8 +40,8 @@ class EmployeeForm extends StatefulWidget {
 }
 
 class _EmployeeFormState extends State<EmployeeForm> {
-  Map<String, String> _getSelectedCountryData() =>
-      widget.countries.firstWhere((country) => country['code'] == widget.selectedCountry);
+  Map<String, String> _getSelectedCountryData() => widget.countries
+      .firstWhere((country) => country['code'] == widget.selectedCountry);
 
   @override
   Widget build(BuildContext context) {

@@ -369,7 +369,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     final latitude = _branchData?.latitude ?? 30.123456;
     final longitude = _branchData?.longitude ?? -97.654321;
     final address = _branchData?.address ?? "Default Address";
-    final mallName = _branchData?.mallName ?? null;
+    final mallName = _branchData?.mallName;
     final space = _branchData?.space ?? 50.0;
 
     // Convert working days data

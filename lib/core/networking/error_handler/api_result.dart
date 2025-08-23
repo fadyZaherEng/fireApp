@@ -15,7 +15,7 @@ class ApiResult<T> {
     required Function(ApiErrorModel error) failure,
   }) {
     if (isSuccess) {
-      success(data!);
+      success(data as T);
     } else if (isFailure) {
       failure(error!);
     }

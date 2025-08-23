@@ -75,7 +75,8 @@ class EngineeringInspectionReportApiService {
     required int visitDate,
   }) async {
     try {
-      _logger.i('🛠 Updating visit date for job ID: $scheduleJobId with date: $visitDate');
+      _logger.i(
+          '🛠 Updating visit date for job ID: $scheduleJobId with date: $visitDate');
 
       final response = await _dio.put(
         '/api/consumer/schedule-job/$scheduleJobId/visit-date',
@@ -87,7 +88,8 @@ class EngineeringInspectionReportApiService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = response.data as Map<String, dynamic>;
 
-        _logger.i('✅ Visit date updated successfully for job ID: $scheduleJobId');
+        _logger
+            .i('✅ Visit date updated successfully for job ID: $scheduleJobId');
 
         return ApiResponse(
           success: true,
@@ -117,7 +119,8 @@ class EngineeringInspectionReportApiService {
     }
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> getProvider(String providerId) async {
+  Future<ApiResponse<Map<String, dynamic>>> getProvider(
+      String providerId) async {
     try {
       _logger.i('🔍 Fetching provider details for ID: $providerId');
 
@@ -126,7 +129,8 @@ class EngineeringInspectionReportApiService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = response.data as Map<String, dynamic>;
 
-        _logger.i('✅ Successfully fetched provider details: ${data['companyName']}');
+        _logger.i(
+            '✅ Successfully fetched provider details: ${data['companyName']}');
 
         return ApiResponse(
           success: true,
@@ -155,27 +159,33 @@ class EngineeringInspectionReportApiService {
       );
     }
   }
+
   Future<ApiResponse<List<dynamic>>> getMaintenanceContracts() async {
     try {
       _logger.i('🔍 Fetching maintenance contracts...');
 
-      final response = await _dio.get('/api/consumer/schedule-job/maintenance-contracts');
+      final response =
+          await _dio.get('/api/consumer/schedule-job/maintenance-contracts');
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['data'] as List<dynamic>;
 
-        _logger.i('✅ Successfully fetched ${data.length} maintenance contracts');
+        _logger
+            .i('✅ Successfully fetched ${data.length} maintenance contracts');
 
         return ApiResponse(
           success: true,
-          message: response.data['message'] ?? 'Maintenance contracts fetched successfully',
+          message: response.data['message'] ??
+              'Maintenance contracts fetched successfully',
           data: data,
         );
       } else {
-        _logger.e('❌ Failed to fetch maintenance contracts: ${response.statusCode}');
+        _logger.e(
+            '❌ Failed to fetch maintenance contracts: ${response.statusCode}');
         return ApiResponse(
           success: false,
-          message: 'Failed to fetch maintenance contracts: ${response.statusCode}',
+          message:
+              'Failed to fetch maintenance contracts: ${response.statusCode}',
         );
       }
     } on DioException catch (e) {

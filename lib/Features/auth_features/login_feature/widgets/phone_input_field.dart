@@ -34,7 +34,6 @@ class PhoneInputField extends StatefulWidget {
     required this.selectedCountryname,
     required this.onCountryCodeChanged,
     this.hint,
-
   });
 
   @override

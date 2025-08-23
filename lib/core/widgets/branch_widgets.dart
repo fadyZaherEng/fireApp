@@ -59,13 +59,13 @@ class PrimaryButton extends StatelessWidget {
   final double? height;
 
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.enabled = true,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -115,10 +115,10 @@ class OutlinePlusButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const OutlinePlusButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -174,11 +174,11 @@ class BranchAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBackPressed;
 
   const BranchAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.showBackButton = true,
     this.onBackPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -243,7 +243,7 @@ class CustomDropdownField extends StatefulWidget {
   final VoidCallback? onTap;
 
   const CustomDropdownField({
-    Key? key,
+    super.key,
     this.value,
     required this.items,
     required this.hintText,
@@ -252,7 +252,7 @@ class CustomDropdownField extends StatefulWidget {
     this.decoration,
     this.style,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomDropdownField> createState() => _CustomDropdownFieldState();
