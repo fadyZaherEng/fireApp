@@ -28,26 +28,26 @@ class SafetyZone extends StatelessWidget {
                 return BlocBuilder<ThemeCubit, ThemeMode>(
                   builder: (context, themeState) {
                     return MaterialApp(
-                        navigatorKey: NavigationService.instance.navigationKey,
-                        locale: localeState.locale,
-                        supportedLocales:
-                            AppLocalizationsSetup.supportedLocales,
-                        localizationsDelegates: [
-                          ...AppLocalizationsSetup.localizationsDelegates,
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                          GlobalCupertinoLocalizations.delegate,
-                        ],
-                        localeResolutionCallback:
-                            AppLocalizationsSetup.localeResolutionCallback,
-                        title: "Safety Zone",
-                        themeMode: themeState,
-                        theme: TAppTheme.lightTheme,
-                        darkTheme: TAppTheme.darkTheme,
-                        debugShowCheckedModeBanner: false,
-                        initialRoute: Routes.splash,
-                        onGenerateRoute: (settings) =>
-                            AppRouter.generateRoute(settings));
+                      navigatorKey: NavigationService.instance.navigationKey,
+                      locale: localeState.locale,
+                      supportedLocales: AppLocalizationsSetup.supportedLocales,
+                      localizationsDelegates: [
+                        ...AppLocalizationsSetup.localizationsDelegates,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                      localeResolutionCallback:
+                          AppLocalizationsSetup.localeResolutionCallback,
+                      title: "Safety Zone",
+                      themeMode: themeState,
+                      theme: TAppTheme.lightTheme,
+                      darkTheme: TAppTheme.darkTheme,
+                      debugShowCheckedModeBanner: false,
+                      initialRoute: Routes.splash,
+                      onGenerateRoute: (settings) =>
+                          AppRouter.generateRoute(settings),
+                    );
                   },
                 );
               },
