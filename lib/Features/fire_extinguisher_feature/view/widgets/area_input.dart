@@ -17,6 +17,7 @@ class AreaInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -25,8 +26,8 @@ class AreaInput extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.number,
-        textDirection: TextDirection.ltr,
-        style: TextStyle(
+         textAlign: TextAlign.center,
+         style: TextStyle(
           fontFamily: 'Almarai',
           fontSize: 14.sp,
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
- import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../cubit/certificate_installation_cubit.dart';
 import '../cubit/certificate_installation_state.dart';
 import '../data/models/certificate_installation_model.dart';
@@ -762,7 +762,8 @@ class _CertificateInstallationViewState
 
           // Loop through all certificates
           ...certificateGroup.certificates.map((certificate) {
-            final requestNumber = certificate.scheduleJob.requestNumber ?? 'N/A';
+            final requestNumber =
+                certificate.scheduleJob.requestNumber ?? 'N/A';
             final employeeName =
                 certificate.scheduleJob.responseEmployee.fullName ?? 'غير محدد';
             final certificateFile = certificate.file ?? '';
@@ -809,19 +810,22 @@ class _CertificateInstallationViewState
                   // Action Buttons Row
                   Row(
                     children: [
-                      Expanded(
-                        child: _buildOutlinedButton(
-                          text: 'عرض الشهادة',
-                          icon: Icons.description_outlined,
-                          onTap: () => _openCertificate(certificateFile),
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
+                      // Expanded(
+                      //   child: _buildOutlinedButton(
+                      //     text: 'عرض الشهادة',
+                      //     icon: Icons.description_outlined,
+                      //     onTap: () => _openCertificate(certificateFile),
+                      //   ),
+                      // ),
+                      // SizedBox(width: 8.w),
                       Expanded(
                         child: _buildOutlinedButton(
                           text: 'تحميل الشهادة',
                           icon: Icons.download_outlined,
-                          onTap: () => _downloadCertificate(certificateFile),
+                          onTap: () {
+                            _showSnackBar('بدء تحميل الشهادة...', Colors.green);
+                            _openCertificate(certificateFile);
+                          },
                         ),
                       ),
                     ],

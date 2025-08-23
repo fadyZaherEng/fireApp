@@ -285,7 +285,7 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
                   _systemType =
                       selectedBranch.systemType; // Set system type from branch
                   _areaController.text =
-                      selectedBranch.space.toString(); // Set area from branch
+                      selectedBranch.space.toString().replaceFirst(".0", ""); // Set area from branch
                   _systemTypeEnabled = false; // Disable system type editing
                   _areaEnabled = false; // Disable area editing
                 });

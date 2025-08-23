@@ -57,14 +57,14 @@ class _LocationMapPickerState extends State<LocationMapPicker> {
     if (_selectedLocation != null) {
       // Call the callback function if provided
       widget.onLocationSelected?.call(
-        _selectedLocation!.longitude,
         _selectedLocation!.latitude,
+        _selectedLocation!.longitude,
       );
 
       // هنا خليتها longitude الأول ثم latitude
       Navigator.pop(context, {
-        'latitude': _selectedLocation!.longitude,
-        'longitude': _selectedLocation!.latitude,
+        'latitude': _selectedLocation!.latitude,
+        'longitude': _selectedLocation!.longitude,
         'address': _selectedAddress,
       });
     }}
