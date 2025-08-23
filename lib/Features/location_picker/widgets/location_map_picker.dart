@@ -99,8 +99,8 @@ class _LocationMapPickerState extends State<LocationMapPicker> {
       }
 
       // Default to Riyadh, Saudi Arabia
-      _selectedLocation = const LatLng(24.7136, 46.6753);
-      _getAddressFromCoordinates(24.7136, 46.6753);
+      _selectedLocation = const LatLng(24.71255509881504, 46.67422581464052);
+      _getAddressFromCoordinates(24.71255509881504, 46.67422581464052);
     }
   }
 

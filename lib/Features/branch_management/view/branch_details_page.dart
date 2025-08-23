@@ -1131,6 +1131,7 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
 
       print('Final system type for API: $systemTypeForAPI');
       print('Branch data: ${branchData.branchName}, ${branchData.employeeId}');
+      print('Latitude: ${branchData.latitude}, Longitude: ${branchData.longitude}');
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
