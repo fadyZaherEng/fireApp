@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/profile_feature/view/company_profile_screen.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../core/localization/app_localizations.dart';
 import '../../data/models/certificate_models.dart';
@@ -106,9 +107,21 @@ class ServiceProviderSection extends StatelessWidget {
 
         // Show selected provider info if one was chosen
         if (selectedProvider != null) ...[
-          SelectedProviderInfo(
-            provider: selectedProvider!,
-            localizations: localizations,
+          InkWell(
+            onTap: () {
+              // Optionally, you can implement some action when tapping the info box
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      CompanyProfileScreen(providerId: selectedProvider!.id),
+                ),
+              );
+            },
+            child: SelectedProviderInfo(
+              provider: selectedProvider!,
+              localizations: localizations,
+            ),
           ),
           SizedBox(height: 20.h),
         ],
