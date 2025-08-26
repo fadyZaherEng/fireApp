@@ -326,16 +326,11 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                               }
 
                               if (offers.isEmpty && !isLoading && !isError) {
-                                return ListView(
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  padding: EdgeInsets.all(16.w),
-                                  children: [
-                                    _buildNoOffersDialog(
-                                      context,
-                                      localizations,
-                                    ),
-                                  ],
+                                return Center(
+                                  child: _buildNoOffersDialog(
+                                    context,
+                                    localizations,
+                                  ),
                                 );
                               }
 
@@ -592,7 +587,10 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                               MaterialPageRoute(
                                 builder: (context) => ChatsListScreen(),
                               ),
-                            );
+                            ).then((value) {
+                              // Refresh offers after returning from chat
+                              context.read<ReceiveOffersCubit>().fetchOffers();
+                            });
                           },
                           child: _buildInfoItem(Icons.chat,
                               localizations.translate('chat'), isArabic),
@@ -643,7 +641,12 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                       : () {
                                           context
                                               .read<ReceiveOffersCubit>()
-                                              .rejectOffer(offer.id);
+                                              .rejectOffer(offer.id)
+                                              .then((_) {
+                                            context
+                                                .read<ReceiveOffersCubit>()
+                                                .fetchOffers();
+                                          });
                                         },
                                   child: isLoading
                                       ? SizedBox(
@@ -696,7 +699,12 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                                     false,
                                                     offerRequest.requestType ==
                                                         "MaintenanceContract",
-                                                  );
+                                                  )
+                                                  .then((_) {
+                                                context
+                                                    .read<ReceiveOffersCubit>()
+                                                    .fetchOffers();
+                                              });
                                             });
                                           } else {
                                             context
@@ -706,7 +714,12 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                                                   true,
                                                   offerRequest.requestType ==
                                                       "MaintenanceContract",
-                                                );
+                                                )
+                                                .then((_) {
+                                              context
+                                                  .read<ReceiveOffersCubit>()
+                                                  .fetchOffers();
+                                            });
                                           }
                                         },
                                   child: isLoading
@@ -964,6 +977,23 @@ class _ReceiveOffersContentState extends State<ReceiveOffersContent> {
                         context
                             .read<ReceiveOffersCubit>()
                             .cancelPriceOffer(offerRequest.id);
+                        //then refresh the list
+                        context
+                            .read<ReceiveOffersCubit>()
+                            .fetchPriceOffers(
+                              page: page,
+                              limit: limit,
+                              statusFlag: true,
+                            )
+                            .then((_) {
+                          _isLoadingMore = false;
+                          if (context
+                              .read<ReceiveOffersCubit>()
+                              .priceOffers
+                              .isEmpty) {
+                            _hasMore = false;
+                          }
+                        });
                       }
                     },
                     style: ElevatedButton.styleFrom(

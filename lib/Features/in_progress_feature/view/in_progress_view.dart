@@ -202,13 +202,9 @@ class _InProgressViewContentState extends State<InProgressViewContent> {
 
                           // 3) Empty
                           if (priceOffers.isEmpty && !isLoadingPriceOffers) {
-                            return ListView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: EdgeInsets.all(16.w),
-                              children: [
-                                _buildNoOffersDialog(context, localizations),
-                              ],
-                            );
+                            return Center(
+                                child: _buildNoOffersDialog(
+                                    context, localizations));
                           }
 
                           // 4) Success + بيانات

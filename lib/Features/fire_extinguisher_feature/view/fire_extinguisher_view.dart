@@ -35,7 +35,8 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
   List<Branch> _branches = [];
   List<ServiceProvider> _providers = [];
   List<AlertDevice> _alertDevices = [];
-  List<FireExtinguisher> _fireExtinguishers = [];
+  List<FireExtinguisher> _alarmItems = [];
+  List<FireExtinguisher> _fireSystemItems = [];
   bool _systemTypeEnabled = true;
   bool _areaEnabled = true;
 
@@ -139,7 +140,8 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
     setState(() {
       _isLoadingBranchDetails = true;
       _alertDevices.clear();
-      _fireExtinguishers.clear();
+      _fireSystemItems.clear();
+      _alarmItems.clear();
     });
 
     try {
@@ -149,9 +151,9 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
         final branchDetails = response.data!;
 
         // Convert items to alert devices and fire extinguishers
-        List<AlertDevice> alertDevices = [];
-        List<FireExtinguisher> fireExtinguishers = [];
-        fireExtinguishers = branchDetails.fireExtinguisherItem
+        // List<AlertDevice> alertDevices = [];
+        // List<FireExtinguisher> fireExtinguishers = [];
+        _alarmItems = branchDetails.fireExtinguisherItem
             .map((item) => FireExtinguisher(
                 type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
                         'en'
@@ -159,10 +161,25 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
                     : item.itemDetails.itemName.ar.toString(),
                 count: item.quantity))
             .toList();
-        setState(() {
-          _alertDevices = alertDevices;
-          _fireExtinguishers = fireExtinguishers;
-        });
+        _fireSystemItems = branchDetails.fireSystemItem
+            .map((item) => FireExtinguisher(
+                type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                        'en'
+                    ? item.itemDetails.itemName.en.toString()
+                    : item.itemDetails.itemName.ar.toString(),
+                count: item.quantity))
+            .toList();
+        _alertDevices = branchDetails.alarmItem
+            .map((item) => AlertDevice(
+                  type:
+                      (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                              'en'
+                          ? item.itemDetails.itemName.en.toString()
+                          : item.itemDetails.itemName.ar.toString(),
+                  count: item.quantity,
+                ))
+            .toList();
+        setState(() {});
       }
     } catch (e) {
       if (mounted) {
@@ -265,7 +282,8 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
             selectedBranch: _selectedBranch,
             selectedSystemType: _systemType,
             alertDevices: _alertDevices,
-            fireExtinguishers: _fireExtinguishers,
+            alarmItems: _alarmItems,
+            fireSystems: _fireSystemItems,
             wantsProvider: _wantsProvider,
             selectedProvider: _selectedProvider,
             providers: _providers,
@@ -340,7 +358,7 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
     if (_formKey.currentState?.validate() == true) {
       final area = double.tryParse(_areaController.text) ?? 0.0;
       final hasDevices = _alertDevices.any((device) => device.count > 0) ||
-          _fireExtinguishers.any((extinguisher) => extinguisher.count > 0);
+          _alarmItems.any((extinguisher) => extinguisher.count > 0);
 
       if (_selectedBranch.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -58,7 +58,9 @@ class DeviceListSection extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.all(16.w),
                     child: Text(
-                      localizations.translate('alertDevices'),
+                      title.isNotEmpty
+                          ? title
+                          : localizations.translate('alertDevices'),
                       style: TextStyle(
                         fontFamily: 'Almarai',
                         fontSize: 14.sp,
@@ -95,8 +97,8 @@ class DeviceListSection extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(16.w),
                       child: Text(
-                        device
-                            .type, // Using the type which now contains the itemName
+                        device.type,
+                        // Using the type which now contains the itemName
                         style: TextStyle(
                           fontFamily: 'Almarai',
                           fontSize: 14.sp,

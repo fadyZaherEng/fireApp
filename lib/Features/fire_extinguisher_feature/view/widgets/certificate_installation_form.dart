@@ -17,11 +17,13 @@ class CertificateInstallationForm extends StatelessWidget {
   final String selectedBranch;
   final String selectedSystemType;
   final List<AlertDevice> alertDevices;
-  final List<FireExtinguisher> fireExtinguishers;
   final Function(String?) onBranchChanged;
   final Function(String?) onSystemTypeChanged;
   final VoidCallback onSubmit;
   final AppLocalizations localizations;
+
+  final List<FireExtinguisher> alarmItems;
+  final List<FireExtinguisher> fireSystems;
 
   // Service Provider related parameters
   final bool wantsProvider;
@@ -41,7 +43,8 @@ class CertificateInstallationForm extends StatelessWidget {
     required this.selectedBranch,
     required this.selectedSystemType,
     required this.alertDevices,
-    required this.fireExtinguishers,
+    required this.alarmItems,
+    required this.fireSystems,
     required this.onBranchChanged,
     required this.onSystemTypeChanged,
     required this.onSubmit,
@@ -96,6 +99,7 @@ class CertificateInstallationForm extends StatelessWidget {
             enabled: areaEnabled,
           ),
           SizedBox(height: 20.h),
+          // Fire Extinguishers - Only display if there are items
 
           // Alert Devices
           DeviceListSection(
@@ -104,16 +108,40 @@ class CertificateInstallationForm extends StatelessWidget {
             title: localizations.translate('alertDevices'),
           ),
           SizedBox(height: 20.h),
-
-          // Fire Extinguishers - Only display if there are items
-          if (fireExtinguishers.isNotEmpty) ...[
+          if (alarmItems.isNotEmpty) ...[
             FireExtinguisherSection(
-              extinguishers: fireExtinguishers,
+              extinguishers: alarmItems,
               localizations: localizations,
               title: localizations.translate('fireExtinguishers'),
             ),
             SizedBox(height: 30.h),
           ],
+          if (fireSystems.isNotEmpty) ...[
+            FireExtinguisherSection(
+              extinguishers: fireSystems,
+              localizations: localizations,
+              title: localizations.translate('fireSystems'),
+            ),
+            SizedBox(height: 30.h),
+          ],
+
+          // Alert Devices
+          // DeviceListSection(
+          //   devices: alertDevices,
+          //   localizations: localizations,
+          //   title: localizations.translate('alertDevices'),
+          // ),
+          // SizedBox(height: 20.h),
+          //
+          // // Fire Extinguishers - Only display if there are items
+          // if (fireExtinguishers.isNotEmpty) ...[
+          //   FireExtinguisherSection(
+          //     extinguishers: fireExtinguishers,
+          //     localizations: localizations,
+          //     title: localizations.translate('fireExtinguishers'),
+          //   ),
+          //   SizedBox(height: 30.h),
+          // ],
           //  _buildQuantitySection(
           //   title: localizations.translate('fireExtinguishers'),
           //   items: fireExtinguishers,
@@ -141,67 +169,67 @@ class CertificateInstallationForm extends StatelessWidget {
     );
   }
 
-  // Widget _buildQuantitySection({
-  //   required String title,
-  //   required List<FireExtinguisher> items,
-  //   required context,
-  // }) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.end,
-  //     children: [
-  //       Row(
-  //         children: [
-  //           SvgPicture.asset(
-  //             "assets/images/price-down.svg",
-  //             color: AppColors.primaryBlue,
-  //             width: 16,
-  //             height: 16,
-  //           ),
-  //           const SizedBox(width: 8),
-  //           Text(
-  //             title,
-  //             style: const TextStyle(
-  //               fontWeight: FontWeight.bold,
-  //               fontSize: 14,
-  //             ),
-  //           ),
-  //           const Spacer(),
-  //           Text(
-  //             AppLocalizations.of(context).translate("quantity"),
-  //             style: const TextStyle(
-  //               fontWeight: FontWeight.bold,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //       const SizedBox(height: 8),
-  //       ...items.asMap().entries.map(
-  //             (item) => _buildQuantityRow(
-  //           item.value.type,
-  //           item.value.count.toString(),
-  //           item.key == items.length - 1,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-  //
-  // Widget _buildQuantityRow(String name, String count, bool isLast) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 4),
-  //     child: Column(
-  //       children: [
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Text(name, style: const TextStyle(fontSize: 14)),
-  //             Text(count, style: const TextStyle(color: Colors.grey)),
-  //           ],
-  //         ),
-  //         if (!isLast) const Divider(),
-  //         const SizedBox(height: 4),
-  //       ],
-  //     ),
-  //   );
-  // }
+// Widget _buildQuantitySection({
+//   required String title,
+//   required List<FireExtinguisher> items,
+//   required context,
+// }) {
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.end,
+//     children: [
+//       Row(
+//         children: [
+//           SvgPicture.asset(
+//             "assets/images/price-down.svg",
+//             color: AppColors.primaryBlue,
+//             width: 16,
+//             height: 16,
+//           ),
+//           const SizedBox(width: 8),
+//           Text(
+//             title,
+//             style: const TextStyle(
+//               fontWeight: FontWeight.bold,
+//               fontSize: 14,
+//             ),
+//           ),
+//           const Spacer(),
+//           Text(
+//             AppLocalizations.of(context).translate("quantity"),
+//             style: const TextStyle(
+//               fontWeight: FontWeight.bold,
+//             ),
+//           ),
+//         ],
+//       ),
+//       const SizedBox(height: 8),
+//       ...items.asMap().entries.map(
+//             (item) => _buildQuantityRow(
+//           item.value.type,
+//           item.value.count.toString(),
+//           item.key == items.length - 1,
+//         ),
+//       ),
+//     ],
+//   );
+// }
+//
+// Widget _buildQuantityRow(String name, String count, bool isLast) {
+//   return Padding(
+//     padding: const EdgeInsets.symmetric(vertical: 4),
+//     child: Column(
+//       children: [
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             Text(name, style: const TextStyle(fontSize: 14)),
+//             Text(count, style: const TextStyle(color: Colors.grey)),
+//           ],
+//         ),
+//         if (!isLast) const Divider(),
+//         const SizedBox(height: 4),
+//       ],
+//     ),
+//   );
+// }
 }
