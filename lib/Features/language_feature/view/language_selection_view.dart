@@ -40,12 +40,12 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
 
           // Bottom Sheet with specific dimensions
           Positioned(
-            top: 491.h, // Positioned from top as specified
+            top: 430.h, // Positioned from top as specified
             left: 0,
             right: 0,
             child: Container(
               width: 375.w,
-              height: 321.h,
+              height: 400.h,
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
               decoration: BoxDecoration(
                 color: const Color(0xFFF4F6F9),
@@ -63,98 +63,96 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
               ),
               child: SafeArea(
                 top: false,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // Sheet Handle Line
-                      Center(
-                        child: Container(
-                          width: 40.w,
-                          height: 4.h,
-                          margin: EdgeInsets.only(bottom: 16.h),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(2.r),
-                          ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // Sheet Handle Line
+                    Center(
+                      child: Container(
+                        width: 40.w,
+                        height: 4.h,
+                        margin: EdgeInsets.only(bottom: 16.h),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(2.r),
                         ),
                       ),
+                    ),
 
-                      // Title - اختر اللغة (Select Language)
-                      Row(
-                        children: [
-                          Text(
-                            localizations.translate('selectLanguage'),
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 20.h),
-
-                      // Language Options
-                      _buildLanguageButton(
-                        label: localizations.translate('english'),
-                        isSelected: selectedLanguage == 'en',
-                        onTap: () => _selectLanguage('en'),
-                      ),
-
-                      SizedBox(height: 12.h),
-
-                      _buildLanguageButton(
-                        label: localizations.translate('arabic'),
-                        isSelected: selectedLanguage == 'ar',
-                        onTap: () => _selectLanguage('ar'),
-                      ),
-
-                      SizedBox(height: 12.h),
-                      // Confirm Button
-                      Container(
-                        width: 345.w,
-                        height: 50.h,
-                        margin: EdgeInsets.only(top: 10.h),
-                        child: ElevatedButton(
-                          onPressed: _confirmLanguage,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFB71C1C),
-                            padding: EdgeInsets.only(
-                              top: 12.h,
-                              right: 120.w,
-                              bottom: 12.h,
-                              left: 120.w,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                          ),
-                          child: Builder(
-                            builder: (context) {
-                              // Use AppLocalizations to get translated text
-                              final String confirmText =
-                                  AppLocalizations.of(context)
-                                      .translate('confirm');
-                              return Text(
-                                confirmText,
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              );
-                            },
+                    // Title - اختر اللغة (Select Language)
+                    Row(
+                      children: [
+                        Text(
+                          localizations.translate('selectLanguage'),
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
                           ),
                         ),
-                      ),
+                      ],
+                    ),
 
-                      // Add padding for bottom spacing
-                      SizedBox(height: 16.h),
-                    ],
-                  ),
+                    SizedBox(height: 20.h),
+
+                    // Language Options
+                    _buildLanguageButton(
+                      label: localizations.translate('english'),
+                      isSelected: selectedLanguage == 'en',
+                      onTap: () => _selectLanguage('en'),
+                    ),
+
+                    SizedBox(height: 12.h),
+
+                    _buildLanguageButton(
+                      label: localizations.translate('arabic'),
+                      isSelected: selectedLanguage == 'ar',
+                      onTap: () => _selectLanguage('ar'),
+                    ),
+
+                    SizedBox(height: 12.h),
+                    // Confirm Button
+                    Container(
+                      width: 345.w,
+                      height: 50.h,
+                      margin: EdgeInsets.only(top: 10.h),
+                      child: ElevatedButton(
+                        onPressed: _confirmLanguage,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFB71C1C),
+                          padding: EdgeInsets.only(
+                            top: 12.h,
+                            right: 120.w,
+                            bottom: 12.h,
+                            left: 120.w,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                        ),
+                        child: Builder(
+                          builder: (context) {
+                            // Use AppLocalizations to get translated text
+                            final String confirmText =
+                                AppLocalizations.of(context)
+                                    .translate('confirm');
+                            return Text(
+                              confirmText,
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                    // Add padding for bottom spacing
+                    SizedBox(height: 16.h),
+                  ],
                 ),
               ),
             ),

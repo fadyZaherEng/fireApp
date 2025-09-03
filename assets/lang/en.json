@@ -511,5 +511,7 @@
   "companyAddress": "Riyadh – Al Olaya, King Fahd Road, Building 21, Office 30",
   "review1": "Honestly, excellent and very fast service. The request was carried out professionally and communication was smooth. Highly recommend dealing with them.",
   "review2": "Great experience and outstanding service. I will definitely repeat it.",
-  "showAll": "Show All"
+  "showAll": "Show All",
+  "invalidVerificationCode": "Invalid verification code",
+  "verificationSuccess": "Verification successful"
 }

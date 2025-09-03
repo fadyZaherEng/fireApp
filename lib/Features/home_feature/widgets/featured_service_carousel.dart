@@ -112,15 +112,11 @@ class FeaturedServiceCarousel extends StatelessWidget {
                                   Text(
                                     service.title,
                                     style: TextStyle(
-                                      fontFamily: 'Almarai',
-                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 16.sp,
-                                      height:
-                                          24 / 16, // line-height / font-size
-                                      letterSpacing: 0,
-                                      color: const Color.fromARGB(
-                                          255, 242, 172, 172),
+                                      fontSize: 14.sp,
+                                      color: Colors.white,
                                     ),
                                     textAlign: TextAlign.center,
                                     maxLines: 3,

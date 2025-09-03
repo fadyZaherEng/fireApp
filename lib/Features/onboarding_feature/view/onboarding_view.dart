@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/core/utils/constants/colors.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
 import '../../../core/utils/constants/image_strings.dart';
@@ -62,21 +63,21 @@ class _OnboardingViewState extends State<OnboardingView> {
         icon: TImages.permitIcon,
         titleKey: 'permitIssuanceTitle',
         descriptionKey: 'permitIssuanceDescription',
-        buttonColor: const Color(0xFFD32F2F),
+        buttonColor: CColors.primary,
         route: Routes.home,
       ),
       OnboardingPage(
         icon: TImages.contractIcon,
         titleKey: 'maintenanceContractTitle',
         descriptionKey: 'maintenanceContractDescription',
-        buttonColor: const Color(0xFFD32F2F),
+        buttonColor: CColors.secondary,
         route: Routes.home,
       ),
       OnboardingPage(
         icon: TImages.extinguisherIcon,
         titleKey: 'extinguisherMaintenanceTitle',
         descriptionKey: 'extinguisherMaintenanceDescription',
-        buttonColor: const Color(0xFFD32F2F),
+        buttonColor:CColors.primary,
         route: Routes.home,
       ),
     ];
@@ -120,7 +121,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget _buildContentSheet(
       BoxConstraints constraints, List<OnboardingPage> pages) {
     return Container(
-      height: 280.h,
+      height: 320.h,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(

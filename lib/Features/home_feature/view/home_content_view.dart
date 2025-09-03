@@ -227,8 +227,6 @@ class HomeContentView extends StatelessWidget {
     return Drawer(
       backgroundColor: Colors.white,
       child: Container(
-        width: 207.w,
-        height: 617.h,
         padding: EdgeInsets.fromLTRB(18.w, 16.h, 18.w, 16.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -268,10 +266,10 @@ class HomeContentView extends StatelessWidget {
                   Text(
                     localizations.translate('drawerCompanyName'),
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primaryBlue,
-                      fontFamily: 'Almarai',
+                      fontFamily: 'Poppins',
                     ),
                   ),
                   Text(
@@ -279,7 +277,7 @@ class HomeContentView extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12.sp,
                       color: const Color(0xFF666666),
-                      fontFamily: 'Almarai',
+                      fontFamily: 'Poppins',
                     ),
                   ),
                 ],
@@ -375,18 +373,14 @@ class HomeContentView extends StatelessWidget {
                   SizedBox(height: 10.h),
                   // Notifications with toggle
                   Container(
-                    width: 171.w,
-                    height: 45.h,
-                    margin: EdgeInsets.symmetric(vertical: 0),
-                    padding: EdgeInsets.all(9.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5.r),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
+                          color: Colors.black.withOpacity(0.06),
                           offset: const Offset(0, 2),
-                          blurRadius: 4,
+                          blurRadius: 6,
                         ),
                       ],
                     ),
@@ -402,9 +396,9 @@ class HomeContentView extends StatelessWidget {
                           child: Text(
                             localizations.translate('drawerNotifications'),
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: 13.sp,
                               color: const Color(0xFF333333),
-                              fontFamily: 'Almarai',
+                              fontFamily: 'Poppins',
                             ),
                           ),
                         ),
@@ -413,7 +407,7 @@ class HomeContentView extends StatelessWidget {
                           onChanged: (value) {
                             // Handle notification toggle
                           },
-                          activeColor: const Color(0xFF4CAF50),
+                          activeColor: Colors.green,
                         ),
                       ],
                     ),
@@ -472,18 +466,15 @@ class HomeContentView extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Container(
-      width: 171.w,
-      height: 45.h,
-      margin: EdgeInsets.symmetric(vertical: 0),
-      padding: EdgeInsets.symmetric(horizontal: 9.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withOpacity(0.06),
             offset: const Offset(0, 2),
-            blurRadius: 4,
+            blurRadius: 6,
+            spreadRadius: 0,
           ),
         ],
       ),
@@ -496,9 +487,9 @@ class HomeContentView extends StatelessWidget {
         title: Text(
           title,
           style: TextStyle(
-            fontSize: 14.sp,
+            fontSize: 13.sp,
             color: const Color(0xFF333333),
-            fontFamily: 'Almarai',
+            fontFamily: 'Poppins',
           ),
         ),
         onTap: onTap,

@@ -79,8 +79,8 @@ class ServiceGrid extends StatelessWidget {
                   Positioned.fill(
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 8.w,
-                        vertical: 12.h,
+                        horizontal: 6.w,
+                        vertical: 6.h,
                       ),
                       child: Center(
                         child: Text(
@@ -92,14 +92,12 @@ class ServiceGrid extends StatelessWidget {
                               ? "شهادات التركيب"
                               : service.title,
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            fontFamily: 'Almarai',
-                            height: 1.2,
+                            fontFamily: 'Poppins',
                           ),
                           textAlign: TextAlign.center,
-                          textDirection: TextDirection.rtl,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
