@@ -38,6 +38,7 @@ class WorkingDay {
     required this.endMinute,
     this.id,
   });
+
   Map<String, dynamic> toJson() {
     final json = {
       'day': day,
@@ -74,6 +75,7 @@ class BranchItem {
     required this.quantity,
     this.id,
   });
+
   Map<String, dynamic> toJson() {
     final json = {
       'item_id': itemId,
@@ -101,6 +103,8 @@ class CreateBranchRequest {
   final String address;
   final String mall;
   final int space;
+  final bool status;
+
   final String systemType;
   final List<WorkingDay> workingDays;
 
@@ -113,6 +117,7 @@ class CreateBranchRequest {
     required this.space,
     required this.systemType,
     required this.workingDays,
+    required this.status,
   });
 
   Map<String, dynamic> toJson() {
@@ -125,6 +130,7 @@ class CreateBranchRequest {
       'space': space,
       'systemType': systemType,
       'workingDays': workingDays.map((day) => day.toJson()).toList(),
+      'status': status,
     };
   }
 }
@@ -139,6 +145,7 @@ class Items {
     required this.fireSystemItem,
     required this.fireExtinguisherItem,
   });
+
   //to json
   Map<String, dynamic> toJson() {
     return {
@@ -170,6 +177,7 @@ class FireItems {
   FireItems({
     required this.fireExtinguisherItem,
   });
+
   //to json
   Map<String, dynamic> toJson() {
     return {
@@ -222,10 +230,63 @@ class AddFireItemsRequest {
   }
 }
 
+// class BranchResponse {
+//   final String id;
+//   final String branchName;
+//   final String employee;
+//   final String address;
+//   final BranchLocation location;
+//   final String mall;
+//   final int space;
+//   final String systemType;
+//   final String? consumer;
+//   final List<WorkingDay> workingDays;
+//   final List<BranchItem> items;
+//   final int? createdAt;
+//   final int? v;
+//
+//   BranchResponse({
+//     required this.id,
+//     required this.branchName,
+//     required this.employee,
+//     required this.address,
+//     required this.location,
+//     required this.mall,
+//     required this.space,
+//     required this.systemType,
+//     this.consumer,
+//     required this.workingDays,
+//     required this.items,
+//     this.createdAt,
+//     this.v,
+//   });
+//
+//   factory BranchResponse.fromJson(Map<String, dynamic> json) {
+//     return BranchResponse(
+//       id: json['_id'] ?? '',
+//       branchName: json['branchName'] ?? '',
+//       employee: json['employee'] ?? '',
+//       address: json['address'] ?? '',
+//       location: BranchLocation.fromJson(json['location'] ?? {}),
+//       mall: json['mall'] ?? '',
+//       space: json['space'] ?? 0,
+//       systemType: json['systemType'] ?? '',
+//       consumer: json['consumer'],
+//       workingDays: (json['workingDays'] as List<dynamic>? ?? [])
+//           .map((day) => WorkingDay.fromJson(day))
+//           .toList(),
+//       items: (json['items'] as List<dynamic>? ?? [])
+//           .map((item) => BranchItem.fromJson(item))
+//           .toList(),
+//       createdAt: json['createdAt'],
+//       v: json['__v'],
+//     );
+//   }
+// }
 class BranchResponse {
   final String id;
   final String branchName;
-  final String employee;
+  final Employee? employee; // بدل String
   final String address;
   final BranchLocation location;
   final String mall;
@@ -257,7 +318,7 @@ class BranchResponse {
     return BranchResponse(
       id: json['_id'] ?? '',
       branchName: json['branchName'] ?? '',
-      employee: json['employee'] ?? '',
+      employee: Employee.fromDynamic(json['employee']),
       address: json['address'] ?? '',
       location: BranchLocation.fromJson(json['location'] ?? {}),
       mall: json['mall'] ?? '',
@@ -273,5 +334,38 @@ class BranchResponse {
       createdAt: json['createdAt'],
       v: json['__v'],
     );
+  }
+}
+
+class Employee {
+  final String id;
+  final String? fullName;
+  final String? phoneNumber;
+  final String? profileImage;
+  final String? employeeType;
+
+  Employee({
+    required this.id,
+    this.fullName,
+    this.phoneNumber,
+    this.profileImage,
+    this.employeeType,
+  });
+
+  /// يتعامل مع الحالتين: String أو Map
+  factory Employee.fromDynamic(dynamic data) {
+    if (data is String) {
+      return Employee(id: data);
+    } else if (data is Map<String, dynamic>) {
+      return Employee(
+        id: data['_id'] ?? '',
+        fullName: data['fullName'],
+        phoneNumber: data['phoneNumber'],
+        profileImage: data['profileImage'],
+        employeeType: data['employeeType'],
+      );
+    } else {
+      return Employee(id: '');
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:safetyZone/Features/branches/branches_screen.dart';
 import 'package:safetyZone/core/config/app_config.dart';
 import '../models/manager_models.dart';
 import '../../../../core/services/shared_pref/shared_pref.dart';
@@ -61,6 +62,7 @@ class ManagerApiService {
       ),
     );
   }
+
   Future<String?> _getAuthToken() async {
     try {
       final token = SharedPref().getString(PrefKeys.token);
@@ -178,5 +180,60 @@ class ManagerApiService {
       message: message,
       statusCode: e.response?.statusCode,
     );
+  }
+
+  Future<ApiResponse<PaginatedBranchesResponse>> getBranchesPaginated({
+    int page = 1,
+    int limit = 10,
+  }) async {
+    try {
+      _logger.i('🔍 Fetching paginated branches (page: $page, limit: $limit)');
+      // Get auth token
+      final token = await _getAuthToken();
+      if (token != null) {
+        _dio.options.headers['Authorization'] = 'Bearer $token';
+      }
+      final response = await _dio.get(
+        '/api/consumer/branch/paginated',
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = PaginatedBranchesResponse.fromJson(
+            response.data as Map<String, dynamic>);
+
+        _logger.i(
+            '✅ Successfully fetched ${data.data.length} branches (total: ${data.total})');
+
+        return ApiResponse(
+          success: true,
+          message: 'Branches fetched successfully',
+          data: data,
+        );
+      } else {
+        _logger
+            .e('❌ Failed to fetch paginated branches: ${response.statusCode}');
+        return ApiResponse(
+          success: false,
+          message: 'Failed to fetch paginated branches: ${response.statusCode}',
+        );
+      }
+    } on DioException catch (e) {
+      _logger.e('💥 Error fetching paginated branches: ${e.message}');
+      return ApiResponse(
+        success: false,
+        message: e.response?.data['message'] ??
+            'Network error occurred while fetching paginated branches',
+      );
+    } catch (e) {
+      _logger.e('💥 Unexpected error fetching paginated branches: $e');
+      return ApiResponse(
+        success: false,
+        message: 'An unexpected error occurred',
+      );
+    }
   }
 }

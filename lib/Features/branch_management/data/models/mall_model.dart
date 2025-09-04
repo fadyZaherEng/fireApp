@@ -42,6 +42,7 @@ class Mall {
 
   @override
   int get hashCode => Object.hash(id, name, address);
+
 }
 
 class LocationData {

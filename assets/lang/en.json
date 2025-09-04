@@ -513,5 +513,16 @@
   "review2": "Great experience and outstanding service. I will definitely repeat it.",
   "showAll": "Show All",
   "invalidVerificationCode": "Invalid verification code",
-  "verificationSuccess": "Verification successful"
+  "verificationSuccess": "Verification successful",
+  "branches_added": "Branches Added",
+  "search_branch": "Search by company or branch name",
+  "location": "Location",
+  "branch_quantities": "Branch Quantities",
+  "contract_details": "Contract Details",
+  "invoices": "View Invoices",
+  "print": "Print",
+  "edit": "Edit",
+  "no_contract": "Do Not Renew Contract",
+  "renew_contract": "Renew Contract",
+  "add_branch": "Add New Branch"
 }

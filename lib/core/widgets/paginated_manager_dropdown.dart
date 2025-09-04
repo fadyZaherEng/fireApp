@@ -65,7 +65,10 @@ class _PaginatedManagerDropdownState extends State<PaginatedManagerDropdown> {
             borderRadius: BorderRadius.circular(BranchSpacing.borderRadius.r),
           ),
           child: DropdownButtonFormField<Manager>(
-            value: widget.selectedManager,
+            value: (state is ManagerLoaded &&
+                    state.managers.contains(widget.selectedManager))
+                ? widget.selectedManager
+                : null,
             isExpanded: true,
             alignment: Alignment.center,
             items: _buildDropdownItems(state),
@@ -76,7 +79,6 @@ class _PaginatedManagerDropdownState extends State<PaginatedManagerDropdown> {
             onTap: () {
               _logger
                   .i('🎯 Dropdown tapped! Current state: ${state.runtimeType}');
-              // Always load managers when dropdown is opened
               if (state is ManagerInitial || state is ManagerError) {
                 _logger.i('🔄 Loading managers...');
                 context.read<ManagerCubit>().loadManagers();
@@ -314,7 +316,9 @@ class _PaginatedManagerDropdownState extends State<PaginatedManagerDropdown> {
 
   List<Widget> _buildSelectedItems(ManagerState state) {
     if (state is ManagerLoaded) {
-      return state.managers.map<Widget>((Manager manager) {
+      final uniqueManagers = state.managers.toSet().toList();
+
+      return uniqueManagers.map<Widget>((Manager manager) {
         return Text(
           manager.fullName,
           style: widget.style ??

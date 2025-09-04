@@ -138,12 +138,14 @@ class BranchApiService {
       );
       print(fireExtinguisherResponse.data);
       if (response.statusCode == 200) {
+        print(response.data);
         return BranchResponse.fromJson(response.data);
       } else {
         throw Exception(
             'Failed to add items to branch: ${response.statusCode}');
       }
-    } on DioException catch (e) {
+    }
+    on DioException catch (e) {
       _logger.e('DioException in addItemsToBranch: ${e.message}');
       if (e.response?.statusCode == 401) {
         throw Exception('Authentication failed. Please login again.');

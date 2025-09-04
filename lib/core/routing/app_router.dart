@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safetyZone/Features/branches/branches_screen.dart';
 import 'package:safetyZone/Features/splash_feature/view/splash_view.dart';
 import '../../Features/add_employees_feature/view/add_employees_view.dart';
 import '../../Features/auth_features/registration_feature/view/beneficiary_registration_view_refactored.dart';
@@ -58,12 +59,16 @@ class AppRouter {
         );
       case Routes.addBranches:
       case Routes.branchDetails:
-        return MaterialPageRoute(
-          builder: (_) => const BranchDetailsPage(),
+         return MaterialPageRoute(
+          builder: (_) =>   BranchDetailsPage(
+            branch: settings.arguments as Branch?,
+          ),
         );
       case Routes.branchQuantities:
         return MaterialPageRoute(
-          builder: (_) => const BranchQuantitiesPage(),
+          builder: (_) =>   BranchQuantitiesPage(
+            isEditing: settings.arguments as bool? ?? false,
+          ),
         );
       case Routes.termsAndConditions:
         return MaterialPageRoute(

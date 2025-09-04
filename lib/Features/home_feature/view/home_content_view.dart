@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safetyZone/Features/auth_features/login_feature/view/login_view.dart';
+import 'package:safetyZone/Features/branches/branches_screen.dart';
 import 'package:safetyZone/Features/engineering_inspection_report_feature/data/services/engineering_inspection_report_api_service.dart';
 import 'package:safetyZone/Features/engineering_inspection_report_feature/view/engineering_inspection_report_view.dart';
 import 'package:safetyZone/Features/fire_extinguisher_feature/cubit/fire_extinguisher_cubit.dart';
@@ -323,8 +324,11 @@ class HomeContentView extends StatelessWidget {
                     icon: Icons.list_alt,
                     title: localizations.translate('drawerBranchesList'),
                     onTap: () {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                       // Navigate to branches list
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => const BranchesScreen(),
+                      ));
                     },
                   ),
                   SizedBox(height: 10.h),

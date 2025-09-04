@@ -17,11 +17,13 @@ import '../viewmodel/branch_quantities_viewmodel.dart';
 class BranchQuantitiesPage extends StatelessWidget {
   final String? systemType;
   final BranchData? branchData;
+  final bool isEditing;
 
   const BranchQuantitiesPage({
     super.key,
     this.systemType,
     this.branchData,
+    required this.isEditing,
   });
 
   @override
@@ -31,13 +33,20 @@ class BranchQuantitiesPage extends StatelessWidget {
         systemType: systemType,
         branchData: branchData,
       ),
-      child: const BranchQuantitiesView(),
+      child: BranchQuantitiesView(
+        isEditing: isEditing,
+      ),
     );
   }
 }
 
 class BranchQuantitiesView extends StatelessWidget {
-  const BranchQuantitiesView({super.key});
+  final bool isEditing;
+
+  const BranchQuantitiesView({
+    super.key,
+    required this.isEditing,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -216,7 +225,7 @@ class BranchQuantitiesView extends StatelessWidget {
           padding: EdgeInsets.all(16.w),
           child: PrimaryButton(
             text: localizations.translate('confirm'),
-            onPressed: () => viewModel.submitQuantities(context),
+            onPressed: () => viewModel.submitQuantities(context, isEditing),
           ),
         ),
         SizedBox(height: 20.h),

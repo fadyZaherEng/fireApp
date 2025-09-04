@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/branches/branches_screen.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
 import '../../../core/services/shared_pref/shared_pref.dart';
@@ -24,7 +25,12 @@ import 'branch_quantities_page.dart';
 String? selectedSystemType;
 
 class BranchDetailsPage extends StatefulWidget {
-  const BranchDetailsPage({super.key});
+  final Branch? branch;
+
+  const BranchDetailsPage({
+    super.key,
+    required this.branch,
+  });
 
   @override
   State<BranchDetailsPage> createState() => _BranchDetailsPageState();
@@ -52,6 +58,66 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
   void initState() {
     super.initState();
     _initializeWorkingDays();
+
+    if (widget.branch != null) {
+      _loadBranchData(widget.branch!);
+    }
+  }
+
+  void _loadBranchData(Branch branch) {
+    // Fill text fields
+    _branchController.text = branch.branchName;
+    _areaController.text = branch.space.toString() ?? "";
+    _selectedManager = Manager(
+      id: branch.employee.id,
+      phoneNumber: branch.employee.phoneNumber,
+      fullName: branch.employee.fullName,
+      jobTitle: branch.employee.employeeType,
+      permission: [],
+      profileImage: branch.employee.profileImage,
+    );
+    // _mainEstablishmentController.text = branch.employee.fullName;
+
+    // Manager (لو انت جايب المانجر من الـ API وتربطه بـ ID)
+    // _selectedManager = branch!.manager;
+
+    // Mall
+    // if (branch.mall != null) {
+    // _insideCommercialComplex = true;
+    // _selectedMall = Mall(id: '1', name: branch.mall, address: '');
+    // }
+
+    // Location
+    _selectedLatitude = branch.coordinates.first;
+    _selectedLongitude = branch.coordinates.last;
+    _selectedAddress = branch.address;
+
+    // System type (لو جاي كـ enum أو string من الـ API)
+    selectedSystemType = _getSystemTypeFromAPI(branch.systemType);
+
+    // Working days
+    if (branch.workingDays != null) {
+      for (final wd in branch.workingDays) {
+        _workingDays[wd.day.toLowerCase()] = WorkingDayData(
+          isActive: true,
+          startTime: TimeOfDay(hour: wd.startHour, minute: wd.startMinute),
+          endTime: TimeOfDay(hour: wd.endHour, minute: wd.endMinute),
+        );
+      }
+    }
+  }
+
+  /// Helper: Convert API system type back to display text
+  String? _getSystemTypeFromAPI(String? apiType) {
+    if (apiType == null) return null;
+    switch (apiType) {
+      case "normal":
+        return AppLocalizations.of(context).translate('normal');
+      case "addressed":
+        return AppLocalizations.of(context).translate('addressed');
+      default:
+        return null;
+    }
   }
 
   void _initializeWorkingDays() {
@@ -98,12 +164,16 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
         ],
         child: WillPopScope(
           onWillPop: () async {
-            // Navigate to home with replacement when back button is pressed
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              Routes.home,
-              (route) => false,
-            );
+            if (widget.branch != null) {
+              Navigator.pop(context);
+            } else {
+              // Navigate to home with replacement when back button is pressed
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                Routes.home,
+                (route) => false,
+              );
+            }
             return false; // Prevent default back navigation
           },
           child: Scaffold(
@@ -118,11 +188,17 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                   size: 20.sp,
                 ),
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    Routes.home,
-                    (route) => false,
-                  );
+                  if (widget.branch != null) {
+                    Navigator.pop(context);
+                    return;
+                  } else {
+                    // Navigate to home with replacement when back button is pressed
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Routes.home,
+                      (route) => false,
+                    );
+                  }
                 },
               ),
             ),
@@ -1139,6 +1215,7 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
           builder: (context) => BranchQuantitiesPage(
             systemType: systemTypeForAPI,
             branchData: branchData,
+            isEditing: widget.branch != null,
           ),
         ),
       );

@@ -321,7 +321,8 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> submitQuantities(BuildContext context) async {
+  Future<void> submitQuantities(
+      BuildContext context, final bool isEditing) async {
     if (!_validateQuantities()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -335,14 +336,16 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final branchResponse = await _createBranch();
+      final branchResponse = await _createBranch(
+        isEditing,
+      );
       await _addItemsToBranch(branchResponse.id);
 
       _isLoading = false;
       notifyListeners();
 
       if (context.mounted) {
-        _showSuccessMessage(context);
+        _showSuccessMessage(context, isEditing: isEditing);
         Navigator.pushNamedAndRemoveUntil(
           context,
           Routes.home,
@@ -362,7 +365,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
         product.quantity! > 0);
   }
 
-  Future<dynamic> _createBranch() async {
+  Future<dynamic> _createBranch(final bool isEditing) async {
     // Use actual branch data if available, otherwise use defaults
     final branchName = _branchData?.branchName ?? "Default Branch";
     final employeeId = _branchData?.employeeId ?? "";
@@ -404,6 +407,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       space: space.toInt(),
       systemType: _systemType,
       workingDays: workingDays,
+      status: isEditing,
     );
 
     print("Creating branch with data:");
@@ -481,10 +485,10 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     }
   }
 
-  void _showSuccessMessage(BuildContext context) {
+  void _showSuccessMessage(BuildContext context, {bool isEditing = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Branch created and items added successfully!'),
+        SnackBar(
+        content: Text(isEditing ? 'Branch updated successfully!' : 'Branch created and items added successfully!'),
         backgroundColor: Colors.green,
       ),
     );
@@ -497,6 +501,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     print('Error in submitQuantities: $error');
 
     if (context.mounted) {
+      print("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error: ${error.toString()}'),

@@ -161,7 +161,10 @@ class MaintenanceScheduleView extends StatelessWidget {
   }
 
   void _navigateToAddBranches(BuildContext context) {
-    Navigator.of(context).pushNamed(Routes.branchDetails);
+    Navigator.of(context).pushNamed(
+      Routes.branchDetails,
+      arguments: null, // نمرر null لإنشاء فرع جديد
+    );
   }
 
   void _navigateToTermsAndConditions(BuildContext context) {

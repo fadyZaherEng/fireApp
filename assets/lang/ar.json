@@ -518,5 +518,16 @@
   "review2": "تجربة رائعة وخدمة فوق الممتاز. سأكرر التجربة بكل تأكيد.",
   "showAll": "مشاهدة الكل",
   "invalidVerificationCode": "رمز التحقق غير صالح",
-  "verificationSuccess": "تم التحقق بنجاح"
+  "verificationSuccess": "تم التحقق بنجاح",
+  "branches_added": "الفروع المضافة",
+  "search_branch": "ابحث باسم الشركة او الفرع",
+  "location": "الموقع",
+  "branch_quantities": "كميات الفرع",
+  "contract_details": "تفاصيل العقد",
+  "invoices": "عرض الفواتير",
+  "print": "طباعة",
+  "edit": "تعديل",
+  "no_contract": "عدم تجديد العقد",
+  "renew_contract": "تجديد العقد",
+  "add_branch": "إضافة فرع جديد"
 }
