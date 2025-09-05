@@ -152,23 +152,78 @@ class _BranchesScreenState extends State<BranchesScreen> {
                                       runSpacing: 8,
                                       alignment: WrapAlignment.end,
                                       children: [
-                                        _buildOutlinedButton(
-                                            loc.translate("location")),
-                                        _buildOutlinedButton(
-                                            loc.translate("branch_quantities")),
-                                        _buildOutlinedButton(
-                                            loc.translate("contract_details")),
-                                        _buildOutlinedButton(
-                                            loc.translate("invoices")),
-                                        _buildFilledButton(loc.translate("print"),
-                                            Colors.red, Icons.print),
-                                        _buildOutlinedButton(
-                                            loc.translate("edit")),
-                                        _buildFilledButton(
-                                            loc.translate("no_contract"),
-                                            Colors.red),
-                                        _buildOutlinedButton(
-                                            loc.translate("renew_contract")),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            _buildOutlinedButton(
+                                                loc.translate("location")),
+                                            _buildFilledButton(
+                                              loc.translate("edit"),
+                                              CColors.secondary,
+                                              Icons.edit,
+                                            ),
+                                            _buildFilledButton(
+                                                loc.translate("print"),
+                                                CColors.primary,
+                                                Icons.print),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            _buildOutlinedButton(loc.translate(
+                                                "branch_quantities")),
+                                            _buildFilledButton(
+                                              loc.translate("edit"),
+                                              CColors.secondary,
+                                              Icons.edit,
+                                            ),
+                                            _buildFilledButton(
+                                                loc.translate("print"),
+                                                CColors.primary,
+                                                Icons.print),
+                                          ],
+                                        ),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              _buildFilledButton(
+                                                loc.translate(
+                                                    "contract_details"),
+                                                CColors.primary,
+                                                Icons.print,
+                                                18,
+                                                10,
+                                                12,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              _buildFilledButton(
+                                                loc.translate("invoices"),
+                                                CColors.primary,
+                                                Icons.print,
+                                                18,
+                                                10,
+                                                12,
+                                              ),
+                                              const SizedBox(width: 16),
+                                              _buildOutlinedButton(
+                                                loc.translate("renew_contract"),
+                                                18,
+                                                10,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              _buildOutlinedButton(
+                                                loc.translate("no_contract"),
+                                                18,
+                                                10,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
                                       ],
                                     )
                                   ],
@@ -217,34 +272,37 @@ class _BranchesScreenState extends State<BranchesScreen> {
     );
   }
 
-  Widget _buildOutlinedButton(String text) {
+  Widget _buildOutlinedButton(String text, [double? radius, double? fontSize]) {
     return OutlinedButton(
       onPressed: () {},
       style: OutlinedButton.styleFrom(
         side: const BorderSide(color: CColors.secondary),
         foregroundColor: CColors.secondary,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius ?? 8)),
       ),
-      child: Text(text, style: const TextStyle(fontSize: 13)),
+      child: Text(text, style: TextStyle(fontSize: fontSize ?? 13)),
     );
   }
 
-  Widget _buildFilledButton(String text, Color color, [IconData? icon]) {
+  Widget _buildFilledButton(String text, Color color,
+      [IconData? icon, double? radius, double? fontSize, double? iconSize]) {
     return ElevatedButton.icon(
       onPressed: () {},
-      icon: icon != null
-          ? Icon(icon, size: 16, color: Colors.white)
+      label: icon != null
+          ? Icon(icon, size: iconSize ?? 16, color: color)
           : const SizedBox(),
-      label: Text(
+      icon: Text(
         text,
-        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+        style: TextStyle(fontSize: fontSize ?? 13, fontWeight: FontWeight.w600),
       ),
       style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        backgroundColor: Colors.white,
+        foregroundColor: color,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius ?? 8)),
       ),
     );
   }
