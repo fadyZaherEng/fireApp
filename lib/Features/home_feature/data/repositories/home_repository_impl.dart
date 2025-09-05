@@ -42,32 +42,32 @@ class HomeRepositoryImpl implements HomeRepository {
 
     return [
       const HomeServiceModel(
-        id: '2',
-        title: "Engineering Inspection Report",
-        titleAr: "تقرير كشف هندسي على المنشآت",
-        image: 'assets/images/engineerreport.png',
-        order: 1,
-      ),
-      const HomeServiceModel(
         id: '3',
         title: "Safety Equipment Installation Certificates",
         titleAr: "شهادات تركيبات ادوات الوقاية",
-        image: 'assets/images/protectioncertificate.png',
+        image: 'assets/images/eng.png',
         order: 2,
       ),
       const HomeServiceModel(
-        id: '4',
-        title: 'Fire Extinguisher',
-        titleAr: 'طفاية الحريق',
-        image: 'assets/images/fireex.png',
-        order: 3,
+        id: '2',
+        title: "Engineering Inspection Report",
+        titleAr: "تقرير كشف هندسي على المنشآت",
+        image: 'assets/images/en.png',
+        order: 1,
       ),
       const HomeServiceModel(
         id: '5',
         title: 'Fire Prevention Maintenance Contracts',
         titleAr: 'عقود صيانة إنذار و إطفاء حريق',
-        image: 'assets/images/alarmfixcontract.png',
+        image: 'assets/images/maint.png',
         order: 4,
+      ),
+      const HomeServiceModel(
+        id: '4',
+        title: 'Fire Extinguisher',
+        titleAr: 'طفاية الحريق',
+        image: 'assets/images/fire.png',
+        order: 3,
       ),
     ];
   }

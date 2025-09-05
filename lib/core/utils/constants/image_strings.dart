@@ -3,7 +3,7 @@
 /// This class contains all the App Images in String formats.
 class TImages {
   // -- App Logos
-  static const String splash = "assets/images/splash.png";
+  static const String splash = "assets/images/img.png";
 
   // -- Language Selection
   static const String firefighter = "assets/images/firefighter.png";

@@ -40,11 +40,13 @@ class SplashView extends StatelessWidget {
               children: [
                 Hero(
                   tag: 'app_logo',
-                  child: Image.asset(
-                    TImages.splash,
-                    fit: BoxFit.cover, // Cover the entire area
-                    width: 1.sw, // Full screen width
-                    height: 1.sh, // Full screen height
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 75),
+                    child: Image.asset(
+                      TImages.splash,
+                      fit: BoxFit.scaleDown,
+                      width: 0.5.sw,
+                    ),
                   ),
                 ),
               ],

@@ -67,7 +67,7 @@ class ServiceGrid extends StatelessWidget {
                           // Blue Overlay (50% opacity)
                           Container(
                             decoration: BoxDecoration(
-                              color: const Color(0x80044692),
+                              color: Colors.black54,
                             ),
                           ),
                         ],
