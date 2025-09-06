@@ -118,7 +118,9 @@ class _BranchesScreenState extends State<BranchesScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(12),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
                                     branch.branchName,

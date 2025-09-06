@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:safetyZone/Features/add_employees_feature/view/add_employees_view.dart';
 import 'package:safetyZone/Features/auth_features/login_feature/view/login_view.dart';
 import 'package:safetyZone/Features/branches/branches_screen.dart';
@@ -304,7 +305,7 @@ class _HomeContentViewState extends State<HomeContentView> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  _buildDrawerItem(
+                  _buildDrawerIconItem(
                     icon: Icons.person_outline,
                     title: localizations.translate('drawerAccountSettings'),
                     onTap: () {
@@ -313,7 +314,7 @@ class _HomeContentViewState extends State<HomeContentView> {
                     },
                   ),
                   SizedBox(height: 10.h),
-                  _buildDrawerItem(
+                  _buildDrawerIconItem(
                     icon: Icons.verified_outlined,
                     title: localizations.translate('drawerInstantCertificates'),
                     onTap: () {
@@ -333,7 +334,7 @@ class _HomeContentViewState extends State<HomeContentView> {
                   ),
                   SizedBox(height: 10.h),
                   _buildDrawerItem(
-                    icon: Icons.list_alt,
+                    icon: "assets/images/b.svg",
                     title: localizations.translate('drawerBranchesList'),
                     onTap: () {
                       // Navigator.pop(context);
@@ -347,7 +348,7 @@ class _HomeContentViewState extends State<HomeContentView> {
                   ),
                   SizedBox(height: 10.h),
                   _buildDrawerItem(
-                    icon: Icons.people_outline,
+                    icon: "assets/images/add.svg",
                     title: localizations.translate('drawerAddEmployees'),
                     onTap: () {
                       // Navigator.pop(context);
@@ -362,7 +363,7 @@ class _HomeContentViewState extends State<HomeContentView> {
                   ),
                   SizedBox(height: 10.h),
                   _buildDrawerItem(
-                    icon: Icons.description_outlined,
+                    icon: "assets/images/reports.svg",
                     title: localizations.translate('drawerModificationReports'),
                     onTap: () {
                       Navigator.pop(context);
@@ -377,7 +378,7 @@ class _HomeContentViewState extends State<HomeContentView> {
                   ),
                   SizedBox(height: 10.h),
                   _buildDrawerItem(
-                    icon: Icons.handshake_outlined,
+                    icon: "assets/images/m.svg",
                     title:
                         localizations.translate('drawerMaintenanceContracts'),
                     onTap: () {
@@ -387,7 +388,7 @@ class _HomeContentViewState extends State<HomeContentView> {
                   ),
                   SizedBox(height: 10.h),
                   _buildDrawerItem(
-                    icon: Icons.assessment_outlined,
+                    icon: "assets/images/visit.svg",
                     title: localizations.translate('drawerVisitReports'),
                     onTap: () {
                       Navigator.pop(context);
@@ -410,10 +411,11 @@ class _HomeContentViewState extends State<HomeContentView> {
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.notifications_outlined,
+                        SvgPicture.asset(
+                          "assets/images/zondicons_notification.svg",
                           color: const Color(0xFFE53935),
-                          size: 20.sp,
+                          width: 20.w,
+                          height: 20.h,
                         ),
                         SizedBox(width: 16.w),
                         Expanded(
@@ -437,7 +439,7 @@ class _HomeContentViewState extends State<HomeContentView> {
                     ),
                   ),
                   SizedBox(height: 10.h),
-                  _buildDrawerItem(
+                  _buildDrawerIconItem(
                     icon: Icons.language,
                     title: localizations.translate('drawerLanguage'),
                     onTap: () {
@@ -454,7 +456,7 @@ class _HomeContentViewState extends State<HomeContentView> {
                     },
                   ),
                   SizedBox(height: 10.h),
-                  _buildDrawerItem(
+                  _buildDrawerIconItem(
                     icon: Icons.phone,
                     title: localizations.translate('drawerContactUs'),
                     onTap: () {
@@ -465,7 +467,7 @@ class _HomeContentViewState extends State<HomeContentView> {
 
                   SizedBox(height: 10.h),
                   _buildDrawerItem(
-                    icon: Icons.phone,
+                    icon: "assets/images/heroicons-solid_logout.svg",
                     title: localizations.translate('drawerLogout'),
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
@@ -488,6 +490,59 @@ class _HomeContentViewState extends State<HomeContentView> {
   }
 
   Widget _buildDrawerItem({
+    required String icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            offset: const Offset(0, 2),
+            blurRadius: 6,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: ListTile(
+        leading: Container(
+          width: 36.w,
+          height: 36.h,
+          decoration: BoxDecoration(
+            color: Color(0xFFE53935).withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8.r),
+            shape: BoxShape.rectangle,
+          ),
+          child: Center(
+            child: SvgPicture.asset(
+              icon,
+              color: const Color(0xFFE53935),
+              width: 20.w,
+              height: 20.h,
+            ),
+          ),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 13.sp,
+            color: const Color(0xFF333333),
+            fontFamily: 'Poppins',
+          ),
+        ),
+        onTap: onTap,
+        contentPadding: EdgeInsets.zero,
+        minLeadingWidth: 0,
+        horizontalTitleGap: 16.w,
+        dense: true,
+      ),
+    );
+  }
+
+  Widget _buildDrawerIconItem({
     required IconData icon,
     required String title,
     required VoidCallback onTap,
@@ -506,10 +561,21 @@ class _HomeContentViewState extends State<HomeContentView> {
         ],
       ),
       child: ListTile(
-        leading: Icon(
-          icon,
-          color: const Color(0xFFE53935),
-          size: 20.sp,
+        leading: Container(
+          width: 36.w,
+          height: 36.h,
+           decoration: BoxDecoration(
+            color: Color(0xFFE53935).withOpacity(0.2),
+            borderRadius: BorderRadius.circular(8.r),
+             shape: BoxShape.rectangle,
+          ),
+          child: Center(
+            child: Icon(
+              icon,
+              color: const Color(0xFFE53935),
+              size: 20.sp,
+            ),
+          ),
         ),
         title: Text(
           title,

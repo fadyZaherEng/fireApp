@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/fire_prevention_maintenance_contract_feature/view/widgets/fire_extinguisher_section.dart';
 import '../../../../../core/localization/app_localizations.dart';
 import '../../data/models/certificate_models.dart';
 import 'service_provider_section.dart';
@@ -20,6 +21,7 @@ class CertificateInstallationForm extends StatelessWidget {
   final String selectedSystemType;
   final List<AlertDevice> alertDevices;
   final List<FireExtinguisher> fireExtinguishers;
+  final List<FireExtinguisher> fireSystems;
   final Function(String?) onBranchChanged;
   final Function(String?) onSystemTypeChanged;
   final VoidCallback onSubmit;
@@ -63,6 +65,7 @@ class CertificateInstallationForm extends StatelessWidget {
     this.isLoadingProviders = false,
     this.systemTypeEnabled = true,
     this.areaEnabled = true,
+    required this.fireSystems,
   });
 
   @override
@@ -134,14 +137,24 @@ class CertificateInstallationForm extends StatelessWidget {
           SizedBox(height: 20.h),
 
           // Fire Extinguishers - Only display if there are items
-          // if (fireExtinguishers.isNotEmpty) ...[
-          //   FireExtinguisherSection(
-          //     extinguishers: fireExtinguishers,
-          //     localizations: localizations,
-          //     title: localizations.translate('fireExtinguishers'),
-          //   ),
-          //   SizedBox(height: 30.h),
-          // ],
+          if (fireExtinguishers.isNotEmpty) ...[
+            FireExtinguisherSection(
+              extinguishers: fireExtinguishers,
+              localizations: localizations,
+              title: localizations.translate('fireExtinguishers'),
+            ),
+            SizedBox(height: 30.h),
+          ],
+
+
+          if (fireSystems.isNotEmpty) ...[
+            FireExtinguisherSection(
+              extinguishers: fireSystems,
+              localizations: localizations,
+              title: localizations.translate('fireSystems'),
+            ),
+            SizedBox(height: 30.h),
+          ],
 
           // Submit Button
           SubmitButton(

@@ -102,12 +102,12 @@ class CertificateInstallationForm extends StatelessWidget {
           // Fire Extinguishers - Only display if there are items
 
           // Alert Devices
-          DeviceListSection(
-            devices: alertDevices,
-            localizations: localizations,
-            title: localizations.translate('alertDevices'),
-          ),
-          SizedBox(height: 20.h),
+          // DeviceListSection(
+          //   devices: alertDevices,
+          //   localizations: localizations,
+          //   title: localizations.translate('alertDevices'),
+          // ),
+          // SizedBox(height: 20.h),
           if (alarmItems.isNotEmpty) ...[
             FireExtinguisherSection(
               extinguishers: alarmItems,
@@ -116,14 +116,14 @@ class CertificateInstallationForm extends StatelessWidget {
             ),
             SizedBox(height: 30.h),
           ],
-          if (fireSystems.isNotEmpty) ...[
-            FireExtinguisherSection(
-              extinguishers: fireSystems,
-              localizations: localizations,
-              title: localizations.translate('fireSystems'),
-            ),
-            SizedBox(height: 30.h),
-          ],
+          // if (fireSystems.isNotEmpty) ...[
+          //   FireExtinguisherSection(
+          //     extinguishers: fireSystems,
+          //     localizations: localizations,
+          //     title: localizations.translate('fireSystems'),
+          //   ),
+          //   SizedBox(height: 30.h),
+          // ],
 
           // Alert Devices
           // DeviceListSection(

@@ -38,6 +38,7 @@ class _ServiceProviderSelectionViewState
   List<ServiceProvider> _providers = [];
   List<AlertDevice> _alertDevices = [];
   List<FireExtinguisher> _fireExtinguishers = [];
+  List<FireExtinguisher> _fireSystems = [];
   bool _systemTypeEnabled = true;
   bool _areaEnabled = true;
   int _visitsPerYear = 2; // Default value
@@ -132,6 +133,7 @@ class _ServiceProviderSelectionViewState
       _isLoadingBranchDetails = true;
       _alertDevices.clear();
       _fireExtinguishers.clear();
+      _fireSystems.clear();
     });
 
     try {
@@ -162,10 +164,22 @@ class _ServiceProviderSelectionViewState
               ),
             )
             .toList();
+        List<FireExtinguisher> fireSystems = branchDetails.fireExtinguisherItem
+            .map(
+              (item) => FireExtinguisher(
+                type: (SharedPref().getString(PrefKeys.languageCode) ?? 'en') ==
+                        'en'
+                    ? item.itemDetails.itemName.en.toString()
+                    : item.itemDetails.itemName.ar.toString(),
+                count: item.quantity,
+              ),
+            )
+            .toList();
 
         setState(() {
           _alertDevices = alertDevices;
           _fireExtinguishers = fireExtinguishers;
+          _fireSystems = fireSystems;
         });
       } else {
         if (mounted) {
@@ -284,6 +298,7 @@ class _ServiceProviderSelectionViewState
             selectedSystemType: _systemType,
             alertDevices: _alertDevices,
             fireExtinguishers: _fireExtinguishers,
+            fireSystems: _fireSystems,
             wantsProvider: _wantsProvider,
             selectedProvider: _selectedProvider,
             providers: _providers,
