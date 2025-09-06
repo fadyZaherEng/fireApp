@@ -171,6 +171,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     notifyListeners();
   }
   void _prefillProductsFromBranch(branch.Branch? branch) {
+
     final lang = "en"; // أو استبدلها بالـ SharedPref().getString(PrefKeys.languageCode)
      void updateProducts( branchItems, String type) {
       for (final branchItem in branchItems) {

@@ -356,7 +356,9 @@ class _HomeContentViewState extends State<HomeContentView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AddEmployeeView(),
+                          builder: (context) => AddEmployeeView(
+                            isEditMode: true,
+                          ),
                         ),
                       );
                     },
@@ -564,10 +566,10 @@ class _HomeContentViewState extends State<HomeContentView> {
         leading: Container(
           width: 36.w,
           height: 36.h,
-           decoration: BoxDecoration(
+          decoration: BoxDecoration(
             color: Color(0xFFE53935).withOpacity(0.2),
             borderRadius: BorderRadius.circular(8.r),
-             shape: BoxShape.rectangle,
+            shape: BoxShape.rectangle,
           ),
           child: Center(
             child: Icon(

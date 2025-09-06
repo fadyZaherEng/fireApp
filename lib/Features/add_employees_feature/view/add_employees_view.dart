@@ -15,7 +15,12 @@ import 'widgets/employee_form.dart';
 import 'widgets/loading_dialog.dart';
 
 class AddEmployeeView extends StatefulWidget {
-  const AddEmployeeView({super.key});
+  final bool isEditMode;
+
+  const AddEmployeeView({
+    super.key,
+    this.isEditMode = false,
+  });
 
   @override
   State<AddEmployeeView> createState() => _AddEmployeeViewState();
@@ -156,7 +161,11 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
                   backgroundColor: const Color(0xFF25D366),
                 ),
               );
-              Navigator.pushNamed(context, Routes.addEmployeesSuccess);
+              if (widget.isEditMode) {
+                Navigator.pop(context);
+              } else {
+                Navigator.pushNamed(context, Routes.addEmployeesSuccess);
+              }
             } else if (state is AddEmployeeFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
