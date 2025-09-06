@@ -84,13 +84,14 @@ class ServiceGrid extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          service.title.contains(AppLocalizations.of(context)
-                                      .translate(
-                                          'safety_equipment_installation_certificates')) ||
-                                  service.title
-                                      .contains("شهادات تركيبات ادوات الوقاية")
+                          service.title.contains("شهادات تركيبات ادوات الوقاية")
                               ? "شهادات التركيب"
-                              : service.title,
+                              : service.title.contains(
+                                      AppLocalizations.of(context).translate(
+                                          'safety_equipment_installation_certificates'))
+                                  ? AppLocalizations.of(context).translate(
+                                      'safety_equipment_installation_certificates')
+                                  : service.title,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,

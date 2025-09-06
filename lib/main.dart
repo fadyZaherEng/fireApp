@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/restart_widget.dart';
 import 'package:safetyZone/Features/splash_feature/view/splash_view.dart';
 import 'core/di/dependency_injection.dart';
 import 'core/services/shared_pref/shared_pref.dart';
@@ -28,13 +30,15 @@ void main() async {
   await setupInjector();
 
   HttpOverrides.global = MyHttpOverrides();
-
-  runApp(
-    BlocProvider(
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]).then((_) {
+    runApp(BlocProvider(
       create: (context) => LocaleCubit()..getSavedLanguage(),
-      child: const MyApp(),
-    ),
-  );
+      child: const RestartWidget(MyApp()),
+    ));
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -50,7 +54,7 @@ class MyApp extends StatelessWidget {
           splitScreenMode: true,
           builder: (context, child) {
             return MaterialApp(
-              title: 'Safety Zone Provider',
+              title: 'Safety Zone Consumer',
               theme: AppTheme.getTheme(state.locale.languageCode),
               home: const SplashView(),
               debugShowCheckedModeBanner: false,

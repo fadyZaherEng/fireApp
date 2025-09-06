@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/restart_widget.dart';
+import 'package:safetyZone/core/routing/routes.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../core/localization/cubit/locale_cubit.dart';
-import '../../../core/routing/routes.dart';
 import '../../../core/services/shared_pref/pref_keys.dart';
 import '../../../core/services/shared_pref/shared_pref.dart';
 import '../../../core/utils/constants/image_strings.dart';
@@ -172,7 +173,8 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
       child: Container(
         width: 345.w,
         height: 48.h,
-        margin: EdgeInsets.only(bottom: 10.h), // Gap between buttons
+        margin: EdgeInsets.only(bottom: 10.h),
+        // Gap between buttons
         padding: EdgeInsets.only(
           top: 12.h,
           right: 120.w,
@@ -230,9 +232,11 @@ class _LanguageSelectionViewState extends State<LanguageSelectionView> {
     SharedPref().setString(PrefKeys.languageCode, selectedLanguage);
 
     // Ensure language is updated in the app
-    context.read<LocaleCubit>().changeLanguage(selectedLanguage);
-
+    RestartWidget.restartApp(context);
+    Navigator.pop(context);
     // Navigate to onboarding
-    Navigator.pushReplacementNamed(context, Routes.onboarding);
+    // Navigator.pushReplacementNamed(context, Routes.splash);
+    // Restart.restartApp();
+    print('Language confirmed: $selectedLanguage');
   }
 }

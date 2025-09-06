@@ -529,5 +529,9 @@
   "edit": "تعديل",
   "no_contract": "عدم تجديد العقد",
   "renew_contract": "تجديد العقد",
-  "add_branch": "إضافة فرع جديد"
+  "add_branch": "إضافة فرع جديد",
+  "This item is already added!": "هذا العنصر مضاف بالفعل!",
+  "Please enter at least one product quantity": "يرجى إدخال كمية منتج واحد على الأقل",
+  "thereAreRepeatedItems": "هناك عناصر مكررة",
+  "shouldHave": "يجب أن يكون لديك  "
 }

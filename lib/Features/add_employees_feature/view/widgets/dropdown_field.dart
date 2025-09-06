@@ -94,12 +94,13 @@ class _MultiSelectDropdownFieldState extends State<MultiSelectDropdownField> {
     final localizations = AppLocalizations.of(context);
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           widget.label,
           style: AppTextStyles.fieldLabel.copyWith(
-            fontFamily: 'Almarai',
             fontWeight: FontWeight.w400,
             fontSize: 16,
             height: 22 / 16,
@@ -121,7 +122,7 @@ class _MultiSelectDropdownFieldState extends State<MultiSelectDropdownField> {
                 width: 1,
               ),
             ),
-            alignment: Alignment.centerLeft,
+            alignment: AlignmentDirectional.centerStart,
             child: Text(
               _selectedItems.isEmpty
                   ? localizations.translate('select_options')

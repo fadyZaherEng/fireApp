@@ -124,6 +124,21 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
   }
 
   @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await Future.delayed(const Duration(milliseconds: 500));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '${_localizations.translate('shouldHave')} ${_localizations.translate('contractDocumentation')}, ${_localizations.translate('management')}',
+          style: AppTextStyles.fieldLabel,
+        ),
+        backgroundColor: Colors.yellow,
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _addEmployeeCubit,
@@ -188,26 +203,6 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
                     children: [
                       const SizedBox(height: AppSizes.paddingLarge),
 
-                      // Main Form Card Container
-                      // EmployeeForm(
-                      //   index: currentEmployeeIndex,
-                      //   nameController: _nameControllers[currentEmployeeIndex],
-                      //   phoneController:
-                      //       _phoneControllers[currentEmployeeIndex],
-                      //   selectedRole: _selectedRoles,
-                      //   selectedCountry:
-                      //       _selectedCountries[currentEmployeeIndex],
-                      //   selectedImage: _selectedImages[currentEmployeeIndex],
-                      //   pickImage: _pickImage,
-                      //   onRoleChanged: (List<String>? newValue) {
-                      //     setState(() {
-                      //       _selectedRoles = newValue!;
-                      //     });
-                      //   },
-                      //   showCountryPicker: _showCountryPicker,
-                      //   roles: EmployeeConstants.roles,
-                      //   countries: EmployeeConstants.countries,
-                      // ),
                       EmployeeForm(
                         index: currentEmployeeIndex,
                         nameController: _nameControllers[currentEmployeeIndex],
@@ -226,17 +221,6 @@ class _AddEmployeeViewState extends State<AddEmployeeView> {
                         showCountryPicker: _showCountryPicker,
                         roles: EmployeeConstants.roles,
                         countries: EmployeeConstants.countries,
-                      ),
-
-                      const SizedBox(height: AppSizes.paddingLarge),
-
-                      // Add More Button
-                      TextButton(
-                        onPressed: _addNewEmployee,
-                        child: Text(
-                          _localizations.translate('addMore'),
-                          style: AppTextStyles.addMoreText,
-                        ),
                       ),
 
                       const SizedBox(height: AppSizes.paddingLarge),

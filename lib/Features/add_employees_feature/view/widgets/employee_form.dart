@@ -127,13 +127,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
           ),
           const SizedBox(height: AppSizes.paddingLarge),
 
-          // Role Dropdown
-          // DropdownField(
-          //   label: localizations.translate('employeeRole'),
-          //   value: widget.selectedRole,
-          //   items: widget.roles,
-          //   onChanged: widget.onRoleChanged,
-          // ),
           MultiSelectDropdownField(
             label: localizations.translate('employeeRole'),
             selectedValues: widget.selectedRole,

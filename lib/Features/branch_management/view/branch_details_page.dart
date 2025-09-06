@@ -206,23 +206,29 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
               child: Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: BranchSpacing.xs.h,
-                        bottom: BranchSpacing.lg.h,
-                        left: BranchSpacing.lg.w,
-                        right: BranchSpacing.lg.w,
-                      ),
-                      child: Text(
-                        localizations.translate('addYourBranches'),
-                        style: TextStyle(
-                          fontFamily: 'Almarai',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 24.sp,
-                          height: 22 / 24,
-                          letterSpacing: 0,
-                          color: BranchColors.primaryBlue,
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: BranchSpacing.xs.h,
+                          bottom: BranchSpacing.lg.h,
+                          left: BranchSpacing.lg.w,
+                          right: BranchSpacing.lg.w,
+                        ),
+                        child: Center(
+                          child: Text(
+                            localizations.translate('addYourBranches'),
+                            style: TextStyle(
+                              fontFamily: 'Almarai',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 24.sp,
+                              height: 22 / 24,
+                              letterSpacing: 0,
+                              color: BranchColors.primaryBlue,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -233,13 +239,15 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                         left: BranchSpacing.lg.w,
                         right: BranchSpacing.lg.w,
                       ),
-                      child: Text(
-                        localizations.translate('enterAvailableQuantities'),
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                          fontFamily: isRTL ? 'Almarai' : 'Poppins',
+                      child: Center(
+                        child: Text(
+                          localizations.translate('enterAvailableQuantities'),
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontFamily: isRTL ? 'Almarai' : 'Poppins',
+                          ),
                         ),
                       ),
                     ),
@@ -250,6 +258,8 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                         padding: EdgeInsets.symmetric(
                             horizontal: BranchSpacing.lg.w),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             // Form fields section
                             _buildFormFields(localizations, isRTL),
@@ -324,7 +334,7 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
 
                 return branchWidgets.CustomTextField(
                   enabled: false,
-                  suffixIcon: Icon(Icons.home, color: BranchColors.primaryBlue),
+                  // suffixIcon: Icon(Icons.home, color: BranchColors.primaryBlue),
                   controller: _mainEstablishmentController,
                   hintText: fullName.isNotEmpty
                       ? fullName
@@ -339,23 +349,21 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
 
         // Branch field
         Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text(
-                  localizations.translate('branch'),
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: BranchColors.primaryBlue,
-                    fontFamily: isRTL ? 'Almarai' : 'Poppins',
-                  ),
-                ),
-              ],
+            Text(
+              localizations.translate('branch'),
+              style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w600,
+                color: BranchColors.primaryBlue,
+                fontFamily: isRTL ? 'Almarai' : 'Poppins',
+              ),
             ),
             SizedBox(height: BranchSpacing.sm.h),
             branchWidgets.CustomTextField(
-              suffixIcon: Icon(Icons.home, color: BranchColors.primaryBlue),
+              // suffixIcon: Icon(Icons.home, color: BranchColors.primaryBlue),
               controller: _branchController,
               hintText: localizations.translate('enterBranchName'),
               validator: (value) {
@@ -408,12 +416,20 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
 
   Widget _buildMapSection(AppLocalizations localizations, bool isRTL) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // Map label
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Icon(
+              Icons.location_pin,
+              size: 20.sp,
+              color: BranchColors.primaryRed,
+            ),
+            SizedBox(width: BranchSpacing.sm.w),
             Text(
               localizations.translate('addLocation'),
               style: TextStyle(
@@ -422,12 +438,6 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                 color: BranchColors.primaryBlue,
                 fontFamily: isRTL ? 'Almarai' : 'Poppins',
               ),
-            ),
-            SizedBox(width: BranchSpacing.sm.w),
-            Icon(
-              Icons.location_pin,
-              size: 20.sp,
-              color: BranchColors.primaryRed,
             ),
           ],
         ),
@@ -463,7 +473,8 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
   Widget _buildCommercialComplexSection(
       AppLocalizations localizations, bool isRTL) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // Question
         Text(
@@ -480,36 +491,49 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
 
         // Radio buttons
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              localizations.translate('no'),
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontFamily: isRTL ? 'Almarai' : 'Poppins',
-              ),
-            ),
-            Radio<bool>(
-              value: false,
-              groupValue: _insideCommercialComplex,
-              onChanged: (value) =>
-                  setState(() => _insideCommercialComplex = value ?? false),
-              activeColor: BranchColors.primaryRed,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  localizations.translate('no'),
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontFamily: isRTL ? 'Almarai' : 'Poppins',
+                  ),
+                ),
+                Radio<bool>(
+                  value: false,
+                  groupValue: _insideCommercialComplex,
+                  onChanged: (value) =>
+                      setState(() => _insideCommercialComplex = value ?? false),
+                  activeColor: BranchColors.primaryRed,
+                ),
+              ],
             ),
             SizedBox(width: BranchSpacing.xl.w),
-            Text(
-              localizations.translate('yes'),
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontFamily: isRTL ? 'Almarai' : 'Poppins',
-              ),
-            ),
-            Radio<bool>(
-              value: true,
-              groupValue: _insideCommercialComplex,
-              onChanged: (value) =>
-                  setState(() => _insideCommercialComplex = value ?? false),
-              activeColor: BranchColors.primaryRed,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  localizations.translate('yes'),
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontFamily: isRTL ? 'Almarai' : 'Poppins',
+                  ),
+                ),
+                Radio<bool>(
+                  value: true,
+                  groupValue: _insideCommercialComplex,
+                  onChanged: (value) =>
+                      setState(() => _insideCommercialComplex = value ?? false),
+                  activeColor: BranchColors.primaryRed,
+                ),
+              ],
             ),
           ],
         ),
@@ -553,7 +577,8 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
 
         // Area field
         Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               localizations.translate('area'),
@@ -632,7 +657,8 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
 
         // System type dropdown
         Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               localizations.translate('systemType'),
@@ -672,12 +698,20 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
 
   Widget _buildWorkingHoursSection(AppLocalizations localizations, bool isRTL) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // Working hours header
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Icon(
+              Icons.access_time,
+              size: 18.sp,
+              color: BranchColors.primaryRed,
+            ),
+            SizedBox(width: BranchSpacing.sm.w),
             Text(
               localizations.translate('workingHours'),
               style: TextStyle(
@@ -686,12 +720,6 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                 color: BranchColors.primaryRed,
                 fontFamily: isRTL ? 'Almarai' : 'Poppins',
               ),
-            ),
-            SizedBox(width: BranchSpacing.sm.w),
-            Icon(
-              Icons.access_time,
-              size: 18.sp,
-              color: BranchColors.primaryRed,
             ),
           ],
         ),
@@ -714,14 +742,60 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
             ),
             child: Row(
               children: [
+                // Day name and checkbox
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Checkbox
+                      SizedBox(
+                        width: 24.w,
+                        height: 24.h,
+                        child: Checkbox(
+                          value:
+                              _workingDays[dayData['key']!]?.isActive ?? false,
+                          onChanged: (value) {
+                            setState(() {
+                              _workingDays[dayData['key']!] =
+                                  _workingDays[dayData['key']!]!
+                                      .copyWith(isActive: value ?? false);
+                            });
+                          },
+                          activeColor: BranchColors.primaryRed,
+                          checkColor: BranchColors.white,
+                          side: BorderSide(
+                            color: BranchColors.fieldBorder,
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      // Day name
+                      Text(
+                        dayData['name']!,
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontFamily: isRTL ? 'Almarai' : 'Poppins',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: BranchSpacing.lg.w),
+
                 // From time picker
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       // AM/PM for from time
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             width: 32.w,
@@ -829,12 +903,22 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                       SizedBox(height: 4.h),
 
                       // "من" label
-                      Text(
-                        localizations.translate('from'),
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: BranchColors.textSecondary,
-                          fontFamily: isRTL ? 'Almarai' : 'Poppins',
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              localizations.translate('from'),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: BranchColors.textSecondary,
+                                fontFamily: isRTL ? 'Almarai' : 'Poppins',
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                          ],
                         ),
                       ),
                     ],
@@ -846,11 +930,13 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                 // To time picker
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // AM/PM for to time
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             width: 32.w,
@@ -882,31 +968,34 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                             ),
                           ),
                           SizedBox(width: 4.w),
-                          Container(
-                            width: 32.w,
-                            height: 20.h,
-                            decoration: BoxDecoration(
-                              color:
-                                  _getAMPMColor(dayData['key']!, false, false),
-                              borderRadius: BorderRadius.circular(4.r),
-                              border: Border.all(
+                          Center(
+                            child: Container(
+                              width: 32.w,
+                              height: 20.h,
+                              decoration: BoxDecoration(
                                 color: _getAMPMColor(
-                                            dayData['key']!, false, false) ==
-                                        Colors.grey.shade100
-                                    ? Colors.grey.shade300
-                                    : BranchColors.primaryBlue.withOpacity(0.3),
-                                width: 1,
+                                    dayData['key']!, false, false),
+                                borderRadius: BorderRadius.circular(4.r),
+                                border: Border.all(
+                                  color: _getAMPMColor(
+                                              dayData['key']!, false, false) ==
+                                          Colors.grey.shade100
+                                      ? Colors.grey.shade300
+                                      : BranchColors.primaryBlue
+                                          .withOpacity(0.3),
+                                  width: 1,
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'PM',
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: _getAMPMTextColor(
-                                      dayData['key']!, false, false),
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
+                              child: Center(
+                                child: Text(
+                                  'PM',
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: _getAMPMTextColor(
+                                        dayData['key']!, false, false),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
@@ -959,56 +1048,21 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
                       SizedBox(height: 4.h),
 
                       // "إلى" label
-                      Text(
-                        localizations.translate('to'),
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: BranchColors.textSecondary,
-                          fontFamily: isRTL ? 'Almarai' : 'Poppins',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(width: BranchSpacing.lg.w),
-
-                // Day name and checkbox
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // Day name
-                      Text(
-                        dayData['name']!,
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w600,
-                          color: BranchColors.primaryBlue,
-                          fontFamily: isRTL ? 'Almarai' : 'Poppins',
-                        ),
-                      ),
-
-                      // Checkbox
-                      SizedBox(
-                        width: 24.w,
-                        height: 24.h,
-                        child: Checkbox(
-                          value:
-                              _workingDays[dayData['key']!]?.isActive ?? false,
-                          onChanged: (value) {
-                            setState(() {
-                              _workingDays[dayData['key']!] =
-                                  _workingDays[dayData['key']!]!
-                                      .copyWith(isActive: value ?? false);
-                            });
-                          },
-                          activeColor: BranchColors.primaryRed,
-                          checkColor: BranchColors.white,
-                          side: BorderSide(
-                            color: BranchColors.fieldBorder,
-                            width: 1,
-                          ),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              localizations.translate('to'),
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: BranchColors.textSecondary,
+                                fontFamily: isRTL ? 'Almarai' : 'Poppins',
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                          ],
                         ),
                       ),
                     ],

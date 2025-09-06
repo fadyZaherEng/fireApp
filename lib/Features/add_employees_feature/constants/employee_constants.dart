@@ -1,7 +1,6 @@
 class EmployeeConstants {
   static final List<String> roles = [
     'management',
-    'administrative',
     'contractDocumentation',
     'reportReceiving',
     'repairApproval',
@@ -10,7 +9,6 @@ class EmployeeConstants {
 
   static final Map<String, String> roleMapping = {
     'management': 'management',
-    'administrative': 'Administrative',
     'contractDocumentation': 'Contract Documentation',
     'reportReceiving': 'Report Receiving',
     'repairApproval': 'Repair Approval',
@@ -19,7 +17,6 @@ class EmployeeConstants {
 
   static final Map<String, String> jobTitleMapping = {
     'management': 'مدير النظام',
-    'administrative': 'إداري',
     'contractDocumentation': 'موثق عقود',
     'reportReceiving': 'مستقبل تقارير',
     'repairApproval': 'موافق إصلاح',

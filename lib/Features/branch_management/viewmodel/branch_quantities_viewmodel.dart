@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safetyZone/core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
 import '../data/services/product_api_service.dart';
 import '../data/services/branch_api_service.dart';
@@ -253,7 +254,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     }
   }
 
-  void addMoreProduct(ProductType type) {
+  void addMoreProduct(ProductType type, context) {
     final newId = '${type.id}_${DateTime.now().millisecondsSinceEpoch}';
     int insertIndex = _products.length;
 
@@ -275,15 +276,6 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       ),
     );
     notifyListeners();
-
-    // Scroll to show the new item
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   scrollController.animateTo(
-    //     scrollController.position.maxScrollExtent,
-    //     duration: const Duration(milliseconds: 300),
-    //     curve: Curves.easeOut,
-    //   );
-    // });
   }
 
   void handleVariantSelection(
@@ -291,6 +283,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     int productIndex,
     ProductData productData,
     List<ProductItem> variants,
+    BuildContext context, // 👈 أضفنا الـ context عشان نعرض الرسالة
   ) {
     if (variant == 'Loading...' || variant == 'No variants available') {
       return;
@@ -302,6 +295,19 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
         selectedItem = variants.firstWhere(
           (item) => item.itemName.en == variant || item.itemName.ar == variant,
         );
+        final isDuplicate = _products.any((p) =>
+            p.selectedVariantItem?.id == selectedItem!.id &&
+            p.id != productData.id);
+
+        if (isDuplicate) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)
+                  .translate("This item is already added!")),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
       } catch (e) {
         selectedItem = null;
         variant = null;
@@ -316,17 +322,195 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // void handleVariantSelection(
+  //     String? variant,
+  //     int productIndex,
+  //     ProductData productData,
+  //     List<ProductItem> variants,
+  //     BuildContext context, // 👈 أضفنا الـ context عشان نعرض الرسالة
+  //     ) {
+  //   if (variant == 'Loading...' || variant == 'No variants available') {
+  //     return;
+  //   }
+  //
+  //   ProductItem? selectedItem;
+  //   if (variant != null && variants.isNotEmpty) {
+  //     try {
+  //       selectedItem = variants.firstWhere(
+  //             (item) => item.itemName.en == variant || item.itemName.ar == variant,
+  //       );
+  //
+  //       // ✅ تحقق لو العنصر دا مستخدم بالفعل في منتجات أخرى
+  //       final isDuplicate = _products.any((p) =>
+  //       p.selectedVariantItem?.id == selectedItem!.id &&
+  //           p.id != productData.id);
+  //
+  //       if (isDuplicate) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           const SnackBar(
+  //             content: Text('This item is already added!'),
+  //             backgroundColor: Colors.orange,
+  //           ),
+  //         );
+  //         return; // وقف الاختيار
+  //       }
+  //     } catch (e) {
+  //       selectedItem = null;
+  //       variant = null;
+  //     }
+  //   }
+  //
+  //   print('Selected variant: $variant');
+  //   print('Selected item: $productIndex');
+  //   _products[productIndex] = productData.copyWith(
+  //     selectedVariant: variant,
+  //     selectedVariantItem: selectedItem,
+  //   );
+  //   notifyListeners();
+  // }
+  // void handleVariantSelection(
+  //   String? variant,
+  //   int productIndex,
+  //   ProductData productData,
+  //   List<ProductItem> variants,
+  //   BuildContext context,
+  // ) {
+  //   if (variant == 'Loading...' || variant == 'No variants available') {
+  //     return;
+  //   }
+  //
+  //   ProductItem? selectedItem;
+  //   if (variant != null && variants.isNotEmpty) {
+  //     try {
+  //       selectedItem = variants.firstWhere(
+  //         (item) => item.itemName.en == variant || item.itemName.ar == variant,
+  //       );
+  //
+  //       // ✅ التشيك للتكرار
+  //       final isDuplicate = _products.any((p) =>
+  //           p.selectedVariantItem?.id == selectedItem!.id &&
+  //           p.id != productData.id);
+  //
+  //       if (isDuplicate) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //             content: Text(AppLocalizations.of(context)
+  //                 .translate("This item is already added!")),
+  //             backgroundColor: Colors.orange,
+  //           ),
+  //         );
+  //
+  //         // 👇 مهم: رجّع القيمة القديمة (ما تغيرش)
+  //         notifyListeners();
+  //         return;
+  //       }
+  //     } catch (e) {
+  //       selectedItem = null;
+  //       variant = null;
+  //     }
+  //   }
+  //
+  //   // ✅ تحديث عادي لو مش مكرر
+  //   _products[productIndex] = productData.copyWith(
+  //     selectedVariant: variant,
+  //     selectedVariantItem: selectedItem,
+  //   );
+  //   notifyListeners();
+  // }
+  // bool handleVariantSelection(
+  //   String? variant,
+  //   int productIndex,
+  //   ProductData productData,
+  //   List<ProductItem> variants,
+  //   BuildContext context,
+  // ) {
+  //   if (variant == 'Loading...' || variant == 'No variants available') {
+  //     return false;
+  //   }
+  //
+  //   ProductItem? selectedItem;
+  //   if (variant != null && variants.isNotEmpty) {
+  //     try {
+  //       selectedItem = variants.firstWhere(
+  //         (item) => item.itemName.en == variant || item.itemName.ar == variant,
+  //       );
+  //
+  //       final isDuplicate = _products.any((p) =>
+  //           p.selectedVariantItem?.id == selectedItem!.id &&
+  //           p.id != productData.id);
+  //
+  //       if (isDuplicate) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //             content: Text(AppLocalizations.of(context)
+  //                 .translate("This item is already added!")),
+  //             backgroundColor: Colors.orange,
+  //           ),
+  //         );
+  //
+  //         _products[productIndex] = productData.copyWith(
+  //           selectedVariant: variant,
+  //           selectedVariantItem: selectedItem,
+  //         );
+  //         return false; // 👈 مرفوض
+  //       }
+  //     } catch (e) {
+  //       selectedItem = null;
+  //       variant = null;
+  //     }
+  //   }
+  //
+  //   _products[productIndex] = productData.copyWith(
+  //     selectedVariant: variant,
+  //     selectedVariantItem: selectedItem,
+  //   );
+  //   notifyListeners();
+  //   return true; // 👈 مقبول
+  // }
+
   void updateQuantity(int productIndex, ProductData productData, int quantity) {
     _products[productIndex] = productData.copyWith(quantity: quantity);
     notifyListeners();
   }
 
+  bool _hasDuplicateVariants() {
+    final seen = <String>{};
+
+    for (final p in products) {
+      if (p.selectedVariantItem == null) continue;
+
+      final id = p.selectedVariantItem!.id;
+
+      if (seen.contains(id)) {
+        return true; // ✅ لقيت مكرر
+      }
+      seen.add(id);
+    }
+
+    return false; // ✅ كله تمام
+  }
+
   Future<void> submitQuantities(
       BuildContext context, final bool isEditing) async {
+    // ✅ check quantities
     if (!_validateQuantities()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter at least one product quantity'),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)
+                .translate("Please enter at least one product quantity"),
+          ),
+        ),
+      );
+      return;
+    }
+
+    // ✅ check duplicates
+    if (_hasDuplicateVariants()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              AppLocalizations.of(context).translate("thereAreRepeatedItems")),
         ),
       );
       return;
@@ -334,11 +518,9 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
 
     _isLoading = true;
     notifyListeners();
-
+    print("Submitting quantities...");
     try {
-      final branchResponse = await _createBranch(
-        isEditing,
-      );
+      final branchResponse = await _createBranch(isEditing);
       await _addItemsToBranch(branchResponse.id);
 
       _isLoading = false;
@@ -400,7 +582,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       employee: employeeId,
       location: BranchLocation(
         type: "Point",
-        coordinates: [latitude, longitude],
+        coordinates: [longitude,latitude],
       ),
       address: address,
       mall: mallName ?? "No Mall",
@@ -489,8 +671,10 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
 
   void _showSuccessMessage(BuildContext context, {bool isEditing = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-        content: Text(isEditing ? 'Branch updated successfully!' : 'Branch created and items added successfully!'),
+      SnackBar(
+        content: Text(isEditing
+            ? 'Branch updated successfully!'
+            : 'Branch created and items added successfully!'),
         backgroundColor: Colors.green,
       ),
     );

@@ -108,145 +108,142 @@ class _BranchesScreenState extends State<BranchesScreen> {
                             horizontal: 12, vertical: 8),
                         itemBuilder: (context, index) {
                           final branch = _branches[index];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                Routes.branchDetails,
-                                arguments: branch,
-                              );
-                            },
-                            child: Card(
-                              margin: const EdgeInsets.only(bottom: 12),
-                              elevation: 1,
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      branch.branchName,
-                                      textAlign: TextAlign.right,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                          return Card(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            elevation: 1,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    branch.branchName,
+                                    textAlign: TextAlign.right,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
                                     ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      branch.address,
-                                      textAlign: TextAlign.right,
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        color: Colors.grey,
-                                      ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    branch.address,
+                                    textAlign: TextAlign.right,
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.grey,
                                     ),
-                                    const SizedBox(height: 12),
+                                  ),
+                                  const SizedBox(height: 12),
 
-                                    // Actions
-                                    Wrap(
-                                      spacing: 8,
-                                      runSpacing: 8,
-                                      alignment: WrapAlignment.end,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            _buildOutlinedButton(
-                                                loc.translate("location")),
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.of(context).pushNamed(
-                                                  Routes.branchDetails,
-                                                  arguments: branch,
-                                                );
-                                              },
-                                              child: _buildFilledButton(
-                                                loc.translate("edit"),
-                                                CColors.secondary,
-                                                Icons.edit,
-                                              ),
+                                  // Actions
+                                  Wrap(
+                                    spacing: 8,
+                                    runSpacing: 8,
+                                    alignment: WrapAlignment.end,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _buildOutlinedButton(
+                                              loc.translate("location")),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).pushNamed(
+                                                Routes.branchDetails,
+                                                arguments: branch,
+                                              );
+                                            },
+                                            child: _buildFilledButton(
+                                              loc.translate("edit"),
+                                              CColors.secondary,
+                                              branch,
+                                              Icons.edit,
                                             ),
-                                            _buildFilledButton(
-                                                loc.translate("print"),
-                                                CColors.primary,
-                                                Icons.print),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            _buildOutlinedButton(
-                                              loc.translate(
-                                                "branch_quantities",
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.of(context).pushNamed(
-                                                  Routes.branchDetails,
-                                                  arguments: branch,
-                                                );
-                                              },
-                                              child: _buildFilledButton(
-                                                loc.translate("edit"),
-                                                CColors.secondary,
-                                                Icons.edit,
-                                              ),
-                                            ),
-                                            _buildFilledButton(
-                                                loc.translate("print"),
-                                                CColors.primary,
-                                                Icons.print),
-                                          ],
-                                        ),
-                                        SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: [
-                                              _buildFilledButton(
-                                                loc.translate(
-                                                    "contract_details"),
-                                                CColors.primary,
-                                                Icons.print,
-                                                18,
-                                                10,
-                                                12,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              _buildFilledButton(
-                                                loc.translate("invoices"),
-                                                CColors.primary,
-                                                Icons.print,
-                                                18,
-                                                10,
-                                                12,
-                                              ),
-                                              const SizedBox(width: 16),
-                                              _buildOutlinedButton(
-                                                loc.translate("renew_contract"),
-                                                18,
-                                                10,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              _buildOutlinedButton(
-                                                loc.translate("no_contract"),
-                                                18,
-                                                10,
-                                              ),
-                                            ],
                                           ),
+                                          _buildFilledButton(
+                                              loc.translate("print"),
+                                              CColors.primary,
+                                              branch,
+                                              Icons.print),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _buildOutlinedButton(
+                                            loc.translate(
+                                              "branch_quantities",
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).pushNamed(
+                                                Routes.branchDetails,
+                                                arguments: branch,
+                                              );
+                                            },
+                                            child: _buildFilledButton(
+                                              loc.translate("edit"),
+                                              CColors.secondary,
+                                              branch,
+                                              Icons.edit,
+                                            ),
+                                          ),
+                                          _buildFilledButton(
+                                              loc.translate("print"),
+                                              CColors.primary,
+                                              branch,
+                                              Icons.print),
+                                        ],
+                                      ),
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            _buildFilledButton(
+                                              loc.translate("contract_details"),
+                                              CColors.primary,
+                                              branch,
+                                              Icons.print,
+                                              18,
+                                              10,
+                                              12,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            _buildFilledButton(
+                                              loc.translate("invoices"),
+                                              CColors.primary,
+                                              branch,
+                                              Icons.print,
+                                              18,
+                                              10,
+                                              12,
+                                            ),
+                                            const SizedBox(width: 16),
+                                            _buildOutlinedButton(
+                                              loc.translate("renew_contract"),
+                                              18,
+                                              10,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            _buildOutlinedButton(
+                                              loc.translate("no_contract"),
+                                              18,
+                                              10,
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(height: 6),
-                                      ],
-                                    )
-                                  ],
-                                ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
                           );
@@ -305,10 +302,15 @@ class _BranchesScreenState extends State<BranchesScreen> {
     );
   }
 
-  Widget _buildFilledButton(String text, Color color,
+  Widget _buildFilledButton(String text, Color color, Branch branch,
       [IconData? icon, double? radius, double? fontSize, double? iconSize]) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).pushNamed(
+          Routes.branchDetails,
+          arguments: branch,
+        );
+      },
       label: icon != null
           ? Icon(icon, size: iconSize ?? 16, color: color)
           : const SizedBox(),

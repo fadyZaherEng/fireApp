@@ -524,5 +524,9 @@
   "edit": "Edit",
   "no_contract": "Do Not Renew Contract",
   "renew_contract": "Renew Contract",
-  "add_branch": "Add New Branch"
+  "add_branch": "Add New Branch",
+  "This item is already added!": "This item is already added!",
+  "Please enter at least one product quantity": "Please enter at least one product quantity",
+  "thereAreRepeatedItems": "There are repeated items, please remove duplicates",
+  "shouldHave": "You should have "
 }

@@ -151,7 +151,7 @@ class BranchQuantitiesView extends StatelessWidget {
               selectedVariantIndex: index,
               onDropdownOpened: () =>
                   viewModel.loadVariantsForType(type.nameKey),
-              onAddMore: () => viewModel.addMoreProduct(type),
+              onAddMore: () => viewModel.addMoreProduct(type, context),
               localizations: localizations,
               isRTL: isRTL,
               onVariantChanged: (variant, prodIndex) {
@@ -159,7 +159,12 @@ class BranchQuantitiesView extends StatelessWidget {
                 final idx = viewModel.products.indexOf(targetProduct);
                 if (idx != -1) {
                   viewModel.handleVariantSelection(
-                      variant, idx, targetProduct, variants);
+                    variant,
+                    idx,
+                    targetProduct,
+                    variants,
+                    context,
+                  );
                 }
               },
               onQuantityChanged: (quantity, prodIndex) {

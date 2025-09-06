@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safetyZone/Features/add_employees_feature/view/add_employees_view.dart';
 import 'package:safetyZone/Features/auth_features/login_feature/view/login_view.dart';
 import 'package:safetyZone/Features/branches/branches_screen.dart';
 import 'package:safetyZone/Features/engineering_inspection_report_feature/data/services/engineering_inspection_report_api_service.dart';
@@ -29,8 +30,19 @@ import '../../certificate_of_equipment_installations_feature/view/certificate_in
 import '../../certificate_of_equipment_installations_feature/cubit/certificate_installation_cubit.dart';
 import '../../certificate_of_equipment_installations_feature/data/services/certificate_installation_api_service.dart';
 
-class HomeContentView extends StatelessWidget {
+class HomeContentView extends StatefulWidget {
   const HomeContentView({super.key});
+
+  @override
+  State<HomeContentView> createState() => _HomeContentViewState();
+}
+
+class _HomeContentViewState extends State<HomeContentView> {
+  @override
+  void didUpdateWidget(covariant HomeContentView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    context.read<HomeUiCubit>().loadHomeData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -326,9 +338,11 @@ class HomeContentView extends StatelessWidget {
                     onTap: () {
                       // Navigator.pop(context);
                       // Navigate to branches list
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => const BranchesScreen(),
-                      ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const BranchesScreen(),
+                          ));
                     },
                   ),
                   SizedBox(height: 10.h),
@@ -336,8 +350,14 @@ class HomeContentView extends StatelessWidget {
                     icon: Icons.people_outline,
                     title: localizations.translate('drawerAddEmployees'),
                     onTap: () {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                       // Navigate to add employees
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddEmployeeView(),
+                        ),
+                      );
                     },
                   ),
                   SizedBox(height: 10.h),
@@ -427,7 +447,10 @@ class HomeContentView extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => const LanguageSettingsView(),
                         ),
-                      );
+                      ).then((_) {
+                        // Reload the home data to reflect language changes
+                        context.read<HomeUiCubit>().loadHomeData();
+                      });
                     },
                   ),
                   SizedBox(height: 10.h),
