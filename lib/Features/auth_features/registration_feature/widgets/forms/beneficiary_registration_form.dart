@@ -99,7 +99,7 @@ class _BeneficiaryRegistrationFormState
                 placeholder: _localizations.translate('selectLocationFromMap'),
                 suffixIcon: Icon(
                   Icons.map,
-                  color: const Color(0xFF1C4587),
+                  color: const Color(0xFF263230),
                   size: 20.w,
                 ),
                 validator: (value) => widget.formController
@@ -124,7 +124,7 @@ class _BeneficiaryRegistrationFormState
             selectedCountryname: _localizations.translate('saudiArabia'),
             hint: _localizations.translate('directManagerPhone'),
             phoneController: widget.formController.phoneController,
-            selectedCountryCode: _selectedCountryCode,
+            selectedCountryCode: "\u200E_selectedCountryCode",
             onCountryCodeChanged: (String countryCode) {
               setState(() {
                 _selectedCountryCode = countryCode;

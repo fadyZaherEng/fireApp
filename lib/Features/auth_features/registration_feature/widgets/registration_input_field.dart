@@ -42,14 +42,14 @@ class RegistrationInputField extends StatelessWidget {
             hintStyle: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
-              color: const Color(0xFF3B3B3B),
+              color: const Color(0xFF263230),
               fontFamily: 'Almarai',
             ),
             prefixIcon: Padding(
               padding: EdgeInsets.only(left: 12.w, right: 8.w),
               child: Icon(
                 icon,
-                color: const Color(0xFF005B99),
+                color: const Color(0xFF263230),
                 size: 20.sp,
               ),
             ),

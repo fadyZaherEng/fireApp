@@ -158,10 +158,18 @@ class _BranchesScreenState extends State<BranchesScreen> {
                                           children: [
                                             _buildOutlinedButton(
                                                 loc.translate("location")),
-                                            _buildFilledButton(
-                                              loc.translate("edit"),
-                                              CColors.secondary,
-                                              Icons.edit,
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pushNamed(
+                                                  Routes.branchDetails,
+                                                  arguments: branch,
+                                                );
+                                              },
+                                              child: _buildFilledButton(
+                                                loc.translate("edit"),
+                                                CColors.secondary,
+                                                Icons.edit,
+                                              ),
                                             ),
                                             _buildFilledButton(
                                                 loc.translate("print"),
@@ -173,12 +181,23 @@ class _BranchesScreenState extends State<BranchesScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            _buildOutlinedButton(loc.translate(
-                                                "branch_quantities")),
-                                            _buildFilledButton(
-                                              loc.translate("edit"),
-                                              CColors.secondary,
-                                              Icons.edit,
+                                            _buildOutlinedButton(
+                                              loc.translate(
+                                                "branch_quantities",
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pushNamed(
+                                                  Routes.branchDetails,
+                                                  arguments: branch,
+                                                );
+                                              },
+                                              child: _buildFilledButton(
+                                                loc.translate("edit"),
+                                                CColors.secondary,
+                                                Icons.edit,
+                                              ),
                                             ),
                                             _buildFilledButton(
                                                 loc.translate("print"),

@@ -409,6 +409,8 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
       workingDays: workingDays,
       status: isEditing,
     );
+    print("===================================");
+    print("Create branch request: ${createBranchRequest.toJson()}");
 
     print("Creating branch with data:");
     print("Branch Name: $branchName");

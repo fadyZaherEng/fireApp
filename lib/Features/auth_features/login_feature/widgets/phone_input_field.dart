@@ -123,7 +123,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                   ),
                   Icon(
                     Icons.arrow_drop_down,
-                    color: const Color(0xFF888888),
+                    color: const Color(0xFF263238),
                     size: 20.sp,
                   ),
                 ],
