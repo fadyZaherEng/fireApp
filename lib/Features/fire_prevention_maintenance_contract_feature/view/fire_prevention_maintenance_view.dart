@@ -302,7 +302,7 @@ class _ServiceProviderSelectionViewState
                 setState(() {
                   _selectedBranch = value;
                   _systemType = selectedBranch.systemType;
-                  _areaController.text = selectedBranch.space.toString();
+                  _areaController.text = (selectedBranch.space ?? 0).toInt().toString();
                   _systemTypeEnabled = false;
                   _areaEnabled = false;
                 });
@@ -359,7 +359,7 @@ class _ServiceProviderSelectionViewState
 
   void _handleSubmit(AppLocalizations localizations) async {
     if (_formKey.currentState?.validate() == true) {
-      final area = double.tryParse(_areaController.text) ?? 0.0;
+      final area = int.tryParse(_areaController.text) ?? 0.0;
       final hasDevices = _alertDevices.any((device) => device.count > 0) ||
           _fireExtinguishers.any((extinguisher) => extinguisher.count > 0);
 

@@ -307,8 +307,10 @@ class _ServiceProviderSelectionViewState
                   _selectedBranch = value;
                   _systemType =
                       selectedBranch.systemType; // Set system type from branch
-                  _areaController.text =
-                      selectedBranch.space.toString(); // Set area from branch
+                  // _areaController.text =
+                  //     selectedBranch.space.toString(); // Set area from branch
+                  _areaController.text = (selectedBranch.space ?? 0).toInt().toString();
+
                   _systemTypeEnabled = false; // Disable system type editing
                   _areaEnabled = false; // Disable area editing
                 });
@@ -360,7 +362,7 @@ class _ServiceProviderSelectionViewState
 
   void _handleSubmit(AppLocalizations localizations) async {
     if (_formKey.currentState?.validate() == true) {
-      final area = double.tryParse(_areaController.text) ?? 0.0;
+      final area = int.tryParse(_areaController.text) ?? 0.0;
       final hasDevices = _alertDevices.any((device) => device.count > 0) ||
           _fireExtinguishers.any((extinguisher) => extinguisher.count > 0);
 

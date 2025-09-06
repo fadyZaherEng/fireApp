@@ -25,12 +25,12 @@ class AreaInput extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.number,
-        textDirection: TextDirection.ltr,
-        style: TextStyle(
+         style: TextStyle(
           fontFamily: 'Almarai',
           fontSize: 14.sp,
         ),
         enabled: enabled,
+        textAlign: TextAlign.center,
         decoration: InputDecoration(
           hintText: localizations.translate('areaHint'),
           hintStyle: TextStyle(

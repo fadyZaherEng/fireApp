@@ -302,9 +302,8 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
                   _selectedBranch = value;
                   _systemType =
                       selectedBranch.systemType; // Set system type from branch
-                  _areaController.text = selectedBranch.space
-                      .toString()
-                      .replaceFirst(".0", ""); // Set area from branch
+                  _areaController.text = (selectedBranch.space ?? 0).toInt().toString();
+// branch
                   _systemTypeEnabled = false; // Disable system type editing
                   _areaEnabled = false; // Disable area editing
                 });
@@ -356,7 +355,7 @@ class _ServiceProviderSelectionViewState extends State<FireExtinguisherView> {
 
   void _handleSubmit(AppLocalizations localizations) async {
     if (_formKey.currentState?.validate() == true) {
-      final area = double.tryParse(_areaController.text) ?? 0.0;
+      final area = int.tryParse(_areaController.text) ?? 0.0;
       final hasDevices = _alertDevices.any((device) => device.count > 0) ||
           _alarmItems.any((extinguisher) => extinguisher.count > 0);
 
