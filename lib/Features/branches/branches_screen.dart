@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:safetyZone/Features/branch_management/data/services/manager_api_service.dart';
+import 'package:safetyZone/Features/branch_management/view/branch_details_page.dart';
 import 'package:safetyZone/core/localization/app_localizations.dart';
 import 'package:safetyZone/core/routing/routes.dart';
 import 'package:safetyZone/core/utils/constants/colors.dart';
@@ -155,10 +156,12 @@ class _BranchesScreenState extends State<BranchesScreen> {
                                               loc.translate("location")),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.of(context).pushNamed(
-                                                Routes.branchDetails,
-                                                arguments: branch,
-                                              );
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BranchDetailsPage(
+                                                            branch: branch,
+                                                          )));
                                             },
                                             child: _buildFilledButton(
                                               loc.translate("edit"),
@@ -185,10 +188,12 @@ class _BranchesScreenState extends State<BranchesScreen> {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.of(context).pushNamed(
-                                                Routes.branchDetails,
-                                                arguments: branch,
-                                              );
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BranchDetailsPage(
+                                                            branch: branch,
+                                                          )));
                                             },
                                             child: _buildFilledButton(
                                               loc.translate("edit"),

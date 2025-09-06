@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safetyZone/Features/branches/branches_screen.dart'as branch;
 import 'package:safetyZone/core/localization/app_localizations.dart';
 import '../../../core/routing/routes.dart';
 import '../data/services/product_api_service.dart';
@@ -37,11 +38,12 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
   BranchQuantitiesViewModel({
     String? systemType,
     BranchData? branchData,
+    branch.Branch? branch,
   }) {
     print("=-=-=-=- $systemType");
     _systemType = systemType ?? 'zone'; // Default to 'zone' if null
     _branchData = branchData;
-    _initializeProducts();
+    _initializeProducts(branch);
   }
 
   /// Update the system type dynamically and reload variants if needed
@@ -67,7 +69,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     }
   }
 
-  void _initializeProducts() {
+  void _initializeProducts(branch.Branch? branch) {
     final productTypes = [
       ProductType(
         id: 'control_panel',
@@ -162,8 +164,59 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
               quantity: 1,
             ))
         .toList();
+    // ✅ لو في branchData (يعني وضع تعديل)
+    if (branch != null) {
+      _prefillProductsFromBranch(branch);
+    }
     notifyListeners();
   }
+  void _prefillProductsFromBranch(branch.Branch? branch) {
+    final lang = "en"; // أو استبدلها بالـ SharedPref().getString(PrefKeys.languageCode)
+     void updateProducts( branchItems, String type) {
+      for (final branchItem in branchItems) {
+        for (int i = 0; i < _products.length; i++) {
+          final product = _products[i];
+
+          // if (product.type.type == type &&
+          //     product.type.subCategory.toLowerCase() ==
+          //         branchItem.item.subCategory.toLowerCase()) {
+            // ✅ لو الـ id متساوي
+          print("Branch item ID: ${branchItem.itemId}, Product selectedVariantItem ID: ${product.selectedVariantItem?.id}");
+            if (branchItem.itemId == product.selectedVariantItem?.id ||
+                product.selectedVariantItem == null) {
+              _products[i] = product.copyWith(
+                selectedVariant:
+                lang == "en" ? product.selectedVariantItem?.itemName.en : product.selectedVariantItem?.itemName.ar,
+                selectedVariantItem: ProductItem(
+                  id: product.selectedVariantItem?.id??"",
+                  itemName: product.selectedVariantItem?.itemName??ItemName(en: '', ar: ''),
+                  type: product.selectedVariantItem?.type??"",
+                  subCategory: product.selectedVariantItem?.subCategory??"",
+                  createdAt: DateTime.now(),
+                  updatedAt: DateTime.now(),
+                  admin: product.selectedVariantItem?.admin??"",
+                  alarmType: product.selectedVariantItem?.alarmType??"",
+                  image: product.selectedVariantItem?.image??"",
+                  isDeleted: product.selectedVariantItem?.isDeleted??false,
+                  itemCode: product.selectedVariantItem?.itemCode??"",
+                  supplierName: product.selectedVariantItem?.supplierName??"",
+                  supplyPrice: product.selectedVariantItem?.supplyPrice??0,
+                  version: product.selectedVariantItem?.version??0,
+                ),
+                quantity: branchItem.quantity,
+              );
+            // }
+          }
+        }
+      }
+    }
+
+    // ✅ طبق على كل نوع
+    updateProducts(branch?.alarmItem??[], "alarm-item");
+    updateProducts(branch?.fireSystemItem??[], "fire-system-item");
+    updateProducts(branch?.fireExtinguisherItem??[], "fire-system-item");
+  }
+
 
   List<ProductType> getUniqueProductTypes() {
     final uniqueTypes = <String, ProductType>{};
@@ -491,7 +544,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
   }
 
   Future<void> submitQuantities(
-      BuildContext context, final bool isEditing) async {
+      BuildContext context, final bool isEditing,String branchId) async {
     // ✅ check quantities
     if (!_validateQuantities()) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -520,8 +573,8 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     notifyListeners();
     print("Submitting quantities...");
     try {
-      final branchResponse = await _createBranch(isEditing);
-      await _addItemsToBranch(branchResponse.id);
+      final branchResponse = await _createBranch(isEditing,branchId);
+      await _addItemsToBranch(isEditing?branchId:branchResponse.id, isEditing);
 
       _isLoading = false;
       notifyListeners();
@@ -547,7 +600,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
         product.quantity! > 0);
   }
 
-  Future<dynamic> _createBranch(final bool isEditing) async {
+  Future<dynamic> _createBranch(final bool isEditing,String branchID) async {
     // Use actual branch data if available, otherwise use defaults
     final branchName = _branchData?.branchName ?? "Default Branch";
     final employeeId = _branchData?.employeeId ?? "";
@@ -603,7 +656,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     print("Space: $space");
     print("System Type: $_systemType");
 
-    return await _branchApiService.createBranch(createBranchRequest);
+    return await _branchApiService.createBranch(createBranchRequest, isEditing,branchID);
   }
 
   /// Helper method to capitalize day names
@@ -612,7 +665,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
     return day[0].toUpperCase() + day.substring(1).toLowerCase();
   }
 
-  Future<void> _addItemsToBranch(String branchId) async {
+  Future<void> _addItemsToBranch(String branchId,bool isEditing) async {
     List<ProductData> validProducts = _products
         .where((product) =>
             product.selectedVariant != null &&
@@ -661,7 +714,7 @@ class BranchQuantitiesViewModel extends ChangeNotifier {
           fireSystemItem: fireSystemItems,
           fireExtinguisherItem: fireExtinguisherItems,
         ),
-        status: true,
+        status: isEditing,
       );
 
       await _branchApiService.addItemsToBranch(

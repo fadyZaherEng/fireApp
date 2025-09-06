@@ -66,7 +66,8 @@ class BranchApiService {
   }
 
   /// Create a new branch
-  Future<BranchResponse> createBranch(CreateBranchRequest request) async {
+  Future<BranchResponse> createBranch(
+      CreateBranchRequest request, bool isEditing, String branchId) async {
     try {
       // Get token from shared preferences
       final token = SharedPref().getString(PrefKeys.token);
@@ -77,11 +78,18 @@ class BranchApiService {
 
       // Set authorization header
       _dio.options.headers['Authorization'] = 'Bearer $token';
-
-      final response = await _dio.post(
-        '/api/consumer/branch',
-        data: request.toJson(),
-      );
+      final Response response;
+      if (isEditing) {
+        response = await _dio.put(
+          '/api/consumer/branch/info/$branchId',
+          data: request.toJson(),
+        );
+      } else {
+        response = await _dio.post(
+          '/api/consumer/branch',
+          data: request.toJson(),
+        );
+      }
       if (response.statusCode == 200 || response.statusCode == 201) {
         SharedPref().setString(PrefKeys.employeeId, request.employee);
         return BranchResponse.fromJson(response.data);
@@ -144,8 +152,7 @@ class BranchApiService {
         throw Exception(
             'Failed to add items to branch: ${response.statusCode}');
       }
-    }
-    on DioException catch (e) {
+    } on DioException catch (e) {
       _logger.e('DioException in addItemsToBranch: ${e.message}');
       if (e.response?.statusCode == 401) {
         throw Exception('Authentication failed. Please login again.');

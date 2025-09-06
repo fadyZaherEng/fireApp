@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:safetyZone/Features/auth_features/login_feature/widgets/primary_button.dart';
 import 'package:safetyZone/Features/branch_management/models/product_data.dart';
 import 'package:safetyZone/Features/branch_management/models/product_type.dart';
+import 'package:safetyZone/Features/branches/branches_screen.dart';
 import 'package:safetyZone/core/services/shared_pref/pref_keys.dart';
 import 'package:safetyZone/core/services/shared_pref/shared_pref.dart';
 import 'package:safetyZone/core/utils/constants/colors.dart';
@@ -17,13 +18,17 @@ import '../viewmodel/branch_quantities_viewmodel.dart';
 class BranchQuantitiesPage extends StatelessWidget {
   final String? systemType;
   final BranchData? branchData;
+  final String? branchId;
   final bool isEditing;
+  final Branch? branch;
 
   const BranchQuantitiesPage({
     super.key,
     this.systemType,
     this.branchData,
     required this.isEditing,
+    this.branchId,
+    this.branch,
   });
 
   @override
@@ -32,22 +37,34 @@ class BranchQuantitiesPage extends StatelessWidget {
       create: (_) => BranchQuantitiesViewModel(
         systemType: systemType,
         branchData: branchData,
+        branch: branch,
       ),
       child: BranchQuantitiesView(
         isEditing: isEditing,
+        branchId: branchId,
+        branch: branch,
       ),
     );
   }
 }
 
-class BranchQuantitiesView extends StatelessWidget {
+class BranchQuantitiesView extends StatefulWidget {
   final bool isEditing;
+  final String? branchId;
+  final Branch? branch;
 
   const BranchQuantitiesView({
     super.key,
     required this.isEditing,
+    this.branchId,
+    this.branch,
   });
 
+  @override
+  State<BranchQuantitiesView> createState() => _BranchQuantitiesViewState();
+}
+
+class _BranchQuantitiesViewState extends State<BranchQuantitiesView> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<BranchQuantitiesViewModel>(context);
@@ -139,7 +156,6 @@ class BranchQuantitiesView extends StatelessWidget {
         final hasLoaded = viewModel.variantsCache.containsKey(type.nameKey);
 
         final variantNames = _getVariantNames(isLoading, hasLoaded, variants);
-
         return Stack(
           children: [
             ProductGroupWidget(
@@ -230,7 +246,11 @@ class BranchQuantitiesView extends StatelessWidget {
           padding: EdgeInsets.all(16.w),
           child: PrimaryButton(
             text: localizations.translate('confirm'),
-            onPressed: () => viewModel.submitQuantities(context, isEditing),
+            onPressed: () => viewModel.submitQuantities(
+              context,
+              widget.isEditing,
+              widget.branchId ?? '',
+            ),
           ),
         ),
         SizedBox(height: 20.h),

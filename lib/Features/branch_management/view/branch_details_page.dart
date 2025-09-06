@@ -1270,6 +1270,8 @@ class _BranchDetailsPageState extends State<BranchDetailsPage> {
             systemType: systemTypeForAPI,
             branchData: branchData,
             isEditing: widget.branch != null,
+            branchId: widget.branch?.id,
+            branch: widget.branch,
           ),
         ),
       );
