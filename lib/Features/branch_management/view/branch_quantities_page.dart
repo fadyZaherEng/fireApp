@@ -156,6 +156,11 @@ class _BranchQuantitiesViewState extends State<BranchQuantitiesView> {
         final hasLoaded = viewModel.variantsCache.containsKey(type.nameKey);
 
         final variantNames = _getVariantNames(isLoading, hasLoaded, variants);
+        print("variantNames$variantNames ${type.nameKey}");
+
+        // [        ] I/flutter (19821): ║                 "alarmItem": [{item_id: 68a2106c0f1f315f8ff6104c, quantity: 7, _id: 68b9f389142d6666cce4a430}]
+        // [        ] I/flutter (19821): ║                 "fireSystemItem": []
+        // [        ] I/flutter (19821): ║                 "fireExtinguisherItem": []
         return Stack(
           children: [
             ProductGroupWidget(

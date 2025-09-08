@@ -487,16 +487,19 @@ class WorkingDay {
 class ItemQuantity {
   final String itemId;
   final int quantity;
+  final String id;
 
   ItemQuantity({
     required this.itemId,
     required this.quantity,
+    this.id = '',
   });
 
   factory ItemQuantity.fromJson(Map<String, dynamic> json) {
     return ItemQuantity(
       itemId: json['item_id'] ?? '',
       quantity: json['quantity'] ?? 0,
+      id: json['_id'] ?? '',
     );
   }
 }
